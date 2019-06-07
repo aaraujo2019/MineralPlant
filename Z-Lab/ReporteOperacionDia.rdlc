@@ -1,0 +1,854 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition">
+  <DataSources>
+    <DataSource Name="PlantaBeneficioReporteOperacion">
+      <ConnectionProperties>
+        <DataProvider>System.Data.DataSet</DataProvider>
+        <ConnectString>/* Local Connection */</ConnectString>
+      </ConnectionProperties>
+      <rd:DataSourceID>b95f3544-7b27-4d90-b642-5950787df5a8</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="DataSetOperation">
+      <Fields>
+        <Field Name="Fecha">
+          <DataField>Fecha</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="ConsumoEnergia">
+          <DataField>ConsumoEnergia</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TonHora">
+          <DataField>TonHora</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="OperacionHorasDia">
+          <DataField>OperacionHorasDia</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DetencionMtto">
+          <DataField>DetencionMtto</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DetencionOperacion">
+          <DataField>DetencionOperacion</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TonHumedasZC">
+          <DataField>TonHumedasZC</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TonhumedasPM">
+          <DataField>TonhumedasPM</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="StockZCGruesos">
+          <DataField>StockZCGruesos</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="StockZCFinos">
+          <DataField>StockZCFinos</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="StockPMFinos">
+          <DataField>StockPMFinos</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TonMolidasZandor">
+          <DataField>TonMolidasZandor</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TonMolidasMineras">
+          <DataField>TonMolidasMineras</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="OroFundido">
+          <DataField>OroFundido</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="OrigenconcentradoFlotacion">
+          <DataField>OrigenconcentradoFlotacion</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="OrigenColasLixiviacion">
+          <DataField>OrigenColasLixiviacion</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="MotivoParada">
+          <DataField>MotivoParada</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="LecturaFlujoAgua">
+          <DataField>LecturaFlujoAgua</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="LecturaFlujoAguaInicio">
+          <DataField>LecturaFlujoAguaInicio</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="ConsumoTotalAgua">
+          <DataField>ConsumoTotalAgua</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="id">
+          <DataField>id</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>PlantaBeneficioReporteOperacion</DataSourceName>
+        <CommandText>/* Local Query */</CommandText>
+      </Query>
+      <rd:DataSetInfo>
+        <rd:DataSetName>PlantaBeneficioReporteOperacion</rd:DataSetName>
+        <rd:SchemaPath>C:\Users\juan.palacio\Documents\Visual Studio 2010\Projects\Z-Lab\Z-Lab\PlantaBeneficioReporteOperacion.xsd</rd:SchemaPath>
+        <rd:TableName>PB_Operation</rd:TableName>
+        <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
+        <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>
+        <rd:TableAdapterName>PB_OperationTableAdapter</rd:TableAdapterName>
+      </rd:DataSetInfo>
+    </DataSet>
+    <DataSet Name="DataSet1">
+      <Fields>
+        <Field Name="HoraInicial">
+          <DataField>HoraInicial</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="HoraFinal">
+          <DataField>HoraFinal</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Fecha">
+          <DataField>Fecha</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="LecturaInicial">
+          <DataField>LecturaInicial</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="LecturaFinal">
+          <DataField>LecturaFinal</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Porc_Humedad">
+          <DataField>Porc_Humedad</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="IdConsecutivo">
+          <DataField>IdConsecutivo</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="TonHumeda">
+          <DataField>TonHumeda</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="TonSeca">
+          <DataField>TonSeca</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Porc_Humedadperc">
+          <DataField>Porc_Humedadperc</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="TonHumedaManual">
+          <DataField>TonHumedaManual</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="TonsecaManual">
+          <DataField>TonsecaManual</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Muestra">
+          <DataField>Muestra</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Tenor_au">
+          <DataField>Tenor_au</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Onzas">
+          <DataField>Onzas</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Turno">
+          <DataField>Turno</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ano">
+          <DataField>ano</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="mes">
+          <DataField>mes</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Periodo">
+          <DataField>Periodo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="mediana">
+          <DataField>mediana</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>PlantaBeneficioReporteOperacion</DataSourceName>
+        <CommandText>/* Local Query */</CommandText>
+      </Query>
+      <rd:DataSetInfo>
+        <rd:DataSetName>PlantaBeneficioReporteOperacion</rd:DataSetName>
+        <rd:SchemaPath>C:\Users\juan.palacio\Documents\Visual Studio 2010\Projects\Z-Lab\Z-Lab\PlantaBeneficioReporteOperacion.xsd</rd:SchemaPath>
+        <rd:TableName>PB_Conveyor</rd:TableName>
+        <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
+        <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>
+        <rd:TableAdapterName>PB_ConveyorTableAdapter</rd:TableAdapterName>
+      </rd:DataSetInfo>
+    </DataSet>
+    <DataSet Name="DataSetUtilizacionPlanta">
+      <Fields>
+        <Field Name="Fecha">
+          <DataField>Fecha</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="utilizacion">
+          <DataField>utilizacion</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>PlantaBeneficioReporteOperacion</DataSourceName>
+        <CommandText>/* Local Query */</CommandText>
+      </Query>
+      <rd:DataSetInfo>
+        <rd:DataSetName>PlantaBeneficioReporteOperacion</rd:DataSetName>
+        <rd:SchemaPath>C:\Users\juan.palacio\Documents\Visual Studio 2010\Projects\Z-Lab\Z-Lab\PlantaBeneficioReporteOperacion.xsd</rd:SchemaPath>
+        <rd:TableName>Amb_HorasDeOperacion</rd:TableName>
+        <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
+        <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>
+        <rd:TableAdapterName>Amb_HorasDeOperacionTableAdapter</rd:TableAdapterName>
+      </rd:DataSetInfo>
+    </DataSet>
+  </DataSets>
+  <Body>
+    <ReportItems>
+      <Textbox Name="Textbox11">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>REPORTE DIARIO  DE OPERACION </Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox11</rd:DefaultName>
+        <Top>0.3302cm</Top>
+        <Left>4.43653cm</Left>
+        <Height>0.55033cm</Height>
+        <Width>8.04567cm</Width>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Tablix Name="Tablix3">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>0.89536in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.87036in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.82036in</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>0.36955in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox18">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Ton.</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                                <TextDecoration>Underline</TextDecoration>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value> Humeda</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                                <TextDecoration>Underline</TextDecoration>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox18</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>LightSteelBlue</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox20">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Muestra</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                                <TextDecoration>Underline</TextDecoration>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox20</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>LightSteelBlue</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox22">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Turno</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                                <TextDecoration>Underline</TextDecoration>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox22</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>LightSteelBlue</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.23622in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="TonHumeda">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Sum(Fields!TonHumeda.Value)</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                                <TextDecoration>Underline</TextDecoration>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>TonHumeda</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>LightSteelBlue</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Muestra">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Muestra.Value</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                                <TextDecoration>Underline</TextDecoration>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Muestra</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>LightSteelBlue</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Turno">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Turno.Value</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                                <TextDecoration>Underline</TextDecoration>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Turno</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>LightSteelBlue</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <rd:Selected>true</rd:Selected>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember />
+            <TablixMember />
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <DataSetName>DataSet1</DataSetName>
+        <Filters>
+          <Filter>
+            <FilterExpression>=Fields!Fecha.Value</FilterExpression>
+            <Operator>Equal</Operator>
+            <FilterValues>
+              <FilterValue>=Parameters!Fecha.Value</FilterValue>
+            </FilterValues>
+          </Filter>
+        </Filters>
+        <Top>2.8067cm</Top>
+        <Left>0.7747cm</Left>
+        <Height>1.53867cm</Height>
+        <Width>6.56867cm</Width>
+        <ZIndex>1</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Tablix>
+      <GaugePanel Name="GaugePanel3">
+        <RadialGauges>
+          <RadialGauge Name="RadialGauge1">
+            <PivotY>75</PivotY>
+            <GaugeScales>
+              <RadialScale Name="RadialScale1">
+                <Radius>54</Radius>
+                <StartAngle>90</StartAngle>
+                <SweepAngle>180</SweepAngle>
+                <GaugePointers>
+                  <RadialPointer Name="RadialPointer1">
+                    <PointerCap>
+                      <Style>
+                        <BackgroundColor>White</BackgroundColor>
+                        <BackgroundGradientType>DiagonalLeft</BackgroundGradientType>
+                        <BackgroundGradientEndColor>DimGray</BackgroundGradientEndColor>
+                        <BackgroundHatchType>None</BackgroundHatchType>
+                      </Style>
+                      <CapImage>
+                        <OffsetX>0pt</OffsetX>
+                        <OffsetY>0pt</OffsetY>
+                        <Source>External</Source>
+                        <Value />
+                      </CapImage>
+                      <OnTop>true</OnTop>
+                      <CapStyle>RoundedWithWideIndentation</CapStyle>
+                      <Width>33</Width>
+                    </PointerCap>
+                    <NeedleStyle>Tapered</NeedleStyle>
+                    <Style>
+                      <Border>
+                        <Style>None</Style>
+                      </Border>
+                      <BackgroundColor>White</BackgroundColor>
+                      <BackgroundGradientType>DiagonalLeft</BackgroundGradientType>
+                      <BackgroundGradientEndColor>Orange</BackgroundGradientEndColor>
+                      <BackgroundHatchType>None</BackgroundHatchType>
+                      <ShadowOffset>1pt</ShadowOffset>
+                    </Style>
+                    <GaugeInputValue>
+                      <Value>=Sum(Fields!utilizacion.Value)</Value>
+                      <Multiplier>1</Multiplier>
+                    </GaugeInputValue>
+                    <PointerImage>
+                      <OffsetX>0pt</OffsetX>
+                      <OffsetY>0pt</OffsetY>
+                      <Source>External</Source>
+                      <Value />
+                    </PointerImage>
+                    <MarkerLength>25</MarkerLength>
+                    <MarkerStyle>Wedge</MarkerStyle>
+                    <Placement>Inside</Placement>
+                    <Width>15</Width>
+                  </RadialPointer>
+                </GaugePointers>
+                <ScaleRanges>
+                  <ScaleRange Name="RadialRange1">
+                    <Style>
+                      <Border>
+                        <Color>Silver</Color>
+                        <Style>Solid</Style>
+                      </Border>
+                      <BackgroundColor>#00ffffff</BackgroundColor>
+                      <BackgroundGradientType>DiagonalLeft</BackgroundGradientType>
+                      <BackgroundGradientEndColor>Salmon</BackgroundGradientEndColor>
+                      <BackgroundHatchType>None</BackgroundHatchType>
+                      <ShadowOffset>0pt</ShadowOffset>
+                    </Style>
+                    <DistanceFromScale>30</DistanceFromScale>
+                    <StartValue>
+                      <Value>60</Value>
+                      <Multiplier>1</Multiplier>
+                    </StartValue>
+                    <EndValue>
+                      <Value />
+                      <Multiplier>1</Multiplier>
+                    </EndValue>
+                    <StartWidth>15</StartWidth>
+                    <EndWidth>30</EndWidth>
+                    <Placement>Inside</Placement>
+                  </ScaleRange>
+                </ScaleRanges>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <BackgroundColor>CornflowerBlue</BackgroundColor>
+                  <BackgroundGradientType>None</BackgroundGradientType>
+                  <BackgroundGradientEndColor>White</BackgroundGradientEndColor>
+                  <BackgroundHatchType>None</BackgroundHatchType>
+                  <ShadowOffset>0pt</ShadowOffset>
+                </Style>
+                <Interval>NaN</Interval>
+                <IntervalOffset>NaN</IntervalOffset>
+                <MaximumValue>
+                  <Value>100</Value>
+                  <Multiplier>1</Multiplier>
+                </MaximumValue>
+                <MinimumValue>
+                  <Value>0</Value>
+                  <Multiplier>1</Multiplier>
+                </MinimumValue>
+                <GaugeMajorTickMarks>
+                  <Interval>NaN</Interval>
+                  <IntervalOffset>NaN</IntervalOffset>
+                  <Style>
+                    <Border>
+                      <Color>DimGray</Color>
+                      <Style>None</Style>
+                    </Border>
+                    <BackgroundColor>DimGray</BackgroundColor>
+                  </Style>
+                  <Placement>Cross</Placement>
+                  <TickMarkImage>
+                    <Source>External</Source>
+                    <Value />
+                  </TickMarkImage>
+                  <Length>18</Length>
+                  <Width>2</Width>
+                </GaugeMajorTickMarks>
+                <GaugeMinorTickMarks>
+                  <Interval>NaN</Interval>
+                  <IntervalOffset>NaN</IntervalOffset>
+                  <Style>
+                    <Border>
+                      <Color>DimGray</Color>
+                      <Style>None</Style>
+                    </Border>
+                    <BackgroundColor>DimGray</BackgroundColor>
+                  </Style>
+                  <Placement>Cross</Placement>
+                  <TickMarkImage>
+                    <Source>External</Source>
+                    <Value />
+                  </TickMarkImage>
+                  <Length>8</Length>
+                  <Width>1</Width>
+                </GaugeMinorTickMarks>
+                <MaximumPin>
+                  <PinLabel>
+                    <Style>
+                      <FontSize>12pt</FontSize>
+                    </Style>
+                    <DistanceFromScale>0</DistanceFromScale>
+                  </PinLabel>
+                  <Style>
+                    <Border>
+                      <Color>DimGray</Color>
+                      <Style>Solid</Style>
+                    </Border>
+                    <BackgroundColor>WhiteSmoke</BackgroundColor>
+                  </Style>
+                  <Placement>Cross</Placement>
+                  <TickMarkImage>
+                    <Source>External</Source>
+                    <Value />
+                  </TickMarkImage>
+                  <Length>6</Length>
+                  <Width>6</Width>
+                  <Shape>Circle</Shape>
+                </MaximumPin>
+                <MinimumPin>
+                  <PinLabel>
+                    <Style>
+                      <FontSize>12pt</FontSize>
+                    </Style>
+                    <DistanceFromScale>0</DistanceFromScale>
+                  </PinLabel>
+                  <Style>
+                    <Border>
+                      <Color>DimGray</Color>
+                      <Style>Solid</Style>
+                    </Border>
+                    <BackgroundColor>WhiteSmoke</BackgroundColor>
+                  </Style>
+                  <Placement>Cross</Placement>
+                  <TickMarkImage>
+                    <Source>External</Source>
+                    <Value />
+                  </TickMarkImage>
+                  <Length>6</Length>
+                  <Width>6</Width>
+                  <Shape>Circle</Shape>
+                </MinimumPin>
+                <ScaleLabels>
+                  <Style>
+                    <FontSize>14pt</FontSize>
+                    <Color>#404040</Color>
+                  </Style>
+                  <Interval>NaN</Interval>
+                  <IntervalOffset>NaN</IntervalOffset>
+                  <DistanceFromScale>0</DistanceFromScale>
+                  <RotateLabels>true</RotateLabels>
+                  <ShowEndLabels>true</ShowEndLabels>
+                  <UseFontPercent>true</UseFontPercent>
+                </ScaleLabels>
+                <Width>0</Width>
+              </RadialScale>
+            </GaugeScales>
+            <BackFrame>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <BackgroundColor>WhiteSmoke</BackgroundColor>
+                <BackgroundGradientType>DiagonalLeft</BackgroundGradientType>
+                <BackgroundGradientEndColor>Gainsboro</BackgroundGradientEndColor>
+                <BackgroundHatchType>None</BackgroundHatchType>
+                <ShadowOffset>0pt</ShadowOffset>
+              </Style>
+              <FrameStyle>Edged</FrameStyle>
+              <FrameShape>CustomSemiCircularN1</FrameShape>
+              <FrameBackground>
+                <Style>
+                  <BackgroundColor>WhiteSmoke</BackgroundColor>
+                  <BackgroundGradientType>DiagonalLeft</BackgroundGradientType>
+                  <BackgroundGradientEndColor>Gray</BackgroundGradientEndColor>
+                  <BackgroundHatchType>None</BackgroundHatchType>
+                </Style>
+              </FrameBackground>
+              <FrameImage>
+                <Source>External</Source>
+                <Value />
+              </FrameImage>
+            </BackFrame>
+            <ClipContent>true</ClipContent>
+            <TopImage>
+              <Source>External</Source>
+              <Value />
+            </TopImage>
+            <AspectRatio>1.48</AspectRatio>
+            <Height>100</Height>
+            <Width>100</Width>
+          </RadialGauge>
+        </RadialGauges>
+        <AutoLayout>true</AutoLayout>
+        <BackFrame>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <BackgroundColor>Gainsboro</BackgroundColor>
+            <BackgroundGradientType>DiagonalLeft</BackgroundGradientType>
+            <BackgroundGradientEndColor>Gray</BackgroundGradientEndColor>
+            <BackgroundHatchType>None</BackgroundHatchType>
+            <ShadowOffset>0pt</ShadowOffset>
+          </Style>
+          <FrameBackground>
+            <Style>
+              <BackgroundColor>Silver</BackgroundColor>
+              <BackgroundGradientType>DiagonalLeft</BackgroundGradientType>
+              <BackgroundGradientEndColor>Gray</BackgroundGradientEndColor>
+              <BackgroundHatchType>None</BackgroundHatchType>
+            </Style>
+          </FrameBackground>
+          <FrameImage>
+            <Source>External</Source>
+            <Value />
+          </FrameImage>
+        </BackFrame>
+        <TopImage>
+          <Source>External</Source>
+          <Value />
+        </TopImage>
+        <DataSetName>DataSetUtilizacionPlanta</DataSetName>
+        <Filters>
+          <Filter>
+            <FilterExpression>=Fields!Fecha.Value</FilterExpression>
+            <Operator>Equal</Operator>
+            <FilterValues>
+              <FilterValue>=Parameters!Fecha.Value</FilterValue>
+            </FilterValues>
+          </Filter>
+        </Filters>
+        <Top>2.8067cm</Top>
+        <Left>12.60687cm</Left>
+        <Height>2.28333cm</Height>
+        <Width>4.79067cm</Width>
+        <ZIndex>2</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>White</BackgroundColor>
+        </Style>
+      </GaugePanel>
+    </ReportItems>
+    <Height>6.48046in</Height>
+    <Style />
+  </Body>
+  <ReportParameters>
+    <ReportParameter Name="Fecha">
+      <DataType>DateTime</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <Width>7.69942in</Width>
+  <Page>
+    <PageHeight>29.7cm</PageHeight>
+    <PageWidth>21cm</PageWidth>
+    <LeftMargin>2cm</LeftMargin>
+    <RightMargin>2cm</RightMargin>
+    <TopMargin>2cm</TopMargin>
+    <BottomMargin>2cm</BottomMargin>
+    <ColumnSpacing>0.13cm</ColumnSpacing>
+    <Style />
+  </Page>
+  <rd:ReportID>ae02664d-b594-4e31-86d3-1e6d65b399f3</rd:ReportID>
+  <rd:ReportUnitType>Cm</rd:ReportUnitType>
+</Report>

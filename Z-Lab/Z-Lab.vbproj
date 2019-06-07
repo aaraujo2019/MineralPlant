@@ -1,0 +1,828 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8E9F107F-906B-4606-940B-EB3174105CBD}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Z_Lab.My.MyApplication</StartupObject>
+    <RootNamespace>Z_Lab</RootNamespace>
+    <AssemblyName>Z-Lab</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Z-Lab.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <WarningLevel>1</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Z-Lab.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <WarningLevel>1</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Text</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>SimboloGCG.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>226D7BF59A0055B1C0423C62A71390235F402092</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Z-Lab_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Deployment">
+      <Private>True</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Private>True</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>True</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClassReporteOperaciones.vb" />
+    <Compile Include="ConexionBd.vb" />
+    <Compile Include="DSReportesOp.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DSReportesOp.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="FmConsProyecto.Designer.vb">
+      <DependentUpon>FmConsProyecto.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FmConsProyecto.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrConfFlows.Designer.vb">
+      <DependentUpon>FrConfFlows.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrConfFlows.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAssayMineralPlant.Designer.vb">
+      <DependentUpon>FrmAssayMineralPlant.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmAssayMineralPlant.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAvanceMes.Designer.vb">
+      <DependentUpon>FrmAvanceMes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmAvanceMes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmBalanceMetalurgico.Designer.vb">
+      <DependentUpon>FrmBalanceMetalurgico.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmBalanceMetalurgico.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCargarGravedadEspecifica.Designer.vb">
+      <DependentUpon>FrmCargarGravedadEspecifica.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCargarGravedadEspecifica.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCargarHumedad.Designer.vb">
+      <DependentUpon>FrmCargarHumedad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCargarHumedad.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCargarInstantaneas.Designer.vb">
+      <DependentUpon>FrmCargarInstantaneas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCargarInstantaneas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmConfReactivos.Designer.vb">
+      <DependentUpon>FrmConfReactivos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmConfReactivos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmConsumoCianuro.Designer.vb">
+      <DependentUpon>FrmConsumoCianuro.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmConsumoCianuro.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmConsumoReactivos.Designer.vb">
+      <DependentUpon>FrmConsumoReactivos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmConsumoReactivos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDespacho.Designer.vb">
+      <DependentUpon>FrmDespacho.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmDespacho.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmEficienciaProcesos.Designer.vb">
+      <DependentUpon>FrmEficienciaProcesos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmEficienciaProcesos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmExportarBascula.Designer.vb">
+      <DependentUpon>FrmExportarBascula.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmExportarBascula.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmExportarFlujos.Designer.vb">
+      <DependentUpon>FrmExportarFlujos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmExportarFlujos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmExportDensidadvb.Designer.vb">
+      <DependentUpon>FrmExportDensidadvb.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmExportDensidadvb.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmFlujos.Designer.vb">
+      <DependentUpon>FrmFlujos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmFlujos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmFundicion.Designer.vb">
+      <DependentUpon>FrmFundicion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmFundicion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGraficoFundicion.Designer.vb">
+      <DependentUpon>FrmGraficoFundicion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmGraficoFundicion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGraficoMineras.Designer.vb">
+      <DependentUpon>FrmGraficoMineras.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmGraficoMineras.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGraficoMinerasDetallado.Designer.vb">
+      <DependentUpon>FrmGraficoMinerasDetallado.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmGraficoMinerasDetallado.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGraficoOnzas.Designer.vb">
+      <DependentUpon>FrmGraficoOnzas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmGraficoOnzas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGraficosBalanceMetalurgico.Designer.vb">
+      <DependentUpon>FrmGraficosBalanceMetalurgico.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmGraficosBalanceMetalurgico.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGraficoTenores.Designer.vb">
+      <DependentUpon>FrmGraficoTenores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmGraficoTenores.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGranulometria.Designer.vb">
+      <DependentUpon>FrmGranulometria.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmGranulometria.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGravedadEspecifica.Designer.vb">
+      <DependentUpon>FrmGravedadEspecifica.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmGravedadEspecifica.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmImportarBasculaDbMEtal.Designer.vb">
+      <DependentUpon>FrmImportarBasculaDbMEtal.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmImportarBasculaDbMEtal.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmImportarInstantaneas.Designer.vb">
+      <DependentUpon>FrmImportarInstantaneas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmImportarInstantaneas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmImportarMinerasDbMetal.Designer.vb">
+      <DependentUpon>FrmImportarMinerasDbMetal.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmImportarMinerasDbMetal.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmImportarSST.Designer.vb">
+      <DependentUpon>FrmImportarSST.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmImportarSST.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmIndicadorAmbiental.Designer.vb">
+      <DependentUpon>FrmIndicadorAmbiental.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmIndicadorAmbiental.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmInventarioAudePlanta.Designer.vb">
+      <DependentUpon>FrmInventarioAudePlanta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmInventarioAudePlanta.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmLabPreparacion.Designer.vb">
+      <DependentUpon>FrmLabPreparacion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmLabPreparacion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMerrilCroweReport.Designer.vb">
+      <DependentUpon>FrmMerrilCroweReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmMerrilCroweReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMineralPlant.Designer.vb">
+      <DependentUpon>FrmMineralPlant.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmMineralPlant.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMuestras.Designer.vb">
+      <DependentUpon>FrmMuestras.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmMuestras.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMuestrasInstantaneas.Designer.vb">
+      <DependentUpon>FrmMuestrasInstantaneas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmMuestrasInstantaneas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPiedeBanda12.Designer.vb">
+      <DependentUpon>FrmPiedeBanda12.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPiedeBanda12.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPrincipal.Designer.vb">
+      <DependentUpon>FrmPrincipal.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPrincipal.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmQc.Designer.vb">
+      <DependentUpon>FrmQc.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmQc.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmReporDensidad.Designer.vb">
+      <DependentUpon>FrmReporDensidad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmReporDensidad.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmReporte.Designer.vb">
+      <DependentUpon>FrmReporte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmReporte.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmReporteVertimimiento.Designer.vb">
+      <DependentUpon>FrmReporteVertimimiento.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmReporteVertimimiento.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSST.Designer.vb">
+      <DependentUpon>FrmSST.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSST.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmUsuarios.Designer.vb">
+      <DependentUpon>FrmUsuarios.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmUsuarios.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IObserver.vb" />
+    <Compile Include="Login.Designer.vb">
+      <DependentUpon>Login.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Login.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="FmConsTotalProyecto.Designer.vb">
+      <DependentUpon>FmConsTotalProyecto.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FmConsTotalProyecto.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAssayLabZandor.Designer.vb">
+      <DependentUpon>FrmAssayLabZandor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmAssayLabZandor.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmConsultarBanda.Designer.vb">
+      <DependentUpon>FrmConsultarBanda.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmConsultarBanda.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PbOperacion.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PbOperacion.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="PbOperation.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PbOperation.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="PbOperation.vb">
+      <DependentUpon>PbOperation.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="PlantaBeneficioReporteOperacion.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlantaBeneficioReporteOperacion.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="PlantaBeneficioReporteOperacion.vb">
+      <DependentUpon>PlantaBeneficioReporteOperacion.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SmtpMail.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FmConsProyecto.resx">
+      <DependentUpon>FmConsProyecto.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrConfFlows.resx">
+      <DependentUpon>FrConfFlows.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmAssayMineralPlant.resx">
+      <DependentUpon>FrmAssayMineralPlant.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmAvanceMes.resx">
+      <DependentUpon>FrmAvanceMes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmBalanceMetalurgico.resx">
+      <DependentUpon>FrmBalanceMetalurgico.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCargarGravedadEspecifica.resx">
+      <DependentUpon>FrmCargarGravedadEspecifica.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCargarHumedad.resx">
+      <DependentUpon>FrmCargarHumedad.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCargarInstantaneas.resx">
+      <DependentUpon>FrmCargarInstantaneas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmConfReactivos.resx">
+      <DependentUpon>FrmConfReactivos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmConsumoCianuro.resx">
+      <DependentUpon>FrmConsumoCianuro.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmConsumoReactivos.resx">
+      <DependentUpon>FrmConsumoReactivos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmDespacho.resx">
+      <DependentUpon>FrmDespacho.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmEficienciaProcesos.resx">
+      <DependentUpon>FrmEficienciaProcesos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmExportarBascula.resx">
+      <DependentUpon>FrmExportarBascula.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmExportarFlujos.resx">
+      <DependentUpon>FrmExportarFlujos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmExportDensidadvb.resx">
+      <DependentUpon>FrmExportDensidadvb.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmFlujos.resx">
+      <DependentUpon>FrmFlujos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmFundicion.resx">
+      <DependentUpon>FrmFundicion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGraficoFundicion.resx">
+      <DependentUpon>FrmGraficoFundicion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGraficoMineras.resx">
+      <DependentUpon>FrmGraficoMineras.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGraficoMinerasDetallado.resx">
+      <DependentUpon>FrmGraficoMinerasDetallado.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGraficoOnzas.resx">
+      <DependentUpon>FrmGraficoOnzas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGraficosBalanceMetalurgico.resx">
+      <DependentUpon>FrmGraficosBalanceMetalurgico.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGraficoTenores.resx">
+      <DependentUpon>FrmGraficoTenores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGranulometria.resx">
+      <DependentUpon>FrmGranulometria.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGravedadEspecifica.resx">
+      <DependentUpon>FrmGravedadEspecifica.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmImportarBasculaDbMEtal.resx">
+      <DependentUpon>FrmImportarBasculaDbMEtal.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmImportarInstantaneas.resx">
+      <DependentUpon>FrmImportarInstantaneas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmImportarMinerasDbMetal.resx">
+      <DependentUpon>FrmImportarMinerasDbMetal.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmImportarSST.resx">
+      <DependentUpon>FrmImportarSST.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmIndicadorAmbiental.resx">
+      <DependentUpon>FrmIndicadorAmbiental.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmInventarioAudePlanta.resx">
+      <DependentUpon>FrmInventarioAudePlanta.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmLabPreparacion.resx">
+      <DependentUpon>FrmLabPreparacion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMerrilCroweReport.resx">
+      <DependentUpon>FrmMerrilCroweReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMineralPlant.resx">
+      <DependentUpon>FrmMineralPlant.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMuestras.resx">
+      <DependentUpon>FrmMuestras.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMuestrasInstantaneas.resx">
+      <DependentUpon>FrmMuestrasInstantaneas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPiedeBanda12.resx">
+      <DependentUpon>FrmPiedeBanda12.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPrincipal.resx">
+      <DependentUpon>FrmPrincipal.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmQc.resx">
+      <DependentUpon>FrmQc.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmReporDensidad.resx">
+      <DependentUpon>FrmReporDensidad.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmReporte.resx">
+      <DependentUpon>FrmReporte.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmReporteVertimimiento.resx">
+      <DependentUpon>FrmReporteVertimimiento.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSST.resx">
+      <DependentUpon>FrmSST.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmUsuarios.resx">
+      <DependentUpon>FrmUsuarios.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FmConsTotalProyecto.resx">
+      <DependentUpon>FmConsTotalProyecto.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmAssayLabZandor.resx">
+      <DependentUpon>FrmAssayLabZandor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmConsultarBanda.resx">
+      <DependentUpon>FrmConsultarBanda.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report2.rdlc" />
+    <EmbeddedResource Include="Reporte1.rdlc" />
+    <EmbeddedResource Include="Reportedetalle.rdlc" />
+    <EmbeddedResource Include="ReporteOperacionDia.rdlc" />
+    <EmbeddedResource Include="Sbreporte.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DSReportesOp.xsc">
+      <DependentUpon>DSReportesOp.xsd</DependentUpon>
+    </None>
+    <None Include="DSReportesOp.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DSReportesOp.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DSReportesOp.xss">
+      <DependentUpon>DSReportesOp.xsd</DependentUpon>
+    </None>
+    <None Include="My Project\app.manifest" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="PbOperacion.xsc">
+      <DependentUpon>PbOperacion.xsd</DependentUpon>
+    </None>
+    <None Include="PbOperacion.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PbOperacion.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="PbOperacion.xss">
+      <DependentUpon>PbOperacion.xsd</DependentUpon>
+    </None>
+    <None Include="PbOperation.xsc">
+      <DependentUpon>PbOperation.xsd</DependentUpon>
+    </None>
+    <None Include="PbOperation.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PbOperation.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="PbOperation.xss">
+      <DependentUpon>PbOperation.xsd</DependentUpon>
+    </None>
+    <None Include="PlantaBeneficioReporteOperacion.xsc">
+      <DependentUpon>PlantaBeneficioReporteOperacion.xsd</DependentUpon>
+    </None>
+    <None Include="PlantaBeneficioReporteOperacion.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PlantaBeneficioReporteOperacion.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="PlantaBeneficioReporteOperacion.xss">
+      <DependentUpon>PlantaBeneficioReporteOperacion.xsd</DependentUpon>
+    </None>
+    <None Include="Z-Lab_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LogoGranColombiaGoldSmall.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\excel.png" />
+    <None Include="Resources\17515.png" />
+    <None Include="Resources\ok-icono_17-1009133509.jpg" />
+    <None Include="Resources\buscar-buscar-ampliar-icono-6707-96.png" />
+    <None Include="Resources\images.png" />
+    <None Include="Resources\gradiente-cielo.png" />
+    <None Include="Resources\Save_Icon_icon-icons.com_69139.png" />
+    <Content Include="SimboloGCG.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="ADODB">
+      <Guid>{00000200-0000-0010-8000-00AA006D2EA4}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>True</Private>
+    </COMReference>
+    <COMReference Include="EnvDTE">
+      <Guid>{80CC9F66-E7D8-4DDD-85B6-D9E6CD0E93E2}</Guid>
+      <VersionMajor>8</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="EnvDTE80">
+      <Guid>{1A31287A-4D7D-413E-8E32-3B374931BD89}</Guid>
+      <VersionMajor>8</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="MSChart20Lib">
+      <Guid>{65E121D4-0C60-11D2-A9FC-0000F8754DA1}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="MSDATASRC">
+      <Guid>{7C0FFAB0-CD84-11D0-949A-00A0C91110ED}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="TaskScheduler">
+      <Guid>{E34CB9F1-C7F7-424C-BE29-027DCC09363A}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
