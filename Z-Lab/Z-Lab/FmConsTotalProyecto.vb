@@ -1,12 +1,11 @@
 ﻿Option Explicit On
+Imports System.Configuration
 'Option Strict On
-Imports System.Data
 Imports System.Data.SqlClient
-Imports Z_Lab.FrmPrincipal
 Imports System.Windows.Forms
 
 Public Class FmConsTotalProyectoFinal
-    Dim Cn As New SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
@@ -27,10 +26,11 @@ Public Class FmConsTotalProyectoFinal
         PictureBox1.BorderStyle = BorderStyle.None
     End Sub
 
+
     Private Sub CargarUbicacion()
         With Cmd
             .CommandType = CommandType.Text
-            .CommandText = "SELECT        Area, Ubicacion      FROM UbicacionMuestra WHERE     area   = '" & (LblArea.Text) & "'  "
+            .CommandText = "SELECT Area, Ubicacion FROM UbicacionMuestra WHERE area = '" & (LblArea.Text) & "'"
             .Connection = Cn
         End With
         Da.SelectCommand = Cmd
@@ -53,7 +53,7 @@ Public Class FmConsTotalProyectoFinal
         Dim conn As New ADODB.Connection()
         Dim RstResumen As New ADODB.Recordset()
         Dim cnStr As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=mercurio; User ID=sa;Password=BdZandor123*;"
+        cnStr = ConfigurationManager.AppSettings("StringConexionODBC").ToString
         conn.Open(cnStr)
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application
@@ -66,9 +66,9 @@ Public Class FmConsTotalProyectoFinal
         objExcel.Visible = False
 
         If CmbProyecto.Text = "Todos" Then
-            RstResumen = conn.Execute(" SELECT        TOP (100) PERCENT Fecha, Ubicacion, SUM(AlimentoGr) / SUM(ToneladaSeca) AS TenorDia, SUM(ToneladaSeca) AS ToneladasSecas, SUM(AlimentoGr) AS AlimentoGramos    FROM dbo.AlimentoGr GROUP BY Fecha, Ubicacion HAVING        (Fecha >= '" & CDate(DtFechainicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha, Ubicacion ")
+            RstResumen = conn.Execute(" SELECT TOP (100) PERCENT Fecha, Ubicacion, SUM(AlimentoGr) / SUM(ToneladaSeca) AS TenorDia, SUM(ToneladaSeca) AS ToneladasSecas, SUM(AlimentoGr) AS AlimentoGramos    FROM dbo.AlimentoGr GROUP BY Fecha, Ubicacion HAVING        (Fecha >= '" & CDate(DtFechainicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha, Ubicacion ")
         Else
-            RstResumen = conn.Execute(" SELECT        TOP (100) PERCENT Fecha, Ubicacion, SUM(AlimentoGr) / SUM(ToneladaSeca) AS TenorDia, SUM(ToneladaSeca) AS ToneladasSecas, SUM(AlimentoGr) AS AlimentoGramos    FROM dbo.AlimentoGr GROUP BY Fecha, Ubicacion HAVING        (Fecha >= '" & CDate(DtFechainicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "') AND (Ubicacion = '" & (CmbProyecto.Text) & "') ORDER BY Fecha, Ubicacion ")
+            RstResumen = conn.Execute(" SELECT TOP (100) PERCENT Fecha, Ubicacion, SUM(AlimentoGr) / SUM(ToneladaSeca) AS TenorDia, SUM(ToneladaSeca) AS ToneladasSecas, SUM(AlimentoGr) AS AlimentoGramos    FROM dbo.AlimentoGr GROUP BY Fecha, Ubicacion HAVING        (Fecha >= '" & CDate(DtFechainicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "') AND (Ubicacion = '" & (CmbProyecto.Text) & "') ORDER BY Fecha, Ubicacion ")
         End If
 
         With objExcel
@@ -120,9 +120,9 @@ Public Class FmConsTotalProyectoFinal
 
     End Sub
     Private Sub cargararea()
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=mercurio; User ID=sa;Password=BdZandor123*;"
+        cnStr = ConfigurationManager.AppSettings("StringConexionODBC").ToString
         conn.Open(cnStr)
-        rsarea = conn.Execute(" SELECT * FROM         usuario WHERE (IdUsusario = '" & (LblUsuario.Text) & "')         ")
+        rsarea = conn.Execute("SELECT * FROM usuario WHERE (IdUsusario = '" & (LblUsuario.Text) & "')")
         If rsarea.EOF = True Then
             Me.LblArea.Text = "NO"
         Else

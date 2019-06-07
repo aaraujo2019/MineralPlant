@@ -7,6 +7,8 @@ Imports Microsoft.Office.Interop
 
 Imports MySql.Data.MySqlClient
 Imports System.Data.SqlClient
+Imports System.Configuration
+
 Public Class FrmImportarSinExcel
     Dim MysqlConn As MySqlConnection
     Friend conexion As MySqlConnection
@@ -14,7 +16,7 @@ Public Class FrmImportarSinExcel
     Dim conn As New ADODB.Connection()
     Dim rstlab As New ADODB.Recordset()
 
-    Dim Cn As New SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Dim rst As New ADODB.Recordset()
     Dim cnStr As String
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click

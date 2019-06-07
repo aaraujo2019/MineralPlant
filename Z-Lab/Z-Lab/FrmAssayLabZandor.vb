@@ -6,6 +6,8 @@ Imports System.Data.SqlClient
 Imports Microsoft.Office.Interop
 Imports System.Data.OleDb
 Imports System.Windows.Forms
+Imports System.Configuration
+
 Public Class FrmAssayLabZandor
     Dim nombreHoja As String
     Dim conn As New ADODB.Connection()
@@ -14,7 +16,7 @@ Public Class FrmAssayLabZandor
 
     Dim rst As New ADODB.Recordset()
     Dim cnStr As String
-    Dim Cn As New SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
 
 
     Private Sub Label1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label1.Click
@@ -88,22 +90,22 @@ Public Class FrmAssayLabZandor
 
 
 
-    Sub Cargar( _
-       ByVal dgView As DataGridView, _
-       ByVal SLibro As String, _
+    Sub Cargar(
+       ByVal dgView As DataGridView,
+       ByVal SLibro As String,
        ByVal sHoja As String)
 
         'HDR=YES : Con encabezado  
-        Dim cs As String = "Provider=Microsoft.Jet.OLEDB.4.0;" & _
-                           "Data Source=" & SLibro & ";" & _
+        Dim cs As String = "Provider=Microsoft.Jet.OLEDB.4.0;" &
+                           "Data Source=" & SLibro & ";" &
                            "Extended Properties=""Excel 8.0;HDR=YES"""
         Try
             ' cadena de conexión  
             Dim cn As New OleDbConnection(cs)
 
             If Not System.IO.File.Exists(SLibro) Then
-                MsgBox("No se encontró el Libro: " & _
-                        SLibro, MsgBoxStyle.Critical, _
+                MsgBox("No se encontró el Libro: " &
+                        SLibro, MsgBoxStyle.Critical,
                         "Ruta inválida")
                 Exit Sub
             End If
@@ -143,7 +145,7 @@ Public Class FrmAssayLabZandor
             Dim FicheroExcel As String
             Dim NombreHoja As String
             'variables de insercion
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             FicheroExcel = Txtruta.Text
@@ -158,7 +160,7 @@ Public Class FrmAssayLabZandor
             turno = "00"
             horainicio = "00:00"
             horafinal = "00:00"
-          
+
             idlab = (Convert.ToString(HojaExcel.Range("b6").Value))
             Dim limite As Integer
             limite = 200
@@ -222,7 +224,7 @@ Public Class FrmAssayLabZandor
 
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             If conn.State <> ConnectionState.Closed Then
@@ -267,7 +269,7 @@ Public Class FrmAssayLabZandor
             Dim FicheroExcel As String
             Dim NombreHoja As String
             'variables de insercion
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             FicheroExcel = Txtruta.Text
@@ -478,7 +480,7 @@ Public Class FrmAssayLabZandor
 
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             If conn.State <> ConnectionState.Closed Then
@@ -490,7 +492,7 @@ Public Class FrmAssayLabZandor
     Private Function ValidaSiExiste(ByVal Idlab As String, ByVal muestra As String) As Boolean
         Try
 
-            Using cnn As New SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+            Using cnn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim sqlbuscar As String = String.Format("SELECT COUNT(*) FROM PB_Assay WHERE Jobno = @IdLab and muestra = @muestra  ")
                 Dim cmd As New SqlCommand(sqlbuscar, cnn)
                 cmd.Parameters.AddWithValue("@IdLab", Idlab)

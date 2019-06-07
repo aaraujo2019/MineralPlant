@@ -5,13 +5,14 @@ Imports System.Data.SqlClient
 
 Imports System.Data.OleDb
 Imports System.Windows.Forms
+Imports System.Configuration
 
 Public Class FrmGranulometria
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
-    Dim Cn As New SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Dim editargranulometria As Boolean
     Dim cnStr As String
 
@@ -43,7 +44,7 @@ Public Class FrmGranulometria
 
     Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & _
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
 " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarGranulometria'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
@@ -66,7 +67,7 @@ Public Class FrmGranulometria
             End If
 
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
 
@@ -126,7 +127,7 @@ Public Class FrmGranulometria
             Catch ex As Exception
 
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -141,7 +142,7 @@ Public Class FrmGranulometria
                     TxtMalla200.Clear()
                     CmbUbicacion.Text = ""
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM Pb_Granulometria    WHERE id=  '" & CInt((Me.DgGranulometrico.Rows(e.RowIndex).Cells("id").Value())) & "' "

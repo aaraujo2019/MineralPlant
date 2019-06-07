@@ -4,8 +4,10 @@ Imports System.Data
 Imports System.Data.SqlClient
 Imports Z_Lab.FrmPrincipal
 Imports System.Windows.Forms
+Imports System.Configuration
+
 Public Class FrmExportDensidadvb
-    Dim Cn As New SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
@@ -17,7 +19,7 @@ Public Class FrmExportDensidadvb
         Dim conn As New ADODB.Connection()
         Dim RstResumen As New ADODB.Recordset()
         Dim cnStr As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=mercurio; User ID=sa;Password=BdZandor123*;"
+        cnStr = ConfigurationManager.AppSettings("StringConexionODBC").ToString
 
         conn.Open(cnStr)
         RstResumen = conn.Execute(" SELECT     Fecha, HoraInicio, Densidad, Ubicacion FROM         dbo.PB_Flows  INNER JOIN RfFlows ON PB_Flows.Ubicacion = RfFlows.Name  where      (Fecha >= '" & CDate(DtFechainicio.Text) & "') AND (Fecha <= '" & CDate(DTFechaFinal.Text) & "')  ORDER BY Fecha, Ubicacion ")
@@ -52,7 +54,7 @@ Public Class FrmExportDensidadvb
             lblexport.Visible = False
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 

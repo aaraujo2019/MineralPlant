@@ -15,7 +15,7 @@ Public Class FrmCargarInstantaneas
     Dim conn As New ADODB.Connection()
     Dim rstlab As New ADODB.Recordset()
 
-    Dim Cn As New SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Dim rst As New ADODB.Recordset()
     Dim cnStr As String
     ' Dim Cn As New MySqlConnection("Server=versionline.com;uid=versionl_jpalaci;pwd=colombia12**;database=versionl_planta")
@@ -134,13 +134,13 @@ Public Class FrmCargarInstantaneas
         Dim LibroExcel As Excel.Workbook
         Dim HojaExcel As Excel.Worksheet
         Dim celda As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=mercurio; User ID=sa;Password=BdZandor123*;"
+        cnStr = ConfigurationManager.AppSettings("StringConexionODBC").ToString
         Try
 
             Dim FicheroExcel As String
             Dim NombreHoja As String
             'variables de insercion
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             FicheroExcel = Txtruta.Text
@@ -324,7 +324,7 @@ Public Class FrmCargarInstantaneas
     End Sub
     Private Function ValidaSiExiste(ByVal fecha_v As Date, ByVal hora2_v As String, ByVal ubicacion_v As String) As Boolean
         Try
-            Using cnn As New SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+            Using cnn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim sqlbuscar As String = String.Format("SELECT COUNT(*) FROM PB_Instantaneas WHERE fecha = @fecha and ubicacion = @ubicacion and hora = @hora")
                 Dim cmd As New SqlCommand(sqlbuscar, cnn)
                 cmd.Parameters.AddWithValue("@fecha", fecha_v)

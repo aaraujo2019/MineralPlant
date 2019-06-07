@@ -145,6 +145,11 @@
     <Compile Include="Clases\ClassReporteDiaOperacion.vb" />
     <Compile Include="Clases\ConexionBd.vb" />
     <Compile Include="Clases\CToneladasMuestra.vb" />
+    <Compile Include="DSReportesOp.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DSReportesOp.xsd</DependentUpon>
+    </Compile>
     <Compile Include="FmConsProyecto.Designer.vb">
       <DependentUpon>FmConsProyecto.vb</DependentUpon>
     </Compile>
@@ -453,6 +458,17 @@
   <ItemGroup>
     <None Include="app.config">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="DSReportesOp.xsc">
+      <DependentUpon>DSReportesOp.xsd</DependentUpon>
+    </None>
+    <None Include="DSReportesOp.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DSReportesOp.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DSReportesOp.xss">
+      <DependentUpon>DSReportesOp.xsd</DependentUpon>
     </None>
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">

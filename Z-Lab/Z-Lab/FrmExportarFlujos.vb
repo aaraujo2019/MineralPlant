@@ -1,9 +1,10 @@
 ﻿Imports System.Windows.Forms
 Imports System.Data
 Imports System.Data.SqlClient
+Imports System.Configuration
 
 Public Class FrmExportarFlujos
-    Dim Cn As New SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
@@ -19,7 +20,7 @@ Public Class FrmExportarFlujos
         Dim RstResumen As New ADODB.Recordset()
         Dim RstResumenTenor As New ADODB.Recordset()
         Dim cnStr As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=mercurio; User ID=sa;Password=BdZandor123*;"
+        cnStr = ConfigurationManager.AppSettings("StringConexionODBC").ToString
         conn.Open(cnStr)
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application
@@ -97,7 +98,7 @@ Public Class FrmExportarFlujos
 
     End Sub
 
- 
+
     Private Sub picturebox1_enfoque(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox1.MouseHover
         PictureBox1.BorderStyle = BorderStyle.FixedSingle
     End Sub

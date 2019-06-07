@@ -5,10 +5,11 @@ Imports System.Data.SqlClient
 Imports Z_Lab.FrmPrincipal
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
+Imports System.Configuration
 
 Public Class FrmDespacho
 
-    Dim Cn As New SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Private dt As DataTable
     Private dtenvios As DataTable
     Dim Da As New SqlDataAdapter
@@ -32,7 +33,7 @@ Public Class FrmDespacho
     End Sub
 
     Private Sub cargararea()
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=mercurio; User ID=sa;Password=BdZandor123*;"
+        cnStr = ConfigurationManager.AppSettings("StringConexionODBC").ToString
         conn.Open(cnStr)
         rsarea = conn.Execute(" SELECT * FROM         usuario WHERE (IdUsusario = '" & (LblUsuario.Text) & "')         ")
         If rsarea.EOF = True Then
@@ -116,7 +117,7 @@ Public Class FrmDespacho
     End Sub
 
     Private Sub Cmdagregar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cmdagregar.Click
-        Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+        Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
         Dim cmd As New System.Data.SqlClient.SqlCommand
         cmd.CommandType = System.Data.CommandType.Text
         If cmbDespacho.Text = "Nuevo" Then
@@ -144,7 +145,7 @@ Public Class FrmDespacho
         cmd.ExecuteNonQuery()
         sqlConnectiondb.Close()
 
-        ' cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=mercurio; User ID=sa;Password=BdZandor123*;"
+        ' cnStr = ConfigurationManager.AppSettings("StringConexionODBC").ToString
         ' conn.Open(cnStr)
         ' rsdespachomuestras = conn.Execute(" SELECT * FROM   DespachoMuestras WHERE (muestra >= '" & (CmbInicio.Text) & "')     AND (muestra <= '" & (CmbFinal.Text) & "')  AND (IdDespacho= '" & (LblIdDespacho.Text) & "')     ")
         ' If rsdespachomuestras.RecordCount = 0 Then
@@ -180,11 +181,11 @@ Public Class FrmDespacho
 
     Private Sub Despachar_Muestras()
         Try
-            cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=mercurio; User ID=sa;Password=BdZandor123*;"
+            cnStr = ConfigurationManager.AppSettings("StringConexionODBC").ToString
             conn.Open(cnStr)
             rsmuestras = conn.Execute(" SELECT * FROM   muestras WHERE (muestra >= '" & (CmbInicio.Text) & "')     AND (muestra <= '" & (CmbFinal.Text) & "')     ")
             Do While Not rsmuestras.EOF
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 cmd.CommandText = "INSERT INTO DespachoMuestras (  IdDespacho , Muestra, CodigoServicio , Elementos) VALUES ( @IdDespacho ,  @Muestra , @CodigoServicio , @Elementos)"
@@ -208,7 +209,7 @@ Public Class FrmDespacho
         Catch ex As Exception
             conn.Close()
             ' Handle the exception.
-            MessageBox.Show("Muestras Duplicadas", Me.Text, _
+            MessageBox.Show("Muestras Duplicadas", Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
@@ -236,7 +237,7 @@ Public Class FrmDespacho
     End Sub
 
     Private Sub cargarDespacho()
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=mercurio; User ID=sa;Password=BdZandor123*;"
+        cnStr = ConfigurationManager.AppSettings("StringConexionODBC").ToString
         conn.Open(cnStr)
         rsdespachos = conn.Execute(" SELECT * FROM   DespachoLab WHERE (IdDespacho = '" & (LblIdDespacho.Text) & "')      ")
         If rsdespachos.EOF = True Then
@@ -265,7 +266,7 @@ Public Class FrmDespacho
 
     Private Sub CmdBorrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdBorrar.Click
         If MsgBox("Esta Seguro Que Desea Eliminar Las Muestras del Despacho?", vbYesNo, "") = vbYes Then
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=mercurio\gcg;uid=sa;pwd=BdZandor123*;database=PlantaBeneficio")
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             cmd.CommandText = "DELETE FROM DespachoMuestras    WHERE IdDespacho=  '" & LblIdDespacho.Text & "'  "
@@ -282,7 +283,7 @@ Public Class FrmDespacho
         Dim cnstr As String
         Dim contarmuestras As Integer
         contarmuestras = 0
-        cnstr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=mercurio; User ID=sa;Password=BdZandor123*;"
+        cnstr = ConfigurationManager.AppSettings("StringConexionODBC").ToString
         'mensaje de exportacion mientras se ejecuta el codigo
         Try
             conn.Open(cnstr)
