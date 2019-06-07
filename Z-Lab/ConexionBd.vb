@@ -1,4 +1,5 @@
-﻿Imports System.Data.SqlClient
+﻿Imports System.Configuration
+Imports System.Data.SqlClient
 Public Class ConexionBd
 
 
@@ -32,7 +33,7 @@ Public Class ConexionBd
 
                 con = New SqlConnection
 
-                con.ConnectionString = "Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio"
+                con.ConnectionString = ConfigurationManager.AppSettings("StringConexion").ToString
 
                 con.Open()
 

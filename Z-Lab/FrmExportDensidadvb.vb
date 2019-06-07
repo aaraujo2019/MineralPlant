@@ -4,8 +4,10 @@ Imports System.Data
 Imports System.Data.SqlClient
 Imports Z_Lab.FrmPrincipal
 Imports System.Windows.Forms
+Imports System.Configuration
+
 Public Class FrmExportDensidadvb
-    Dim Cn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
@@ -52,7 +54,7 @@ Public Class FrmExportDensidadvb
             lblexport.Visible = False
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 

@@ -5,13 +5,15 @@ Imports System.Data.SqlClient
 Imports Microsoft.Office.Interop
 Imports System.Data.OleDb
 Imports System.Windows.Forms
+Imports System.Configuration
+
 Public Class FrmCargarGravedadEspecifica
     Dim nombreHoja As String
     Dim conn As New ADODB.Connection()
     Dim rstlab As New ADODB.Recordset()
     Dim rst As New ADODB.Recordset()
     Dim cnStr As String
-    Dim Cn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Private Sub CmdExaminar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdExaminar.Click
         Dim openFD As New OpenFileDialog()
         With openFD
@@ -74,22 +76,22 @@ Public Class FrmCargarGravedadEspecifica
 
 
 
-    Sub Cargar( _
-       ByVal dgView As DataGridView, _
-       ByVal SLibro As String, _
+    Sub Cargar(
+       ByVal dgView As DataGridView,
+       ByVal SLibro As String,
        ByVal sHoja As String)
 
         'HDR=YES : Con encabezado  
-        Dim cs As String = "Provider=Microsoft.Jet.OLEDB.15.0;" & _
-                           "Data Source=" & SLibro & ";" & _
+        Dim cs As String = "Provider=Microsoft.Jet.OLEDB.15.0;" &
+                           "Data Source=" & SLibro & ";" &
                            "Extended Properties=""Excel 8.0;HDR=YES"""
         Try
             ' cadena de conexión  
             Dim cn As New OleDbConnection(cs)
 
             If Not System.IO.File.Exists(SLibro) Then
-                MsgBox("No se encontró el Libro: " & _
-                        SLibro, MsgBoxStyle.Critical, _
+                MsgBox("No se encontró el Libro: " &
+                        SLibro, MsgBoxStyle.Critical,
                         "Ruta inválida")
                 Exit Sub
             End If
@@ -120,11 +122,11 @@ Public Class FrmCargarGravedadEspecifica
     Private Function ValidaSiExiste(ByVal ID As String, ByVal ubicacion As String, ByVal turno As String) As Boolean
         Try
 
-            Using cnn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+            Using cnn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim sqlbuscar As String = String.Format("SELECT COUNT(*) FROM PB_GravedadEspecifica WHERE IdLab = @IdLab and Ubicacion = @ubicacion and turno = @turno  ")
                 Dim cmd As New SqlCommand(sqlbuscar, cnn)
                 cmd.Parameters.AddWithValue("@IdLab", ID)
-                cmd.Parameters.AddWithValue("@Ubicacion", Ubicacion)
+                cmd.Parameters.AddWithValue("@Ubicacion", ubicacion)
                 cmd.Parameters.AddWithValue("@turno", turno)
                 cnn.Open()
                 Dim Count As Integer = CInt(cmd.ExecuteScalar())
@@ -152,7 +154,7 @@ Public Class FrmCargarGravedadEspecifica
             Dim FicheroExcel As String
             Dim NombreHoja As String
             'variables de insercion
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             FicheroExcel = Txtruta.Text
@@ -239,7 +241,7 @@ Public Class FrmCargarGravedadEspecifica
 
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             If conn.State <> ConnectionState.Closed Then

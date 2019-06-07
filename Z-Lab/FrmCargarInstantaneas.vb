@@ -5,7 +5,7 @@ Imports Microsoft.Office.Interop
 Imports System.Windows.Forms
 
 Imports System.Data.SqlClient
-
+Imports System.Configuration
 
 Public Class FrmCargarInstantaneas
     ' _______________________________
@@ -14,7 +14,7 @@ Public Class FrmCargarInstantaneas
     Dim conn As New ADODB.Connection()
     Dim rstlab As New ADODB.Recordset()
 
-    Dim Cn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Dim rst As New ADODB.Recordset()
     Dim cnStr As String
     ' Dim Cn As New MySqlConnection("Server=versionline.com;uid=versionl_jpalaci;pwd=colombia12**;database=versionl_planta")
@@ -80,22 +80,22 @@ Public Class FrmCargarInstantaneas
 
 
 
-    Sub Cargar( _
-       ByVal dgView As DataGridView, _
-       ByVal SLibro As String, _
+    Sub Cargar(
+       ByVal dgView As DataGridView,
+       ByVal SLibro As String,
        ByVal sHoja As String)
 
         'HDR=YES : Con encabezado  
-        Dim cs As String = "Provider=Microsoft.ACE.OLEDB.15.0;" & _
-                           "Data Source=" & SLibro & ";" & _
+        Dim cs As String = "Provider=Microsoft.ACE.OLEDB.15.0;" &
+                           "Data Source=" & SLibro & ";" &
                            "Extended Properties=""Excel 12.0;HDR=YES"""
         Try
             ' cadena de conexión  
             Dim cn As New OleDbConnection(cs)
 
             If Not System.IO.File.Exists(SLibro) Then
-                MsgBox("No se encontró el Libro: " & _
-                        SLibro, MsgBoxStyle.Critical, _
+                MsgBox("No se encontró el Libro: " &
+                        SLibro, MsgBoxStyle.Critical,
                         "Ruta inválida")
                 Exit Sub
             End If
@@ -139,7 +139,7 @@ Public Class FrmCargarInstantaneas
             Dim FicheroExcel As String
             Dim NombreHoja As String
             'variables de insercion
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             FicheroExcel = Txtruta.Text
@@ -274,7 +274,7 @@ Public Class FrmCargarInstantaneas
         Catch ex As Exception
             ' MsgBox(celda)
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             If conn.State <> ConnectionState.Closed Then
@@ -294,7 +294,7 @@ Public Class FrmCargarInstantaneas
 
     Private Function ValidaSiExiste(ByVal fecha_v As Date, ByVal hora2_v As String, ByVal ubicacion_v As String) As Boolean
         Try
-            Using cnn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+            Using cnn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim sqlbuscar As String = String.Format("SELECT COUNT(*) FROM PB_Instantaneas WHERE fecha = @fecha and ubicacion = @ubicacion and hora = @hora")
                 Dim cmd As New SqlCommand(sqlbuscar, cnn)
                 cmd.Parameters.AddWithValue("@fecha", fecha_v)

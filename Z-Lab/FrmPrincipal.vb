@@ -5,9 +5,10 @@ Imports System.Data
 Imports System.Data.SqlClient
 Imports Z_Lab.Login
 Imports System.Windows.Forms
+Imports System.Configuration
 
 Public Class FrmPrincipal
-    Dim Cn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Dim tipoflujo As String
     Private dt As DataTable
     Dim Da As New SqlDataAdapter

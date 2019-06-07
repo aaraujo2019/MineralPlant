@@ -6,12 +6,14 @@ Imports System.Windows.Forms
 Imports System.Windows.Forms.DataVisualization.Charting
 Imports System.Math
 Imports System.Drawing
+Imports System.Configuration
+
 Public Class FrmGraficoTenores
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
     Public cadena As String = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
-    Dim Cn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Public dt As DataTable
     Dim Series1 As Series
     Dim Series2 As Series
@@ -455,7 +457,7 @@ Public Class FrmGraficoTenores
         'ControlBmpToFile(PbGrafico, "C:\Users\juan.palacio\Documents")
     End Sub
 
- 
+
 
     Private Sub Cmbubicacion_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cmbubicacion.SelectedIndexChanged
 

@@ -1,10 +1,11 @@
 ﻿Option Explicit On
 Option Strict On
+Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
 Imports Z_Lab.FrmPrincipal
 Public Class FrmAvanceMes
-    Dim Cn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand

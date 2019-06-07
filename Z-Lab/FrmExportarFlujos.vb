@@ -1,9 +1,10 @@
 ﻿Imports System.Windows.Forms
 Imports System.Data
 Imports System.Data.SqlClient
+Imports System.Configuration
 
 Public Class FrmExportarFlujos
-    Dim Cn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
@@ -104,7 +105,7 @@ Public Class FrmExportarFlujos
 
     End Sub
 
- 
+
     Private Sub picturebox1_enfoque(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox1.MouseHover
         PictureBox1.BorderStyle = BorderStyle.FixedSingle
     End Sub

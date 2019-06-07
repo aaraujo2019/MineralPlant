@@ -6,13 +6,14 @@ Imports Z_Lab.Login
 Imports System.Data.OleDb
 Imports System.Windows.Forms
 Imports System.Net.Mail
+Imports System.Configuration
 
 Public Class FrmMineralPlant
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
-    Dim Cn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Dim editarlix As Boolean
     Dim editamuestra As Boolean
     Dim editaroperacion As Boolean
@@ -64,7 +65,7 @@ Public Class FrmMineralPlant
             Llenar_DataGridViewDgFlujometroRebalse()
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
             conn.Close()
         End Try
@@ -86,7 +87,7 @@ Public Class FrmMineralPlant
     Private Sub CmdSaveMuestras_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdSaveMuestras.Click
         'Consultar si el usuario posee permisos de escritura sobre el formulario
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & _
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
 " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarMuestrasLab'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
@@ -100,7 +101,7 @@ Public Class FrmMineralPlant
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editamuestra = True Then
@@ -140,7 +141,7 @@ Public Class FrmMineralPlant
                 DgSamplesDay.FirstDisplayedScrollingRowIndex = DgSamplesDay.RowCount - 1
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
 
             End Try
@@ -302,7 +303,7 @@ Public Class FrmMineralPlant
             conn.Close()
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             If conn.State <> ConnectionState.Closed Then
@@ -517,7 +518,7 @@ Public Class FrmMineralPlant
             Me.DgLixiviacion.ReadOnly = False
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -983,7 +984,7 @@ Public Class FrmMineralPlant
         Llenar_TotalBandas()
     End Sub
     Private Sub CargarDuplicado()
-        Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+        Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
         Dim cmd As New System.Data.SqlClient.SqlCommand
         cmd.CommandType = System.Data.CommandType.Text
         cmd.CommandText = "INSERT INTO PB_Samples (Muestra,HoraInicial,HoraFinal, Fecha,Ubicacion,TipoMuestra, Dup, DupMuestra)VALUES(@Muestra ,@HoraInicial,@HoraFinal,@Fecha,@Ubicacion,@TipoMuestra , @Dup,@DupMuestra)"
@@ -1270,7 +1271,7 @@ Public Class FrmMineralPlant
     End Sub
 
 
-    Private Sub Chk24hmuestras_CheckedChanged(ByVal sender As Object, _
+    Private Sub Chk24hmuestras_CheckedChanged(ByVal sender As Object,
 ByVal e As EventArgs)
         If Chk24hmuestras.Checked Then
             ListHFrom.Text = "07:00 a.m."
@@ -1297,7 +1298,7 @@ ByVal e As EventArgs)
     End Sub
 
 
-    Private Sub ChKFlotaLixiSolucion_CheckedChanged(ByVal sender As Object, _
+    Private Sub ChKFlotaLixiSolucion_CheckedChanged(ByVal sender As Object,
 ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
 
         If ChkTenorFLixi.Checked = True Then
@@ -1321,7 +1322,7 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
         End If
     End Sub
 
-    Private Sub ChkTenorFLixi_CheckedChanged(ByVal sender As Object, _
+    Private Sub ChkTenorFLixi_CheckedChanged(ByVal sender As Object,
 ByVal e As EventArgs) Handles ChkTenorFLixi.CheckedChanged
 
 
@@ -1346,7 +1347,7 @@ ByVal e As EventArgs) Handles ChkTenorFLixi.CheckedChanged
         End If
     End Sub
 
-    Private Sub ChkTenorBanda_CheckedChanged(ByVal sender As Object, _
+    Private Sub ChkTenorBanda_CheckedChanged(ByVal sender As Object,
 ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
         If ChkTenorBanda.Checked Then
             Llenar_TenorDataGridViewDgLecturaBandas()
@@ -1375,7 +1376,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
             End If
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1390,7 +1391,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     TxtHKNelsonF.Clear()
                     CmbKNelsonTurn.Text = ""
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM Pb_HorasKNelson    WHERE fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' and turno=  '" & CStr(CmbKNelsonTurn.Text) & "'  "
@@ -1405,7 +1406,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editahorometroknelson = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -1441,7 +1442,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
             End If
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1474,7 +1475,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
 
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1519,7 +1520,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
 
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1544,7 +1545,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
             End If
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
@@ -1561,7 +1562,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     ListHoraFinal.ClearSelected()
                     TxtGravedad.Clear()
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM PB_Leaching    WHERE Fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' AND Espesador= '" & CmbFlujodeMasa.Text & "' AND HoraInicial= '" & ListHoraInicio.Text & "' "
@@ -1576,7 +1577,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editarlix = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         Else
@@ -1595,7 +1596,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     ListMCInicio.ClearSelected()
                     ListMCFinal.ClearSelected()
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM PB_MerrilCrowe    WHERE HoraInicial =  '" & CStr(ListMCInicio.Text) & "'    AND Fecha = '" & Format(CDate(DateTimePickerFechaReporte.Value), "yyyy/MM/dd") & "'   "
@@ -1613,7 +1614,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editaMerril = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         Else
@@ -1640,7 +1641,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
             End If
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1655,7 +1656,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     TxtLfinalHorometro.Clear()
                     Cmbturno.Text = ""
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM Pb_HorasMolienda    WHERE fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' and turno=  '" & CStr(Cmbturno.Text) & "'  "
@@ -1669,7 +1670,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editahorometro = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -1691,7 +1692,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     ListHFrom.ClearSelected()
                     ListHTo.ClearSelected()
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM PB_Samples    WHERE Muestra=  '" & CStr(TxtSample.Text) & "' "
@@ -1710,7 +1711,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editamuestra = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -1737,7 +1738,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     ListB12Inicio.ClearSelected()
                     ListB12Final.ClearSelected()
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     'cmd.CommandText = "DELETE FROM PB_Conveyor    WHERE LecturaInicial=  '" & CDec(DgLecturaBandas.CurrentRow.Cells("LecturaInicial").Value) & "' "
@@ -1759,7 +1760,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editarbanda = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -1795,7 +1796,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
             End If
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1814,7 +1815,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     Me.TxtHorasOperacione5.Clear()
                     Me.CmbTurnoE5.Text = "Seleccione"
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM Pb_FlowsE5    WHERE fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' and turno=  '" & CStr(CmbTurnoE5.Text) & "'  "
@@ -1833,7 +1834,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editarflujoe5 = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -1865,7 +1866,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
             End If
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1883,7 +1884,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     Me.TxtHorasFl.Clear()
                     Me.CmbTurnoFl.Text = "Seleccione"
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM Pb_FlowsColasBulk    WHERE fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' and turno=  '" & CStr(CmbTurnoFl.Text) & "'  "
@@ -1902,7 +1903,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editaflujoflotacion = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -1922,7 +1923,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     Me.TxtDensidadHidro.Clear()
                     Me.CmbTurnoRciclon.Text = "Seleccione"
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM Pb_FlowsRebalseCiclon    WHERE fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' and turno=  '" & CStr(CmbTurnoRciclon.Text) & "'  "
@@ -1941,7 +1942,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editaflujoRebalse = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -1968,7 +1969,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
             End If
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -2029,12 +2030,12 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
             End With
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
-    Private Sub ChkTenor_CheckedChanged(ByVal sender As Object, _
+    Private Sub ChkTenor_CheckedChanged(ByVal sender As Object,
 ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         If ChkTenor.Checked Then
             Llenar_TenorDataGridViewDgSamplesDay()
@@ -2068,7 +2069,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
     Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
 
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & _
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
 " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarMineralPlant'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
@@ -2082,7 +2083,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editarlix = True Then
@@ -2142,7 +2143,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 DgLixiviacion.FirstDisplayedScrollingRowIndex = DgLixiviacion.RowCount - 1
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         End If
@@ -2150,7 +2151,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
     Private Sub CmdSaveBanda_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdSaveBanda.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & _
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
 " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarBanda'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
@@ -2163,7 +2164,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
 
@@ -2209,7 +2210,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 DgLecturaBandas.FirstDisplayedScrollingRowIndex = DgLecturaBandas.RowCount - 1
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -2297,7 +2298,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             LblExportar.Visible = False
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
             conn.Close()
             LblExportar.Visible = False
@@ -2614,7 +2615,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
     End Sub
     Private Sub CmdSaveMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdSaveMC.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & _
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
 " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarMerrilCrowe'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
@@ -2626,7 +2627,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editaMerril = True Then
@@ -2666,7 +2667,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 DgMerrilCrowe.FirstDisplayedScrollingRowIndex = DgMerrilCrowe.RowCount - 1
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -2679,7 +2680,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
     Private Sub CmdOperacion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdOperacion.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & _
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
 " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarMineralPlant'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
@@ -2690,7 +2691,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         Try
             Dim fechaestimada As Date
             fechaestimada = DateTimePickerFechaReporte.Value
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             If editaroperacion = True Then
@@ -2724,7 +2725,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             MessageBox.Show("Los datos se han guardado Correctamente.")
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -2791,7 +2792,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         Try
             Dim SmtpServer As New SmtpClient()
             Dim mail As New MailMessage()
-            SmtpServer.Credentials = New  _
+            SmtpServer.Credentials = New _
   Net.NetworkCredential("planta.beneficio@grancolombiagold.com.co", "colombia12*")
             SmtpServer.Port = 587
             SmtpServer.Host = "smtp-mail.outlook.com"
@@ -2831,7 +2832,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
     Private Sub Button1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & _
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
 " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
@@ -2843,7 +2844,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editahorometro = True Then
@@ -2870,7 +2871,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 editahorometro = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -2880,7 +2881,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
     Private Sub Button2_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & _
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
 " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
@@ -2892,7 +2893,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editahorometroknelson = True Then
@@ -2921,7 +2922,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -2932,7 +2933,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
     Private Sub Button3_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & _
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
 " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
@@ -2944,7 +2945,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editarflujoe5 = True Then
@@ -2975,7 +2976,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -3067,7 +3068,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & _
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
 " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
@@ -3081,7 +3082,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editaflujoflotacion = True Then
@@ -3114,7 +3115,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -3311,7 +3312,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & _
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
 " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
@@ -3325,7 +3326,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editaflujoRebalse = True Then

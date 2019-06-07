@@ -5,6 +5,7 @@ Imports System.Data.SqlClient
 Imports Microsoft.Office.Interop
 Imports System.Data.OleDb
 Imports System.Windows.Forms
+Imports System.Configuration
 
 Public Class FrmImportarMinerasDbMetal
     Dim nombreHoja As String
@@ -14,7 +15,7 @@ Public Class FrmImportarMinerasDbMetal
 
     Dim rst As New ADODB.Recordset()
     Dim cnStr As String
-    Dim Cn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Private Sub FrmImportarMinerasDbMetal_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
     End Sub
@@ -69,22 +70,22 @@ Public Class FrmImportarMinerasDbMetal
         End Try
     End Function
 
-    Sub Cargar( _
-   ByVal dgView As DataGridView, _
-   ByVal SLibro As String, _
+    Sub Cargar(
+   ByVal dgView As DataGridView,
+   ByVal SLibro As String,
    ByVal sHoja As String)
 
         'HDR=YES : Con encabezado  
-        Dim cs As String = "Provider=Microsoft.Jet.OLEDB.4.0;" & _
-                           "Data Source=" & SLibro & ";" & _
+        Dim cs As String = "Provider=Microsoft.Jet.OLEDB.4.0;" &
+                           "Data Source=" & SLibro & ";" &
                            "Extended Properties=""Excel 8.0;HDR=YES"""
         Try
             ' cadena de conexión  
             Dim cn As New OleDbConnection(cs)
 
             If Not System.IO.File.Exists(SLibro) Then
-                MsgBox("No se encontró el Libro: " & _
-                        SLibro, MsgBoxStyle.Critical, _
+                MsgBox("No se encontró el Libro: " &
+                        SLibro, MsgBoxStyle.Critical,
                         "Ruta inválida")
                 Exit Sub
             End If
@@ -114,7 +115,7 @@ Public Class FrmImportarMinerasDbMetal
     Private Function ValidaSiExiste(ByVal Consecutivo As String) As Boolean
         Try
 
-            Using cnn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+            Using cnn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim sqlbuscar As String = String.Format("SELECT COUNT(*) FROM PB_Mineras WHERE Consecutivo = @Consecutivo")
                 Dim cmd As New SqlCommand(sqlbuscar, cnn)
                 cmd.Parameters.AddWithValue("@Consecutivo", Consecutivo)
@@ -142,7 +143,7 @@ Public Class FrmImportarMinerasDbMetal
             Dim FicheroExcel As String
             Dim NombreHoja As String
             'variables de insercion
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             FicheroExcel = Txtruta.Text

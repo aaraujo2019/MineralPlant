@@ -5,7 +5,7 @@ Imports System.Data.SqlClient
 Imports Microsoft.Office.Interop
 Imports System.Data.OleDb
 Imports System.Windows.Forms
-
+Imports System.Configuration
 
 Public Class FrmAssayMineralPlant
     Dim nombreHoja As String
@@ -15,7 +15,7 @@ Public Class FrmAssayMineralPlant
 
     Dim rst As New ADODB.Recordset()
     Dim cnStr As String
-    Dim Cn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
 
 
     Private Sub CmdExaminar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdExaminar.Click
@@ -90,22 +90,22 @@ Public Class FrmAssayMineralPlant
 
 
 
-    Sub Cargar( _
-       ByVal dgView As DataGridView, _
-       ByVal SLibro As String, _
+    Sub Cargar(
+       ByVal dgView As DataGridView,
+       ByVal SLibro As String,
        ByVal sHoja As String)
 
         'HDR=YES : Con encabezado  
-        Dim cs As String = "Provider=Microsoft.Jet.OLEDB.4.0;" & _
-                           "Data Source=" & SLibro & ";" & _
+        Dim cs As String = "Provider=Microsoft.Jet.OLEDB.4.0;" &
+                           "Data Source=" & SLibro & ";" &
                            "Extended Properties=""Excel 8.0;HDR=YES"""
         Try
             ' cadena de conexión  
             Dim cn As New OleDbConnection(cs)
 
             If Not System.IO.File.Exists(SLibro) Then
-                MsgBox("No se encontró el Libro: " & _
-                        SLibro, MsgBoxStyle.Critical, _
+                MsgBox("No se encontró el Libro: " &
+                        SLibro, MsgBoxStyle.Critical,
                         "Ruta inválida")
                 Exit Sub
             End If
@@ -150,7 +150,7 @@ Public Class FrmAssayMineralPlant
             Dim FicheroExcel As String
             Dim NombreHoja As String
             'variables de insercion
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             FicheroExcel = Txtruta.Text
@@ -640,7 +640,7 @@ Public Class FrmAssayMineralPlant
             End If
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             If conn.State <> ConnectionState.Closed Then
@@ -652,7 +652,7 @@ Public Class FrmAssayMineralPlant
     Private Function ValidaSiExiste(ByVal ID As String, ByVal Muestra As String) As Boolean
         Try
             ' Dim Resultado As Boolean
-            Using cnn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+            Using cnn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim sqlbuscar As String = String.Format("SELECT COUNT(*) FROM PB_Assay WHERE Jobno = @Jobno and Muestra = @Muestra")
                 Dim cmd As New SqlCommand(sqlbuscar, cnn)
                 cmd.Parameters.AddWithValue("@Jobno", ID)

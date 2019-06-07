@@ -6,13 +6,14 @@ Imports Z_Lab.Login
 Imports System.Data.OleDb
 Imports System.Windows.Forms
 Imports Z_Lab.FrmPrincipal
+Imports System.Configuration
 
 Public Class FrmConsumoCianuro
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
-    Dim Cn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Dim editarfundicion As Boolean
     Dim conn As New ADODB.Connection()
     Dim rstoperacion As New ADODB.Recordset()

@@ -6,6 +6,7 @@ Imports System.Windows.Forms
 Imports Microsoft.Office.Interop
 Imports System.Data.OleDb
 Imports System.IO
+Imports System.Configuration
 
 Public Class FrmConsumoReactivos
     Dim nombreHoja As String
@@ -14,7 +15,7 @@ Public Class FrmConsumoReactivos
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
     Dim editarreactivo As Boolean
-    Dim Cn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Dim cnStr As String
     Dim conn As New ADODB.Connection()
     Dim rsreactivos As New ADODB.Recordset()
@@ -105,7 +106,7 @@ Public Class FrmConsumoReactivos
             End If
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -123,7 +124,7 @@ Public Class FrmConsumoReactivos
                     Me.TxtSTraslado.Clear()
 
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM PB_Reactivos    WHERE   ID= '" & LblId.Text & "'  "
@@ -142,7 +143,7 @@ Public Class FrmConsumoReactivos
                 editarreactivo = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         Else
@@ -166,7 +167,7 @@ Public Class FrmConsumoReactivos
             Dim totalsaldo As Double
             totalsaldo = 0
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editarreactivo = True Then

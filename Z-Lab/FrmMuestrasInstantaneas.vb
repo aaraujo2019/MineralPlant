@@ -1,5 +1,6 @@
 ﻿Option Explicit On
 Option Strict On
+Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
 Imports System.Windows.Forms
@@ -11,8 +12,8 @@ Public Class FrmMuestrasInstantaneas
     Dim Dataset As DataSet
     Dim editarinstantanea As Boolean
 
-    ' Dim Cn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
-    Dim Cn As New SqlConnection("Data Source=SEGSVRSQL01;Initial Catalog=PlantaBeneficio;User ID=sa;Password=*Bd6r4nC0l0mb1a* ; Integrated Security=True")
+    ' Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Dim cnStr As String
     Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
 
@@ -20,7 +21,7 @@ Public Class FrmMuestrasInstantaneas
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editarinstantanea = True Then
@@ -47,7 +48,7 @@ Public Class FrmMuestrasInstantaneas
                 TxtTenor.Clear()
                 editarinstantanea = False
             Catch ex As Exception                ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -147,7 +148,7 @@ Public Class FrmMuestrasInstantaneas
 
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
@@ -159,7 +160,7 @@ Public Class FrmMuestrasInstantaneas
                     TxtTenor.Clear()
                     TxtObservaciones.Clear()
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM PB_Instantaneas    WHERE id=  '" & CStr(Lblid.Text) & "' "

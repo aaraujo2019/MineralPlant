@@ -4,10 +4,10 @@ Imports System.Data
 Imports System.Data.SqlClient
 Imports Z_Lab.FrmPrincipal
 Imports System.Windows.Forms
-
+Imports System.Configuration
 
 Public Class FrmLabPreparacion
-    Dim Cn As New SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
@@ -137,7 +137,7 @@ Public Class FrmLabPreparacion
         End If
 
         Try
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=SEGSVRSQL01;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             cmd.CommandText = "UPDATE  Lab_Muestras  SET   PesoBandejaMuestra= @PesoBandejaMuestra ,  PesoHumedoMuestra= @PesoHumedoMuestra , PesoSecoMuestra = @PesoSecoMuestra  WHERE  Muestra = @Muestra  "
