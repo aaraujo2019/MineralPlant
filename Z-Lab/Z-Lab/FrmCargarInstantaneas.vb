@@ -5,7 +5,7 @@ Imports Microsoft.Office.Interop
 Imports System.Windows.Forms
 Imports MySql.Data.MySqlClient
 Imports System.Data.SqlClient
-
+Imports System.Configuration
 
 Public Class FrmCargarInstantaneas
     ' _______________________________
@@ -58,7 +58,7 @@ Public Class FrmCargarInstantaneas
 
     Private Function ObtenerNombrePrimeraHoja(ByVal rutaLibro As String) As String
         Dim app As Excel.Application = Nothing
-        
+
         Try
             app = New Excel.Application()
             Dim wb As Excel.Workbook = app.Workbooks.Open(rutaLibro)

@@ -5,7 +5,7 @@ Imports System.Data.SqlClient
 Imports Microsoft.Office.Interop
 Imports System.Data.OleDb
 Imports System.Windows.Forms
-
+Imports System.Configuration
 
 Public Class FrmAssayMineralPlant
     Dim nombreHoja As String
@@ -20,7 +20,7 @@ Public Class FrmAssayMineralPlant
 
     Private Sub CmdExaminar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdExaminar.Click
 
-       
+
 
 
 
