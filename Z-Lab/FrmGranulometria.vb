@@ -15,7 +15,7 @@ Public Class FrmGranulometria
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Dim editargranulometria As Boolean
     Dim cnStr As String
 
@@ -70,7 +70,7 @@ Public Class FrmGranulometria
             End If
 
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
 
@@ -145,7 +145,7 @@ Public Class FrmGranulometria
                     TxtMalla200.Clear()
                     CmbUbicacion.Text = ""
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM Pb_Granulometria    WHERE id=  '" & CInt((Me.DgGranulometrico.Rows(e.RowIndex).Cells("id").Value())) & "' "

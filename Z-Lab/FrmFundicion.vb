@@ -13,7 +13,7 @@ Public Class FrmFundicion
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Dim editarfundicion As Boolean
     Dim conn As New ADODB.Connection()
     Dim rstoperacion As New ADODB.Recordset()
@@ -35,7 +35,7 @@ Public Class FrmFundicion
             MsgBox("Por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
 
@@ -295,7 +295,7 @@ Public Class FrmFundicion
 
     Private Sub CmdBuscar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdBuscar.Click
         ' AND PERIODO = '" & (cmbperiodo2.Text) & "' 
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
         Rsfundicion = conn.Execute(" SELECT * FROM         PB_Fundicion WHERE ano = '" & (cmbano.Text) & "'  AND MES = '" & (cmbmes.Text) & "'  AND PERIODO = '" & (cmbperiodo2.Text) & "'       ")
         If Rsfundicion.EOF = True Then

@@ -1,6 +1,8 @@
 ﻿Imports System.Windows.Forms
 Imports System.Data
 Imports System.Data.SqlClient
+Imports System.Configuration
+
 Public Class FrmReporteVertimimiento
 
     Private Sub FrmReporteVertimimiento_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -27,7 +29,7 @@ Public Class FrmReporteVertimimiento
         Dim RstResumenTenor As New ADODB.Recordset()
 
         Dim cnStr As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application

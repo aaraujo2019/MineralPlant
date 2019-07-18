@@ -13,7 +13,7 @@ Public Class FrmPiedeBanda12
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Dim editarpiedebanda As Boolean
     Dim conn As New ADODB.Connection()
     Dim rstoperacion As New ADODB.Recordset()
@@ -88,7 +88,7 @@ Public Class FrmPiedeBanda12
             MsgBox("Por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
 

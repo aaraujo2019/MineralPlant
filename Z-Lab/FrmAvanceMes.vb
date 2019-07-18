@@ -5,7 +5,7 @@ Imports System.Data
 Imports System.Data.SqlClient
 Imports Z_Lab.FrmPrincipal
 Public Class FrmAvanceMes
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand

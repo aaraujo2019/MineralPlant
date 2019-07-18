@@ -38,20 +38,18 @@ Partial Class Login
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(128, 19)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Location = New System.Drawing.Point(106, 11)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(227, 36)
+        Me.Label3.Size = New System.Drawing.Size(185, 29)
         Me.Label3.TabIndex = 4
         Me.Label3.Text = "Inicio de Sesión"
         '
         'Cmdcancel
         '
         Me.Cmdcancel.BackColor = System.Drawing.Color.LightGoldenrodYellow
-        Me.Cmdcancel.Location = New System.Drawing.Point(295, 234)
-        Me.Cmdcancel.Margin = New System.Windows.Forms.Padding(4)
+        Me.Cmdcancel.Location = New System.Drawing.Point(205, 175)
         Me.Cmdcancel.Name = "Cmdcancel"
-        Me.Cmdcancel.Size = New System.Drawing.Size(133, 62)
+        Me.Cmdcancel.Size = New System.Drawing.Size(126, 41)
         Me.Cmdcancel.TabIndex = 6
         Me.Cmdcancel.Text = "Cancelar"
         Me.Cmdcancel.UseVisualStyleBackColor = False
@@ -59,10 +57,9 @@ Partial Class Login
         'Cmdlogin
         '
         Me.Cmdlogin.BackColor = System.Drawing.Color.LightGoldenrodYellow
-        Me.Cmdlogin.Location = New System.Drawing.Point(57, 234)
-        Me.Cmdlogin.Margin = New System.Windows.Forms.Padding(4)
+        Me.Cmdlogin.Location = New System.Drawing.Point(65, 175)
         Me.Cmdlogin.Name = "Cmdlogin"
-        Me.Cmdlogin.Size = New System.Drawing.Size(133, 62)
+        Me.Cmdlogin.Size = New System.Drawing.Size(132, 41)
         Me.Cmdlogin.TabIndex = 5
         Me.Cmdlogin.Text = "Ingresar"
         Me.Cmdlogin.UseVisualStyleBackColor = False
@@ -73,39 +70,38 @@ Partial Class Login
         Me.GroupBox1.Controls.Add(Me.TxtUsuario)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.Label1)
-        Me.GroupBox1.Location = New System.Drawing.Point(23, 58)
+        Me.GroupBox1.Location = New System.Drawing.Point(14, 42)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(432, 157)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(2)
+        Me.GroupBox1.Size = New System.Drawing.Size(369, 128)
         Me.GroupBox1.TabIndex = 7
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Datos de Usuario:"
         '
         'TxtPassword
         '
-        Me.TxtPassword.Location = New System.Drawing.Point(168, 96)
-        Me.TxtPassword.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtPassword.Location = New System.Drawing.Point(126, 78)
         Me.TxtPassword.Name = "TxtPassword"
         Me.TxtPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.TxtPassword.Size = New System.Drawing.Size(219, 22)
+        Me.TxtPassword.Size = New System.Drawing.Size(165, 20)
         Me.TxtPassword.TabIndex = 7
         Me.TxtPassword.Tag = "password"
         '
         'TxtUsuario
         '
-        Me.TxtUsuario.Location = New System.Drawing.Point(168, 38)
-        Me.TxtUsuario.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtUsuario.Location = New System.Drawing.Point(126, 31)
         Me.TxtUsuario.Name = "TxtUsuario"
-        Me.TxtUsuario.Size = New System.Drawing.Size(219, 22)
+        Me.TxtUsuario.Size = New System.Drawing.Size(165, 20)
         Me.TxtUsuario.TabIndex = 6
         '
         'Label2
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(30, 96)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Location = New System.Drawing.Point(22, 78)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(111, 20)
+        Me.Label2.Size = New System.Drawing.Size(91, 16)
         Me.Label2.TabIndex = 5
         Me.Label2.Text = "Contraseña:"
         '
@@ -113,25 +109,24 @@ Partial Class Login
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(30, 47)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Location = New System.Drawing.Point(22, 38)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(80, 20)
+        Me.Label1.Size = New System.Drawing.Size(66, 16)
         Me.Label1.TabIndex = 4
         Me.Label1.Text = "Usuario:"
         '
         'Login
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightGoldenrodYellow
-        Me.ClientSize = New System.Drawing.Size(501, 317)
+        Me.ClientSize = New System.Drawing.Size(397, 228)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Cmdcancel)
         Me.Controls.Add(Me.Cmdlogin)
         Me.Controls.Add(Me.Label3)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4)
+        Me.MaximizeBox = False
         Me.Name = "Login"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Login"

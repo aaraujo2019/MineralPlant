@@ -33,7 +33,7 @@ Public Class ConexionBd
 
                 con = New SqlConnection
 
-                con.ConnectionString = ConfigurationManager.AppSettings("StringConexion").ToString
+                con.ConnectionString = ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString()
 
                 con.Open()
 

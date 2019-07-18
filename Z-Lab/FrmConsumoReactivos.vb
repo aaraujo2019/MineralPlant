@@ -15,7 +15,7 @@ Public Class FrmConsumoReactivos
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
     Dim editarreactivo As Boolean
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Dim cnStr As String
     Dim conn As New ADODB.Connection()
     Dim rsreactivos As New ADODB.Recordset()
@@ -29,7 +29,7 @@ Public Class FrmConsumoReactivos
     End Sub
     Private Sub CalcularStock()
 
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
         rsalida = conn.Execute(" SELECT * FROM         usuario WHERE (IdUsusario = '" & (LblUsuario.Text) & "')         ")
         If rsalida.EOF = True Then
@@ -124,7 +124,7 @@ Public Class FrmConsumoReactivos
                     Me.TxtSTraslado.Clear()
 
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM PB_Reactivos    WHERE   ID= '" & LblId.Text & "'  "
@@ -167,7 +167,7 @@ Public Class FrmConsumoReactivos
             Dim totalsaldo As Double
             totalsaldo = 0
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editarreactivo = True Then
@@ -238,7 +238,7 @@ Public Class FrmConsumoReactivos
         Try
 
 
-            cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+            cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
             conn.Open(cnStr)
             rsreactivos = conn.Execute(" SELECT     SUM(Entrada) - SUM(Salida) AS saldo FROM         dbo.PB_Reactivos WHERE   NombreReactivo= '" & (reactivo) & "'   ")
             If rsreactivos.EOF = True Then

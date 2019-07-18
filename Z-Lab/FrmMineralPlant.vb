@@ -7,13 +7,14 @@ Imports System.Data.OleDb
 Imports System.Windows.Forms
 Imports System.Net.Mail
 Imports System.Configuration
+Imports System.Runtime.CompilerServices
 
 Public Class FrmMineralPlant
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Dim editarlix As Boolean
     Dim editamuestra As Boolean
     Dim editaroperacion As Boolean
@@ -50,7 +51,8 @@ Public Class FrmMineralPlant
     Private Sub FrmMineralPlant_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             Me.LblUsuario.Text = FrmPrincipal.LblUserName.Text
-            LblFechaReporte.Text = CStr(Format(DateTimePickerFechaReporte.Value, "yyyy-MM-dd"))
+            DateTimePickerFechaReporte.Value = New DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)
+            LblFechaReporte.Text = Convert.ToDateTime(DateTimePickerFechaReporte.Value).ToString("yyyy-MM-dd")
             cargararea()
             CargarlistHoraInicio()
             CargarlistHoraFinal()
@@ -65,21 +67,21 @@ Public Class FrmMineralPlant
             Llenar_DataGridViewDgFlujometroRebalse()
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             conn.Close()
         End Try
     End Sub
 
 
     Private Sub cargararea()
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
-        conn.Open(cnStr)
-        rsarea = conn.Execute(" SELECT * FROM         usuario WHERE (IdUsusario = '" & (LblUsuario.Text) & "')         ")
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
+        conn.Open(cnStr, "", "", -1)
+        rsarea = conn.Execute(" SELECT * FROM usuario WHERE (IdUsusario = '" & (LblUsuario.Text) & "')", RuntimeHelpers.GetObjectValue(System.Reflection.Missing.Value), -1)
+
         If rsarea.EOF = True Then
             Me.LblArea.Text = "NO"
         Else
-            Me.LblArea.Text = CStr((rsarea.Fields("Area").Value))
+            Me.LblArea.Text = Convert.ToString(rsarea.Fields("Area").Value)
         End If
         conn.Close()
     End Sub
@@ -87,8 +89,7 @@ Public Class FrmMineralPlant
     Private Sub CmdSaveMuestras_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdSaveMuestras.Click
         'Consultar si el usuario posee permisos de escritura sobre el formulario
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
-" WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarMuestrasLab'  ) ", Cn)
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarMuestrasLab'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
 
@@ -101,7 +102,7 @@ Public Class FrmMineralPlant
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editamuestra = True Then
@@ -114,7 +115,7 @@ Public Class FrmMineralPlant
                 cmd.Parameters.AddWithValue("@Muestra", Convert.ToString(TxtSample.Text))
                 cmd.Parameters.AddWithValue("@HoraInicial", Convert.ToString(ListHFrom.Text))
                 cmd.Parameters.AddWithValue("@HoraFinal", Convert.ToString(ListHTo.Text))
-                cmd.Parameters.AddWithValue("@Fecha", CDate(DateTimePickerFechaReporte.Text))
+                cmd.Parameters.AddWithValue("@Fecha", Convert.ToDateTime(DateTimePickerFechaReporte.Text))
                 cmd.Parameters.AddWithValue("@Ubicacion", Convert.ToString(CmbLocation.Text))
                 cmd.Parameters.AddWithValue("@TipoMuestra", Convert.ToString(CmbSampleType.Text))
                 cmd.Parameters.AddWithValue("@Dup", Convert.ToString(TxtDuplicado.Text))
@@ -123,9 +124,11 @@ Public Class FrmMineralPlant
                 sqlConnectiondb.Open()
                 cmd.ExecuteNonQuery()
                 sqlConnectiondb.Close()
+
                 If ChkDup.Checked Then
                     CargarDuplicado()
                 End If
+
                 MessageBox.Show("Los datos se  guardaron Correctamente.")
                 Llenar_DataGridViewDgSamplesDay()
                 ListHFrom.ClearSelected()
@@ -141,8 +144,7 @@ Public Class FrmMineralPlant
                 DgSamplesDay.FirstDisplayedScrollingRowIndex = DgSamplesDay.RowCount - 1
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
 
             End Try
 
@@ -151,7 +153,7 @@ Public Class FrmMineralPlant
 
     Private Sub DateTimePickerFechaReporte_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DateTimePickerFechaReporte.ValueChanged
         'Format(fechacreacion, "yyyy/MM/dd")
-        LblFechaReporte.Text = CStr(Format(DateTimePickerFechaReporte.Value, "yyyy-MM-dd"))
+        LblFechaReporte.Text = Format(Convert.ToDateTime(DateTimePickerFechaReporte.Value), "yyyy-MM-dd")
         limpiarcampos()
         ChkTenor.Checked = False
         ChkTenorFLixi.Checked = False
@@ -201,7 +203,6 @@ Public Class FrmMineralPlant
         TxtDensidadFl.Clear()
         TxtHorasFl.Clear()
 
-
         editamuestra = False
         editarlix = False
         editarbanda = False
@@ -214,12 +215,14 @@ Public Class FrmMineralPlant
     Private Sub CargarlistHoraInicio()
         With Cmd
             .CommandType = CommandType.Text
-            .CommandText = "SELECT        Id, Hora, Militar, Tipo FROM            RfTime  ORDER BY Orden"
+            .CommandText = "SELECT Id, Hora, Militar, Tipo FROM RfTime  ORDER BY Orden"
             .Connection = Cn
         End With
+
         Da.SelectCommand = Cmd
         dt = New DataTable
         Da.Fill(dt)
+
         With ListHoraInicio
             .DataSource = dt
             .DisplayMember = "Hora"
@@ -256,9 +259,18 @@ Public Class FrmMineralPlant
     Private Sub cargarOperacion()
 
         Try
-            cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
-            conn.Open(cnStr)
-            rstoperacion = conn.Execute(" SELECT * FROM         PB_Operation WHERE (Fecha = '" & CDate(DateTimePickerFechaReporte.Text) & "')         ")
+            cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
+            conn.Open(cnStr, "", "", -1)
+
+            Dim strFecha As String = System.String.Empty
+
+            If (DateTimePickerFechaReporte.Text = System.String.Empty) Then
+                strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+            Else
+                strFecha = Convert.ToDateTime(DateTimePickerFechaReporte.Text).ToString("yyyy-MM-dd")
+            End If
+
+            rstoperacion = conn.Execute(" SELECT * FROM PB_Operation WHERE (Fecha = '" & strFecha & "')", RuntimeHelpers.GetObjectValue(System.Reflection.Missing.Value), -1)
             If rstoperacion.EOF = True Then
                 editaroperacion = False
                 CmbConcentradoFlotacion.Text = "Seleccione"
@@ -276,25 +288,25 @@ Public Class FrmMineralPlant
                 TxtTonMinera.Clear()
                 CmbParada.Text = ""
             Else
-                Txtconsumo.Text = CStr((rstoperacion.Fields("LecturaFlujoAgua").Value))
-                TxtTonHora.Text = CStr((rstoperacion.Fields("TonHora").Value))
-                TxtHoras.Text = CStr((rstoperacion.Fields("OperacionHorasDia").Value))
-                TxtMtto.Text = CStr((rstoperacion.Fields("DetencionMtto").Value))
-                TxtOperacion.Text = CStr((rstoperacion.Fields("DetencionOperacion").Value))
+                Txtconsumo.Text = Convert.ToString((rstoperacion.Fields("LecturaFlujoAgua").Value))
+                TxtTonHora.Text = Convert.ToString((rstoperacion.Fields("TonHora").Value))
+                TxtHoras.Text = Convert.ToString((rstoperacion.Fields("OperacionHorasDia").Value))
+                TxtMtto.Text = Convert.ToString((rstoperacion.Fields("DetencionMtto").Value))
+                TxtOperacion.Text = Convert.ToString((rstoperacion.Fields("DetencionOperacion").Value))
                 'toneladas bascula
-                TxtTonHumedasZC.Text = CStr((rstoperacion.Fields("TonHumedasZC").Value))
-                TxtTonhumedasPM.Text = CStr((rstoperacion.Fields("TonhumedasPM").Value))
-                TxtStockZCGruesos.Text = CStr((rstoperacion.Fields("StockZCGruesos").Value))
-                TxtStockZCFinos.Text = CStr((rstoperacion.Fields("StockZCFinos").Value))
-                TxtStockPMFinos.Text = CStr((rstoperacion.Fields("StockPMFinos").Value))
-                TxtTonZandor.Text = CStr((rstoperacion.Fields("TonMolidasZandor").Value))
-                TxtTonMinera.Text = CStr((rstoperacion.Fields("TonMolidasMineras").Value))
-                CmbConcentradoFlotacion.Text = CStr((rstoperacion.Fields("OrigenconcentradoFlotacion").Value))
+                TxtTonHumedasZC.Text = Convert.ToString((rstoperacion.Fields("TonHumedasZC").Value))
+                TxtTonhumedasPM.Text = Convert.ToString((rstoperacion.Fields("TonhumedasPM").Value))
+                TxtStockZCGruesos.Text = Convert.ToString((rstoperacion.Fields("StockZCGruesos").Value))
+                TxtStockZCFinos.Text = Convert.ToString((rstoperacion.Fields("StockZCFinos").Value))
+                TxtStockPMFinos.Text = Convert.ToString((rstoperacion.Fields("StockPMFinos").Value))
+                TxtTonZandor.Text = Convert.ToString((rstoperacion.Fields("TonMolidasZandor").Value))
+                TxtTonMinera.Text = Convert.ToString((rstoperacion.Fields("TonMolidasMineras").Value))
+                CmbConcentradoFlotacion.Text = Convert.ToString((rstoperacion.Fields("OrigenconcentradoFlotacion").Value))
                 ' fundicion
                 If IsDBNull((rstoperacion.Fields("MotivoParada").Value)) Then
-                    CmbParada.Text = ""
+                    CmbParada.Text = String.Empty
                 Else
-                    CmbParada.Text = CStr((rstoperacion.Fields("MotivoParada").Value))
+                    CmbParada.Text = Convert.ToString((rstoperacion.Fields("MotivoParada").Value))
                 End If
 
                 editaroperacion = True
@@ -303,8 +315,7 @@ Public Class FrmMineralPlant
             conn.Close()
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             If conn.State <> ConnectionState.Closed Then
                 conn.Close()
@@ -316,9 +327,10 @@ Public Class FrmMineralPlant
     Private Sub CargarlistHoraFinal()
         With Cmd
             .CommandType = CommandType.Text
-            .CommandText = "SELECT        Id, Hora, Militar, Tipo FROM            RfTime ORDER BY Orden"
+            .CommandText = "SELECT Id, Hora, Militar, Tipo FROM RfTime ORDER BY Orden"
             .Connection = Cn
         End With
+
         Da.SelectCommand = Cmd
         dt = New DataTable
         Da.Fill(dt)
@@ -355,18 +367,17 @@ Public Class FrmMineralPlant
         ListHoraFinal.ClearSelected()
     End Sub
 
-
-
     Private Sub CargarCmbFlujodeMasa()
         With Cmd
             .CommandType = CommandType.Text
-            .CommandText = "SELECT        TOP (100) PERCENT Id, Name, VolumenLt  FROM           RfFlujoMass ORDER BY Name"
+            .CommandText = "SELECT TOP (100) PERCENT Id, Name, VolumenLt  FROM  RfFlujoMass ORDER BY Name"
             .Connection = Cn
         End With
         Da.SelectCommand = Cmd
 
         dt = New DataTable
         Da.Fill(dt)
+
         With CmbFlujodeMasa
             .DataSource = dt
             .DisplayMember = "Name"
@@ -374,13 +385,13 @@ Public Class FrmMineralPlant
             .SelectedValue = 0
             .Text = "Seleccione"
         End With
-
     End Sub
+
+
     Private Sub CargarCmbOrigenConcentradodeFlotacion()
         With Cmd
-
             .CommandType = CommandType.Text
-            .CommandText = "  SELECT        TOP (100) PERCENT Name FROM     dbo.RfFlows WHERE        (Tipo = N'Espesadores') AND (Visible = 1) ORDER BY Name"
+            .CommandText = "  SELECT TOP (100) PERCENT Name FROM dbo.RfFlows WHERE (Tipo = N'Espesadores') AND (Visible = 1) ORDER BY Name"
             .Connection = Cn
         End With
         Da.SelectCommand = Cmd
@@ -394,7 +405,6 @@ Public Class FrmMineralPlant
             .SelectedValue = 0
             .Text = "Seleccione"
         End With
-
     End Sub
 
 
@@ -416,19 +426,23 @@ Public Class FrmMineralPlant
     End Sub
 
     Private Sub Cargar_FormOperacion()
+        Dim strfecha As String = System.String.Empty
+
+        If (Me.DateTimePickerFechaReporte.Text = System.String.Empty) Then
+            strfecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strfecha = Convert.ToDateTime(Me.DateTimePickerFechaReporte.Text).ToString("yyyy-MM-dd")
+        End If
+
         With Cmd
             .CommandType = CommandType.Text
-            .CommandText = "SELECT        Fecha , ConsumoEnergia, TonHora, OperacionHorasDia,DetencionMtto,DetencionOperacion  FROM           PB_Operation  WHERE Fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' "
+            .CommandText = "SELECT Fecha , ConsumoEnergia, TonHora, OperacionHorasDia,DetencionMtto,DetencionOperacion  FROM PB_Operation  WHERE Fecha=  '" & strfecha & "' "
             .Connection = Cn
         End With
         Da.SelectCommand = Cmd
         dt = New DataTable
         Da.Fill(dt)
-
-        With Txtconsumo
-            .Text = "ConsumoEnergia"
-        End With
-
+        Txtconsumo.Text = "ConsumoEnergia"
     End Sub
 
 
@@ -438,7 +452,7 @@ Public Class FrmMineralPlant
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT        HoraInicial, HoraFinal, Espesador, AuFinal_ppm, TonSeca as Tonsecalixi,  AlimentoGr FROM            vw_PB_AlimentoFlotacion WHERE        Fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' "
+        sql = "SELECT        HoraInicial, HoraFinal, Espesador, AuFinal_ppm, TonSeca as Tonsecalixi,  AlimentoGr FROM            vw_PB_AlimentoFlotacion WHERE        Fecha=  '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text) & "' "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
@@ -468,7 +482,7 @@ Public Class FrmMineralPlant
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT        HoraInicial, HoraFinal, Espesador, AuFinal_ppm, Tonsecalixi, AuSolido as AlimentoGr FROM            vw_PB_AlimentoAgitadores_Solido WHERE        Fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' "
+        sql = "SELECT        HoraInicial, HoraFinal, Espesador, AuFinal_ppm, Tonsecalixi, AuSolido as AlimentoGr FROM            vw_PB_AlimentoAgitadores_Solido WHERE        Fecha=  '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text) & "' "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
@@ -497,7 +511,7 @@ Public Class FrmMineralPlant
             Dim ds As New DataSet
             Dim da As New SqlDataAdapter
             Dim sql As String
-            sql = "SELECT        HoraInicial, HoraFinal, Espesador, AuFinal_ppm, Tonsecalixi, AuSolido as  AlimentoGr FROM            vw_PB_ColasAgitadores_Solido WHERE        Fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' "
+            sql = "SELECT        HoraInicial, HoraFinal, Espesador, AuFinal_ppm, Tonsecalixi, AuSolido as  AlimentoGr FROM            vw_PB_ColasAgitadores_Solido WHERE        Fecha=  '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text) & "' "
             da.SelectCommand = New SqlCommand(sql, Cn)
             da.Fill(ds)
             Cn.Close()
@@ -581,7 +595,7 @@ Public Class FrmMineralPlant
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT        HoraInicial, HoraFinal, Espesador, AuFinal_ppm, Tonsecalixi, AlimentoGr FROM            dbo.vw_PB_ColasLixiviacion_Solido WHERE        Fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' "
+        sql = "SELECT        HoraInicial, HoraFinal, Espesador, AuFinal_ppm, Tonsecalixi, AlimentoGr FROM            dbo.vw_PB_ColasLixiviacion_Solido WHERE        Fecha=  '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text) & "' "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
@@ -608,7 +622,7 @@ Public Class FrmMineralPlant
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT        HoraInicial, HoraFinal, Espesador, AuFinal_ppm, Tonsecalixi,  AlimentoGr FROM            vw_PB_ColasFlotacion WHERE        Fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' "
+        sql = "SELECT        HoraInicial, HoraFinal, Espesador, AuFinal_ppm, Tonsecalixi,  AlimentoGr FROM            vw_PB_ColasFlotacion WHERE        Fecha=  '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text) & "' "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
@@ -637,7 +651,7 @@ Public Class FrmMineralPlant
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT        HoraInicial, HoraFinal, Espesador, AuFinal_ppm, Tonsecalixi, AuSolido as AlimentoGr FROM            vw_PB_ColasAgitadores_Solucion WHERE        Fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' "
+        sql = "SELECT        HoraInicial, HoraFinal, Espesador, AuFinal_ppm, Tonsecalixi, AuSolido as AlimentoGr FROM            vw_PB_ColasAgitadores_Solucion WHERE        Fecha=  '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text) & "' "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
@@ -665,7 +679,7 @@ Public Class FrmMineralPlant
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT        HoraInicial, HoraFinal, Espesador, AuFinal_ppm, Tonsecalixi, OroSolucion as AlimentoGr FROM            dbo.vw_PB_ColasLixiviacion_Solucion WHERE        Fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' "
+        sql = "SELECT        HoraInicial, HoraFinal, Espesador, AuFinal_ppm, Tonsecalixi, OroSolucion as AlimentoGr FROM            dbo.vw_PB_ColasLixiviacion_Solucion WHERE        Fecha=  '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text) & "' "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
@@ -687,111 +701,133 @@ Public Class FrmMineralPlant
     End Sub
 
     Private Sub Llenar_DataGridViewDgLixiviacion()   'cargar DataGrid de Preparacion Daily
+        Dim strFecha As String = System.String.Empty
+        If (Me.DateTimePickerFechaReporte.Text = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(Me.DateTimePickerFechaReporte.Text).ToString("yyyy-MM-dd")
+        End If
+
         Cn.Open()
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = " SELECT   Fecha,HoraInicial,HoraFinal, Espesador, Densidad, Porc_Pasante, Porc_PesoSolido , SGmineral, VolumenLt , TonConcentrado from    PB_Leaching INNER JOIN RfTime ON  PB_Leaching.HoraInicial = RfTime.Hora WHERE Fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' AND Espesador= '" & CmbFlujodeMasa.Text & "'   ORDER BY RfTime.IdPlanta "
+        sql = " SELECT   Fecha,HoraInicial,HoraFinal, Espesador, Densidad, Porc_Pasante, Porc_PesoSolido , SGmineral, VolumenLt , TonConcentrado from    PB_Leaching INNER JOIN RfTime ON  PB_Leaching.HoraInicial = RfTime.Hora WHERE Fecha=  '" & strFecha & "' AND Espesador= '" & CmbFlujodeMasa.Text & "'   ORDER BY RfTime.IdPlanta "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
+
         Dim dt As DataTable = ds.Tables(0)
-        DgLixiviacion.DataSource = dt
-        DgLixiviacion.AutoResizeColumns()
-        Me.DgLixiviacion.Columns("Fecha").Visible = False
-        DgLixiviacion.Columns("Porc_PesoSolido").DefaultCellStyle.Format = "00%"
-        DgLixiviacion.Columns("HoraInicial").HeaderText = "Hora Inincio"
-        DgLixiviacion.Columns("HoraFinal").HeaderText = "Hora Final"
-        DgLixiviacion.Columns("Espesador").HeaderText = "Espesador-Agitador"
-        DgLixiviacion.Columns("Densidad").HeaderText = "Densidad"
-        DgLixiviacion.Columns("Porc_Pasante").HeaderText = "% de Pasante 74µm"
-        DgLixiviacion.Columns("VolumenLt").HeaderText = "m³/hora"
-        Dim metrospreparacion As Decimal
-        metrospreparacion = 0
-        Llenar_TotalTenorFlotacion()
-        Me.DgLixiviacion.ReadOnly = False
+        If dt.Rows.Count > 0 Then
+            DgLixiviacion.DataSource = dt
+            DgLixiviacion.AutoResizeColumns()
+            DgLixiviacion.Columns("Porc_PesoSolido").DefaultCellStyle.Format = "00%"
+            Dim metrospreparacion As Decimal
+            metrospreparacion = 0
+            Llenar_TotalTenorFlotacion()
+            DgLixiviacion.ReadOnly = False
+        Else
+            Me.DgLixiviacion.DataSource = Nothing
+            Me.Llenar_TotalTenorFlotacion()
+        End If
     End Sub
 
 
 
     Private Sub Llenar_DataGridViewDgLecturaBandas()
-        'cargar DataGrid de Preparacion Daily
+        Dim strFecha As String = System.String.Empty
+        If (Me.DateTimePickerFechaReporte.Text = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(Me.DateTimePickerFechaReporte.Text).ToString("yyyy-MM-dd")
+        End If
+
         Cn.Open()
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT        TOP (100) PERCENT dbo.PB_Conveyor.HoraInicial, dbo.PB_Conveyor.HoraFinal, dbo.PB_Conveyor.LecturaInicial, dbo.PB_Conveyor.LecturaFinal , dbo.PB_Conveyor.TonHumeda, dbo.PB_Conveyor.Porc_Humedad ,  dbo.PB_Conveyor.TonSeca , dbo.PB_Conveyor.muestra ,  dbo.PB_Conveyor.Tenor_au , dbo.PB_Conveyor.Onzas , dbo.pb_conveyor.IdConsecutivo FROM      dbo.PB_Conveyor INNER JOIN       dbo.RfTime ON dbo.PB_Conveyor.HoraInicial = dbo.RfTime.Hora WHERE    (dbo.PB_Conveyor.Fecha = '" & CDate(DateTimePickerFechaReporte.Text) & "') ORDER BY dbo.PB_Conveyor.LecturaInicial "
+        sql = "SELECT TOP (100) PERCENT dbo.PB_Conveyor.HoraInicial as 'Hora Inicio', dbo.PB_Conveyor.HoraFinal as 'Hora Final', dbo.PB_Conveyor.LecturaInicial as 'Lectura Inicial', dbo.PB_Conveyor.LecturaFinal as 'Lectura Final', dbo.PB_Conveyor.TonHumeda as 'Toneladas Humedas', dbo.PB_Conveyor.Porc_Humedad as '% de Humedad', dbo.PB_Conveyor.TonSeca as 'Toneladas Secas', dbo.PB_Conveyor.muestra as 'Muestra', dbo.PB_Conveyor.Tenor_au , dbo.PB_Conveyor.Onzas as 'Onzas', dbo.pb_conveyor.IdConsecutivo as 'IdConsecutivo'FROM dbo.PB_Conveyor INNER JOIN dbo.RfTime ON dbo.PB_Conveyor.HoraInicial = dbo.RfTime.Hora WHERE (dbo.PB_Conveyor.Fecha = '" & strFecha & "') ORDER BY dbo.PB_Conveyor.LecturaInicial"
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
+
         Dim dt As DataTable = ds.Tables(0)
-        DgLecturaBandas.DataSource = dt
-        DgLecturaBandas.AutoResizeColumns()
-        DgLecturaBandas.Columns("TonHumeda").DefaultCellStyle.Format = "0.00"
-        DgLecturaBandas.Columns("TonSeca").DefaultCellStyle.Format = "0.00"
-        DgLecturaBandas.Columns("Onzas").DefaultCellStyle.Format = "0.00"
-        DgLecturaBandas.Columns("HoraInicial").HeaderText = "Hora Inicio"
-        DgLecturaBandas.Columns("HoraFinal").HeaderText = "Hora Final"
-        DgLecturaBandas.Columns("LecturaInicial").HeaderText = "Lectura Inicial"
-        DgLecturaBandas.Columns("LecturaFinal").HeaderText = "Lectura Final"
-        DgLecturaBandas.Columns("Porc_Humedad").HeaderText = "% de Humedad"
-        DgLecturaBandas.Columns("TonHumeda").HeaderText = "Toneladas Humedas"
-        DgLecturaBandas.Columns("Tonseca").HeaderText = "Tondeladas Seca"
-        DgLecturaBandas.Columns("Onzas").HeaderText = "Onzas"
-        DgLecturaBandas.Columns("IdConsecutivo").Visible = False
-        Llenar_TotalBandas()
-        Me.DgLecturaBandas.ReadOnly = False
+        If dt.Rows.Count > 0 Then
+            DgLecturaBandas.DataSource = dt
+            DgLecturaBandas.AutoResizeColumns()
+            DgLecturaBandas.Columns("Toneladas Humedas").DefaultCellStyle.Format = "0.00"
+            DgLecturaBandas.Columns("Toneladas Secas").DefaultCellStyle.Format = "0.00"
+            DgLecturaBandas.Columns("Onzas").DefaultCellStyle.Format = "0.00"
+            Llenar_TotalBandas()
+            DgLecturaBandas.ReadOnly = False
+        Else
+            Me.DgLecturaBandas.DataSource = Nothing
+            Me.Llenar_TotalBandas()
+        End If
     End Sub
 
     Private Sub Llenar_DataGridViewDgMerrilCrowe()
+        Dim strFecha As String = System.String.Empty
+        If (Me.DateTimePickerFechaReporte.Text = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(Me.DateTimePickerFechaReporte.Text).ToString("yyyy-MM-dd")
+        End If
         Cn.Open()
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT        TOP (100) PERCENT HoraInicial, HoraFinal, LecturaInicial, LecturaFinal, Volumen ,fecha, TenorCabeza, TenorCola , onzas  FROM      PB_MerrilCrowe INNER JOIN       dbo.RfTime ON dbo.PB_MerrilCrowe.HoraInicial = dbo.RfTime.Hora WHERE    (dbo.PB_MerrilCrowe.Fecha = '" & CDate(DateTimePickerFechaReporte.Text) & "') ORDER BY dbo.RfTime.IdPlanta "
+        sql = "SELECT TOP (100) PERCENT HoraInicial, HoraFinal, LecturaInicial, LecturaFinal, Volumen ,fecha, TenorCabeza, TenorCola , onzas FROM PB_MerrilCrowe INNER JOIN dbo.RfTime ON dbo.PB_MerrilCrowe.HoraInicial = dbo.RfTime.Hora WHERE (dbo.PB_MerrilCrowe.Fecha = '" & strFecha & "') ORDER BY dbo.RfTime.IdPlanta "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
         Dim dt As DataTable = ds.Tables(0)
-        DgMerrilCrowe.DataSource = dt
-        DgMerrilCrowe.AutoResizeColumns()
-        '    If IsDBNull(DgMerrilCrowe.Columns("Volumen")) Then
 
-        '  Else
-        DgMerrilCrowe.Columns("Volumen").DefaultCellStyle.Format = "0.00"
-        '  End If
-        'DgMerrilCrowe.Columns("Volumen").DefaultCellStyle.Format = "0.00"
-        DgMerrilCrowe.Columns("Onzas").DefaultCellStyle.Format = "0.00"
-        DgMerrilCrowe.Columns("Fecha").HeaderText = "Fecha"
-        DgMerrilCrowe.Columns("Fecha").Visible = False
-        DgMerrilCrowe.Columns("HoraInicial").HeaderText = "Hora Inicio"
-        DgMerrilCrowe.Columns("HoraFinal").HeaderText = "Hora Final"
-        DgMerrilCrowe.Columns("LecturaInicial").HeaderText = "Lectura Inicial"
-        DgMerrilCrowe.Columns("LecturaFinal").HeaderText = "Lectura Final"
-        DgMerrilCrowe.Columns("Volumen").HeaderText = "Volumen m³/h"
-        DgMerrilCrowe.Columns("Onzas").HeaderText = "Onzas Precipitadas"
-        Llenar_TotalMerril()
-        Me.DgMerrilCrowe.ReadOnly = False
+        If dt.Rows.Count > 0 Then
+            DgMerrilCrowe.DataSource = dt
+            DgMerrilCrowe.AutoResizeColumns()
+            DgMerrilCrowe.Columns("Volumen").DefaultCellStyle.Format = "0.00"
+            DgMerrilCrowe.Columns("Onzas").DefaultCellStyle.Format = "0.00"
+            DgMerrilCrowe.Columns("Fecha").HeaderText = "Fecha"
+            DgMerrilCrowe.Columns("Fecha").Visible = False
+            DgMerrilCrowe.Columns("HoraInicial").HeaderText = "Hora Inicio"
+            DgMerrilCrowe.Columns("HoraFinal").HeaderText = "Hora Final"
+            DgMerrilCrowe.Columns("LecturaInicial").HeaderText = "Lectura Inicial"
+            DgMerrilCrowe.Columns("LecturaFinal").HeaderText = "Lectura Final"
+            DgMerrilCrowe.Columns("Volumen").HeaderText = "Volumen m³/h"
+            DgMerrilCrowe.Columns("Onzas").HeaderText = "Onzas Precipitadas"
+            Llenar_TotalMerril()
+            Me.DgMerrilCrowe.ReadOnly = False
+        Else
+            Me.DgMerrilCrowe.DataSource = Nothing
+            Me.Llenar_TotalMerril()
+        End If
     End Sub
 
     Private Sub Llenar_DataGridViewDgHorometro()
+
+        Dim strFecha As String = System.String.Empty
+        If (Me.DateTimePickerFechaReporte.Text = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(Me.DateTimePickerFechaReporte.Text).ToString("yyyy-MM-dd")
+        End If
+
         Cn.Open()
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT         HoromInicial, HoromFinal , fecha , HorasOperacionTurno , turno FROM      Pb_HorasMolienda  WHERE    (dbo.Pb_HorasMolienda.Fecha = '" & CDate(DateTimePickerFechaReporte.Text) & "') ORDER BY dbo.Pb_HorasMolienda.Turno "
+        sql = "SELECT HoromInicial as 'Lectura Inicial', HoromFinal as 'Lectura Final', HorasOperacionTurno as 'Horas Turno', turno FROM Pb_HorasMolienda WHERE (dbo.Pb_HorasMolienda.Fecha = '" & strFecha & "') ORDER BY dbo.Pb_HorasMolienda.Turno "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
         Dim dt As DataTable = ds.Tables(0)
-        DgHorometro.DataSource = dt
-        DgHorometro.AutoResizeColumns()
-        DgHorometro.Columns("HoromInicial").HeaderText = "Lectura Inicial"
-        DgHorometro.Columns("Fecha").Visible = False
-        DgHorometro.Columns("HoromFinal").HeaderText = "Lectura Final"
-        DgHorometro.Columns("HorasOperacionTurno").HeaderText = "Horas Turno"
 
-        Me.DgHorometro.ReadOnly = False
+        If dt.Rows.Count > 0 Then
+            DgHorometro.DataSource = dt
+            DgHorometro.AutoResizeColumns()
+            DgHorometro.ReadOnly = False
+        End If
     End Sub
 
     Private Sub Llenar_DgHorometroKnelson()
@@ -799,7 +835,7 @@ Public Class FrmMineralPlant
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT         HoromInicial, HoromFinal , fecha , HorasOperacionTurno , turno FROM      Pb_HorasKNelson WHERE    (dbo.Pb_HorasKNelson.Fecha = '" & CDate(DateTimePickerFechaReporte.Text) & "') ORDER BY dbo.Pb_HorasKNelson.Turno "
+        sql = "SELECT         HoromInicial, HoromFinal , fecha , HorasOperacionTurno , turno FROM      Pb_HorasKNelson WHERE    (dbo.Pb_HorasKNelson.Fecha = '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text) & "') ORDER BY dbo.Pb_HorasKNelson.Turno "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
@@ -815,25 +851,30 @@ Public Class FrmMineralPlant
     End Sub
 
     Private Sub Llenar_DataGridViewDgMerrilCrowe_Tenor()
+        Dim strFecha As String = System.String.Empty
+        If (Me.DateTimePickerFechaReporte.Text = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(Me.DateTimePickerFechaReporte.Text).ToString("yyyy-MM-dd")
+        End If
         Cn.Open()
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT     Fecha, HoraInicial, HoraFinal, Volumen, AuFinal_ppm, AlimentoGr, Turno   FROM dbo.vw_AlimentoMerrilCrowe WHERE     (dbo.vw_AlimentoMerrilCrowe.Fecha = '" & CDate(DateTimePickerFechaReporte.Text) & "') "
+        sql = "SELECT HoraInicial as 'Hora Inicio', HoraFinal as 'Hora Final', Volumen as 'Volumen m³/h', AuFinal_ppm as 'Tenor', AlimentoGr, Turno FROM dbo.vw_AlimentoMerrilCrowe WHERE (dbo.vw_AlimentoMerrilCrowe.Fecha = '" & strFecha & "') "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
         Dim dt As DataTable = ds.Tables(0)
-        DgMerrilCrowe.DataSource = dt
-        DgMerrilCrowe.AutoResizeColumns()
-        DgMerrilCrowe.Columns("Fecha").Visible = False
-        DgMerrilCrowe.Columns("Volumen").DefaultCellStyle.Format = "0.00"
-        DgMerrilCrowe.Columns("HoraInicial").HeaderText = "Hora Inicio"
-        DgMerrilCrowe.Columns("HoraFinal").HeaderText = "Hora Final"
-        DgMerrilCrowe.Columns("AuFinal_ppm").HeaderText = "Tenor"
-        DgMerrilCrowe.Columns("Volumen").HeaderText = "Volumen m³/h"
-        Llenar_TotalMerril()
-        Me.DgMerrilCrowe.ReadOnly = False
+
+        If dt.Rows.Count > 0 Then
+            DgMerrilCrowe.DataSource = dt
+            DgMerrilCrowe.AutoResizeColumns()
+            DgMerrilCrowe.Columns("Fecha").Visible = False
+            DgMerrilCrowe.Columns("Volumen").DefaultCellStyle.Format = "0.00"
+            Llenar_TotalMerril()
+            Me.DgMerrilCrowe.ReadOnly = False
+        End If
     End Sub
 
     Private Sub Llenar_DataGridViewDgSamplesDay()
@@ -841,7 +882,7 @@ Public Class FrmMineralPlant
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = " SELECT    Muestra, Fecha, HoraInicial,HoraFinal, Ubicacion,TipoMuestra, Dup , Comments  from PB_Samples WHERE Fecha=  '" & CDate(DateTimePickerFechaReporte.Value) & "'  ORDER BY TipoMuestra , Muestra"
+        sql = " SELECT    Muestra, Fecha, HoraInicial,HoraFinal, Ubicacion,TipoMuestra, Dup , Comments  from PB_Samples WHERE Fecha=  '" & Convert.ToDateTime(DateTimePickerFechaReporte.Value) & "'  ORDER BY TipoMuestra , Muestra"
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
@@ -863,7 +904,7 @@ Public Class FrmMineralPlant
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = " SELECT        TOP (100) PERCENT PB_Samples.Muestra, dbo.PB_Samples.Fecha, PB_Samples.HoraInicial, PB_Samples.HoraFinal, PB_Samples.Ubicacion,    PB_Samples.TipoMuestra,  PB_Assay.AuFinal_ppm, PB_Assay.Ag_Ppm, PB_Assay.Peso_gr ,  PB_Samples.Dup , pb_samples.Comments FROM     PB_Samples INNER JOIN           PB_Assay ON PB_Samples.Muestra = PB_Assay.Muestra WHERE        (PB_Samples.Fecha = '" & CDate(DateTimePickerFechaReporte.Text) & "') AND Pb_Assay.Activado='SI' ORDER BY PB_Samples.TipoMuestra, PB_Samples.Muestra"
+        sql = " SELECT        TOP (100) PERCENT PB_Samples.Muestra, dbo.PB_Samples.Fecha, PB_Samples.HoraInicial, PB_Samples.HoraFinal, PB_Samples.Ubicacion,    PB_Samples.TipoMuestra,  PB_Assay.AuFinal_ppm, PB_Assay.Ag_Ppm, PB_Assay.Peso_gr ,  PB_Samples.Dup , pb_samples.Comments FROM     PB_Samples INNER JOIN           PB_Assay ON PB_Samples.Muestra = PB_Assay.Muestra WHERE        (PB_Samples.Fecha = '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text) & "') AND Pb_Assay.Activado='SI' ORDER BY PB_Samples.TipoMuestra, PB_Samples.Muestra"
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
@@ -881,91 +922,88 @@ Public Class FrmMineralPlant
         Me.DgSamplesDay.ReadOnly = False
     End Sub
     Private Sub Llenar_DataGridViewDgFlujometroE5()
-        'cargar DataGrid de Preparacion Daily
+        Dim strFecha As String = System.String.Empty
+        If (Me.DateTimePickerFechaReporte.Text = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(Me.DateTimePickerFechaReporte.Text).ToString("yyyy-MM-dd")
+        End If
+
         Cn.Open()
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT        TOP (100) PERCENT dbo.Pb_FlowsE5.LecturaInicial, dbo.Pb_FlowsE5.LecturaFinal , dbo.Pb_FlowsE5.Densidad,HorasOperacion , HorasVertimiento ,dbo.pb_flowse5.gespecifica , dbo.pb_flowse5.FlujoM3 , dbo.pb_flowse5.TonsTurno , dbo.pb_flowse5.ToneladasVertidas , dbo.Pb_FlowsE5.Turno  FROM      dbo.Pb_FlowsE5  WHERE    (dbo.Pb_FlowsE5.Fecha = '" & CDate(DateTimePickerFechaReporte.Text) & "') ORDER BY dbo.Pb_FlowsE5.turno "
+        sql = "SELECT TOP (100) PERCENT dbo.Pb_FlowsE5.LecturaInicial as 'Lectura Inicial', dbo.Pb_FlowsE5.LecturaFinal as 'Lectura Final', dbo.Pb_FlowsE5.Densidad, HorasOperacion as 'Horas de Operacion', HorasVertimiento as 'Horas de Vertimiento', dbo.pb_flowse5.gespecifica as 'Gravedad Especifica', dbo.pb_flowse5.FlujoM3 as 'M3 / Turno', dbo.pb_flowse5.TonsTurno as 'Toneladas', dbo.pb_flowse5.ToneladasVertidas as 'Toneladas Vertidas', dbo.Pb_FlowsE5.Turno FROM dbo.Pb_FlowsE5 WHERE (dbo.Pb_FlowsE5.Fecha = '" & strFecha & "') ORDER BY dbo.Pb_FlowsE5.turno "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
         Dim dt As DataTable = ds.Tables(0)
         DgFlujoE5.DataSource = dt
         DgFlujoE5.AutoResizeColumns()
-        DgFlujoE5.Columns("flujom3").DefaultCellStyle.Format = "0.00"
-        DgFlujoE5.Columns("gespecifica").DefaultCellStyle.Format = "0.00"
-        DgFlujoE5.Columns("TonsTurno").DefaultCellStyle.Format = "0.00"
-        DgFlujoE5.Columns("ToneladasVertidas").DefaultCellStyle.Format = "0.00"
-        DgFlujoE5.Columns("HorasVertimiento").DefaultCellStyle.Format = "0.00"
-        DgFlujoE5.Columns("LecturaInicial").HeaderText = "Lectura Inicial"
-        DgFlujoE5.Columns("LecturaFinal").HeaderText = "Lectura Final"
-        DgFlujoE5.Columns("Horasoperacion").HeaderText = "Horas de Operacion"
-        DgFlujoE5.Columns("Gespecifica").HeaderText = "Gravedad Especifica"
-        DgFlujoE5.Columns("FlujoM3").HeaderText = "M3 / Turno"
-        DgFlujoE5.Columns("ToneladasVertidas").HeaderText = "Toneladas Vertidas"
-        DgFlujoE5.Columns("HorasVertimiento").HeaderText = "Horas de Vertimiento"
-
-        DgFlujoE5.Columns("TonsTurno").HeaderText = "Toneladas"
+        DgFlujoE5.Columns("M3 / Turno").DefaultCellStyle.Format = "0.00"
+        DgFlujoE5.Columns("Gravedad Especifica").DefaultCellStyle.Format = "0.00"
+        DgFlujoE5.Columns("Toneladas").DefaultCellStyle.Format = "0.00"
+        DgFlujoE5.Columns("Toneladas Vertidas").DefaultCellStyle.Format = "0.00"
+        DgFlujoE5.Columns("Horas de Vertimiento").DefaultCellStyle.Format = "0.00"
         Llenar_TotalFlujoE5()
         Me.DgFlujoE5.ReadOnly = False
     End Sub
 
     Private Sub Llenar_DataGridViewDgFlujometroFlotacion()
-        'cargar DataGrid de Preparacion Daily
+
+        Dim strFecha As String = System.String.Empty
+        If (Me.DateTimePickerFechaReporte.Text = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(Me.DateTimePickerFechaReporte.Text).ToString("yyyy-MM-dd")
+        End If
+
         Cn.Open()
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT        TOP (100) PERCENT dbo.Pb_FlowsColasBulk.LecturaInicial, dbo.Pb_FlowsColasBulk.LecturaFinal , dbo.Pb_FlowsColasBulk.Densidad,HorasOperacion, HorasVertimiento ,dbo.Pb_FlowsColasBulk.gespecifica , dbo.Pb_FlowsColasBulk.FlujoM3 , dbo.Pb_FlowsColasBulk.TonsTurno,dbo.Pb_FlowsColasBulk.ToneladasVertidas , dbo.Pb_FlowsColasBulk.Turno  FROM      dbo.Pb_FlowsColasBulk  WHERE    (dbo.Pb_FlowsColasBulk.Fecha = '" & CDate(DateTimePickerFechaReporte.Text) & "') ORDER BY dbo.Pb_FlowsColasBulk.turno "
+        sql = "SELECT TOP (100) PERCENT dbo.Pb_FlowsColasBulk.LecturaInicial as 'Lectura Inicial', dbo.Pb_FlowsColasBulk.LecturaFinal as 'Lectura Final', dbo.Pb_FlowsColasBulk.Densidad, HorasOperacion as 'Horas de Operacion', HorasVertimiento as 'Horas de Vertimiento',dbo.Pb_FlowsColasBulk.gespecifica as 'Gravedad Especifica', dbo.Pb_FlowsColasBulk.FlujoM3 as 'M3 / Turno', dbo.Pb_FlowsColasBulk.TonsTurno as 'Toneladas', dbo.Pb_FlowsColasBulk.ToneladasVertidas as 'Toneladas Vertidas', dbo.Pb_FlowsColasBulk.Turno  FROM dbo.Pb_FlowsColasBulk  WHERE(dbo.Pb_FlowsColasBulk.Fecha = '" & strFecha & "') ORDER BY dbo.Pb_FlowsColasBulk.turno "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
         Dim dt As DataTable = ds.Tables(0)
         DgColasFlotacion.DataSource = dt
         DgColasFlotacion.AutoResizeColumns()
-        DgColasFlotacion.Columns("flujom3").DefaultCellStyle.Format = "0.00"
-        DgColasFlotacion.Columns("gespecifica").DefaultCellStyle.Format = "0.00"
-        DgColasFlotacion.Columns("TonsTurno").DefaultCellStyle.Format = "0.00"
-        DgColasFlotacion.Columns("ToneladasVertidas").DefaultCellStyle.Format = "0.00"
-        DgColasFlotacion.Columns("LecturaInicial").HeaderText = "Lectura Inicial"
-        DgColasFlotacion.Columns("LecturaFinal").HeaderText = "Lectura Final"
-        DgColasFlotacion.Columns("Horasoperacion").HeaderText = "Horas de Operacion"
-        DgColasFlotacion.Columns("HorasVertimiento").HeaderText = "Horas de Operacion"
-        DgColasFlotacion.Columns("Gespecifica").HeaderText = "Gravedad Especifica"
-        DgColasFlotacion.Columns("FlujoM3").HeaderText = "M3 / Turno"
-        DgColasFlotacion.Columns("HorasVertimiento").HeaderText = "Horas de Vertimiento"
-        DgColasFlotacion.Columns("ToneladasVertidas").HeaderText = "Toneladas Vertidas"
-        DgColasFlotacion.Columns("TonsTurno").HeaderText = "Toneladas"
+        DgColasFlotacion.Columns("M3 / Turno").DefaultCellStyle.Format = "0.00"
+        DgColasFlotacion.Columns("Toneladas").DefaultCellStyle.Format = "0.00"
+        DgColasFlotacion.Columns("Toneladas Vertidas").DefaultCellStyle.Format = "0.00"
         Llenar_TotalFlujoFlotacion()
         Me.DgColasFlotacion.ReadOnly = False
     End Sub
 
-
-
     Private Sub Llenar_DataGridViewDgFlujometroRebalse()
-        'cargar DataGrid de Preparacion Daily
+
+        Dim strFecha As String = System.String.Empty
+        If (Me.DateTimePickerFechaReporte.Text = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(Me.DateTimePickerFechaReporte.Text).ToString("yyyy-MM-dd")
+        End If
+
         Cn.Open()
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT        TOP (100) PERCENT dbo.Pb_FlowsRebalseCiclon.LecturaInicial, dbo.Pb_FlowsRebalseCiclon.LecturaFinal , dbo.Pb_FlowsRebalseCiclon.Densidad , Turno , FlujoM3 , TonsTurno FROM      dbo.Pb_FlowsRebalseCiclon  WHERE    (dbo.Pb_FlowsRebalseCiclon.Fecha = '" & CDate(DateTimePickerFechaReporte.Text) & "') ORDER BY dbo.Pb_FlowsRebalseCiclon.turno "
+        sql = "SELECT TOP (100) PERCENT dbo.Pb_FlowsRebalseCiclon.LecturaInicial as 'Lectura Inicial', dbo.Pb_FlowsRebalseCiclon.LecturaFinal as 'LecturaFinal', dbo.Pb_FlowsRebalseCiclon.Densidad, Turno, FlujoM3 as 'M3 / Turno', TonsTurno as 'Toneladas' FROM dbo.Pb_FlowsRebalseCiclon WHERE(dbo.Pb_FlowsRebalseCiclon.Fecha = '" & strFecha & "') ORDER BY dbo.Pb_FlowsRebalseCiclon.turno "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
         Dim dt As DataTable = ds.Tables(0)
-        DgFlujoHidrociclones.DataSource = dt
-        DgFlujoHidrociclones.AutoResizeColumns()
-        DgFlujoHidrociclones.Columns("flujom3").DefaultCellStyle.Format = "0.00"
 
-        DgFlujoHidrociclones.Columns("TonsTurno").DefaultCellStyle.Format = "0.00"
+        If dt.Rows.Count > 0 Then
+            DgFlujoHidrociclones.DataSource = dt
+            DgFlujoHidrociclones.AutoResizeColumns()
+            Llenar_TotalFlujoFlotacion()
+            DgFlujoHidrociclones.ReadOnly = False
+        Else
+            DgFlujoHidrociclones.DataSource = Nothing
+        End If
 
-        DgFlujoHidrociclones.Columns("LecturaInicial").HeaderText = "Lectura Inicial"
-        DgFlujoHidrociclones.Columns("LecturaFinal").HeaderText = "Lectura Final"
-        DgFlujoHidrociclones.Columns("FlujoM3").HeaderText = "M3 / Turno"
-        DgFlujoHidrociclones.Columns("TonsTurno").HeaderText = "Toneladas"
-        'Llenar_TotalFlujoFlotacion()
-        Me.DgFlujoHidrociclones.ReadOnly = False
     End Sub
 
     Private Sub Llenar_TenorDataGridViewDgLecturaBandas()
@@ -973,7 +1011,7 @@ Public Class FrmMineralPlant
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = " SELECT        TOP (100) PERCENT vw_PB_AlimentoMolienda.HoraInicial, vw_PB_AlimentoMolienda.HoraFinal, vw_PB_AlimentoMolienda.LecturaInicial, vw_PB_AlimentoMolienda.LecturaFinal , vw_PB_AlimentoMolienda.TonsecaManual , vw_PB_AlimentoMolienda.TonHumedaManual ,   vw_PB_AlimentoMolienda.Au_Media,  vw_PB_AlimentoMolienda.Ag_Ppm,  vw_PB_AlimentoMolienda.Au_AlimentoGr FROM     vw_PB_AlimentoMolienda  WHERE        (vw_PB_AlimentoMolienda.Fecha = '" & CDate(DateTimePickerFechaReporte.Text) & "')  "
+        sql = " SELECT        TOP (100) PERCENT vw_PB_AlimentoMolienda.HoraInicial, vw_PB_AlimentoMolienda.HoraFinal, vw_PB_AlimentoMolienda.LecturaInicial, vw_PB_AlimentoMolienda.LecturaFinal , vw_PB_AlimentoMolienda.TonsecaManual , vw_PB_AlimentoMolienda.TonHumedaManual ,   vw_PB_AlimentoMolienda.Au_Media,  vw_PB_AlimentoMolienda.Ag_Ppm,  vw_PB_AlimentoMolienda.Au_AlimentoGr FROM     vw_PB_AlimentoMolienda  WHERE        (vw_PB_AlimentoMolienda.Fecha = '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text) & "')  "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
@@ -983,15 +1021,17 @@ Public Class FrmMineralPlant
         Me.DgLecturaBandas.ReadOnly = False
         Llenar_TotalBandas()
     End Sub
+
+
     Private Sub CargarDuplicado()
-        Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+        Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
         Dim cmd As New System.Data.SqlClient.SqlCommand
         cmd.CommandType = System.Data.CommandType.Text
         cmd.CommandText = "INSERT INTO PB_Samples (Muestra,HoraInicial,HoraFinal, Fecha,Ubicacion,TipoMuestra, Dup, DupMuestra)VALUES(@Muestra ,@HoraInicial,@HoraFinal,@Fecha,@Ubicacion,@TipoMuestra , @Dup,@DupMuestra)"
         cmd.Parameters.AddWithValue("@Muestra", Convert.ToString(TxtSample.Text) & "A")
         cmd.Parameters.AddWithValue("@HoraInicial", Convert.ToString(ListHFrom.Text))
         cmd.Parameters.AddWithValue("@HoraFinal", Convert.ToString(ListHTo.Text))
-        cmd.Parameters.AddWithValue("@Fecha", CDate(DateTimePickerFechaReporte.Text))
+        cmd.Parameters.AddWithValue("@Fecha", Convert.ToDateTime(DateTimePickerFechaReporte.Text))
         cmd.Parameters.AddWithValue("@Ubicacion", Convert.ToString(CmbLocation.Text))
         cmd.Parameters.AddWithValue("@TipoMuestra", Convert.ToString(CmbSampleType.Text))
         cmd.Parameters.AddWithValue("@Dup", Convert.ToString(TxtSample.Text))
@@ -1001,6 +1041,8 @@ Public Class FrmMineralPlant
         cmd.ExecuteNonQuery()
         sqlConnectiondb.Close()
     End Sub
+
+
     Private Sub Llenar_TotalBandas()
         Dim registros As Decimal
         Dim TotalTonseca As Decimal
@@ -1287,6 +1329,7 @@ ByVal e As EventArgs)
 
 
     Private Sub ChkMerril_Change(ByVal sender As Object, ByVal e As EventArgs) Handles ChkResumerril.CheckedChanged
+
         If ChkResumerril.Checked Then
             Llenar_DataGridViewDgMerrilCrowe_Tenor()
             Llenar_TotalMerril()
@@ -1294,14 +1337,13 @@ ByVal e As EventArgs)
             Llenar_DataGridViewDgMerrilCrowe()
             Llenar_TotalMerril()
         End If
-
     End Sub
 
 
     Private Sub ChKFlotaLixiSolucion_CheckedChanged(ByVal sender As Object,
 ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
 
-        If ChkTenorFLixi.Checked = True Then
+        If ChkTenorFLixi.Checked Then
             MsgBox("No es Posible Mostrar 2 Tenores. Por Favor Quitar 1 la Seleccion")
             ChKFlotaLixiSolucion.Checked = False
             Exit Sub
@@ -1322,19 +1364,17 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
         End If
     End Sub
 
-    Private Sub ChkTenorFLixi_CheckedChanged(ByVal sender As Object,
-ByVal e As EventArgs) Handles ChkTenorFLixi.CheckedChanged
-
+    Private Sub ChkTenorFLixi_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ChkTenorFLixi.CheckedChanged
 
         If ChKFlotaLixiSolucion.Checked = True Then
             MsgBox("No es Posible Mostrar 2 Tenores. Por Favor Quitar 1 la Seleccion")
             ChkTenorFLixi.Checked = False
             Exit Sub
         End If
+
         If ChkTenorFLixi.Checked = True And CmbFlujodeMasa.Text = "Colas Espesador 5" Then
             Llenar_TenorDataGridViewDgColasEspesador5_Solido()
         ElseIf CmbFlujodeMasa.Text = "Alimento Agitadores" And ChkTenorFLixi.Checked = True Then
-
             Llenar_TenorDataGridViewDgAgitadores_Solido()
         ElseIf CmbFlujodeMasa.Text = "Alimento Flotacion" And ChkTenorFLixi.Checked = True Then
             Llenar_TenorDataGridViewDgAlimentoFlotacion_Solido()
@@ -1347,8 +1387,8 @@ ByVal e As EventArgs) Handles ChkTenorFLixi.CheckedChanged
         End If
     End Sub
 
-    Private Sub ChkTenorBanda_CheckedChanged(ByVal sender As Object,
-ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
+    Private Sub ChkTenorBanda_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
+
         If ChkTenorBanda.Checked Then
             Llenar_TenorDataGridViewDgLecturaBandas()
         Else
@@ -1391,10 +1431,10 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     TxtHKNelsonF.Clear()
                     CmbKNelsonTurn.Text = ""
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
-                    Dim cmd As New System.Data.SqlClient.SqlCommand
-                    cmd.CommandType = System.Data.CommandType.Text
-                    cmd.CommandText = "DELETE FROM Pb_HorasKNelson    WHERE fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' and turno=  '" & CStr(CmbKNelsonTurn.Text) & "'  "
+                    Dim sqlConnectiondb As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+                    Dim cmd As New SqlCommand
+                    cmd.CommandType = CommandType.Text
+                    cmd.CommandText = "DELETE FROM Pb_HorasKNelson WHERE fecha=  '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text).ToString & "' and turno=  '" & CmbKNelsonTurn.Text & "'"
                     cmd.Connection = sqlConnectiondb
                     sqlConnectiondb.Open()
                     cmd.ExecuteNonQuery()
@@ -1420,8 +1460,6 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
 
     Private Sub DgSamplesDay_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs)
         Try
-            'Aquí pongo lo que pasaría si el campo está en blanco o nulo
-
             If DBNull.Value.Equals(DgSamplesDay.CurrentRow.Cells("Muestra").Value) Then
                 Me.TxtSample.Clear()
                 Me.ListHFrom.ClearSelected()
@@ -1432,25 +1470,22 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 Me.TxtDuplicado.Text = ""
             Else
                 TxtSample.Text = CStr(Me.DgSamplesDay.Rows(e.RowIndex).Cells("Muestra").Value())
-                ListHFrom.Text = CStr(Me.DgSamplesDay.Rows(e.RowIndex).Cells("HoraInicial").Value())
-                ListHTo.Text = CStr(Me.DgSamplesDay.Rows(e.RowIndex).Cells("Horafinal").Value())
+                ListHFrom.Text = CStr(Me.DgSamplesDay.Rows(e.RowIndex).Cells("Hora Inicio").Value())
+                ListHTo.Text = CStr(Me.DgSamplesDay.Rows(e.RowIndex).Cells("Hora Final").Value())
                 CmbLocation.Text = CStr(Me.DgSamplesDay.Rows(e.RowIndex).Cells("Ubicacion").Value())
-                CmbSampleType.Text = CStr(Me.DgSamplesDay.Rows(e.RowIndex).Cells("TipoMuestra").Value())
-                TxtDuplicado.Text = CStr(Me.DgSamplesDay.Rows(e.RowIndex).Cells("Dup").Value())
-                TxtCommentSamples.Text = CStr(Me.DgSamplesDay.Rows(e.RowIndex).Cells("Comments").Value())
+                CmbSampleType.Text = CStr(Me.DgSamplesDay.Rows(e.RowIndex).Cells("Tipo de Muestra").Value())
+                TxtDuplicado.Text = CStr(Me.DgSamplesDay.Rows(e.RowIndex).Cells("Duplicado de").Value())
+                TxtCommentSamples.Text = CStr(Me.DgSamplesDay.Rows(e.RowIndex).Cells("Comentarios").Value())
                 editamuestra = True
             End If
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-
     End Sub
 
     Private Sub DgLixiviacion_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgLixiviacion.CellClick
         Try
-            'Aquí pongo lo que pasaría si el campo está en blanco o nulo
             If DBNull.Value.Equals(DgLixiviacion.CurrentRow.Cells("Densidad").Value) Then
                 TxtDensidad.Clear()
                 ListHoraInicio.ClearSelected()
@@ -1475,10 +1510,8 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
 
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-
     End Sub
 
 
@@ -1488,7 +1521,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
         Try
             If ChkTenorBanda.Checked = True Then
             Else
-                If DBNull.Value.Equals(DgLecturaBandas.CurrentRow.Cells("HoraInicial").Value) Then
+                If DBNull.Value.Equals(DgLecturaBandas.CurrentRow.Cells("Hora Inicio").Value) Then
                     ListB12Inicio.ClearSelected()
                     ListB12Final.ClearSelected()
                     TxtLecturaInicial.Clear()
@@ -1496,16 +1529,16 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     TxtPercHumedad.Clear()
                     LblIdConsecutivo.Text = "Id"
                 Else
-                    ListB12Inicio.Text = CStr(Me.DgLecturaBandas.Rows(e.RowIndex).Cells("HoraInicial").Value())
-                    ListB12Final.Text = CStr(Me.DgLecturaBandas.Rows(e.RowIndex).Cells("HoraFinal").Value())
-                    TxtLecturaInicial.Text = CStr(Me.DgLecturaBandas.Rows(e.RowIndex).Cells("LecturaInicial").Value())
-                    TxtLecturaFinal.Text = CStr(Me.DgLecturaBandas.Rows(e.RowIndex).Cells("LecturaFinal").Value())
-                    TxtPercHumedad.Text = CStr(Me.DgLecturaBandas.Rows(e.RowIndex).Cells("Porc_Humedad").Value())
+                    ListB12Inicio.Text = CStr(Me.DgLecturaBandas.Rows(e.RowIndex).Cells("Hora Inicio").Value())
+                    ListB12Final.Text = CStr(Me.DgLecturaBandas.Rows(e.RowIndex).Cells("Hora Final").Value())
+                    TxtLecturaInicial.Text = CStr(Me.DgLecturaBandas.Rows(e.RowIndex).Cells("Lectura Inicial").Value())
+                    TxtLecturaFinal.Text = CStr(Me.DgLecturaBandas.Rows(e.RowIndex).Cells("Lectura Final").Value())
+                    TxtPercHumedad.Text = CStr(Me.DgLecturaBandas.Rows(e.RowIndex).Cells("% Humedad").Value())
                     LblIdConsecutivo.Text = CStr(Me.DgLecturaBandas.Rows(e.RowIndex).Cells("IdConsecutivo").Value())
-                    If IsDBNull((Me.DgLecturaBandas.Rows(e.RowIndex).Cells("TonHumeda").Value())) Then
+                    If IsDBNull((Me.DgLecturaBandas.Rows(e.RowIndex).Cells("Toneladas Humedas").Value())) Then
                         txtToneladas.Text = ""
                     Else
-                        txtToneladas.Text = CStr(Me.DgLecturaBandas.Rows(e.RowIndex).Cells("TonHumeda").Value())
+                        txtToneladas.Text = CStr(Me.DgLecturaBandas.Rows(e.RowIndex).Cells("Toneladas Humedas").Value())
                     End If
                 End If
                 If IsDBNull((Me.DgLecturaBandas.Rows(e.RowIndex).Cells("Muestra").Value())) Then
@@ -1516,14 +1549,10 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
             End If
 
             editarbanda = True
-
-
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-
     End Sub
 
 
@@ -1545,8 +1574,7 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
             End If
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
@@ -1562,10 +1590,11 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     ListHoraFinal.ClearSelected()
                     TxtGravedad.Clear()
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
-                    cmd.CommandText = "DELETE FROM PB_Leaching    WHERE Fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' AND Espesador= '" & CmbFlujodeMasa.Text & "' AND HoraInicial= '" & ListHoraInicio.Text & "' "
+                    cmd.CommandText = "DELETE FROM PB_Leaching    WHERE Fecha=  '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text).ToString &
+                                        "' AND Espesador= '" & CmbFlujodeMasa.Text & "' AND HoraInicial= '" & ListHoraInicio.Text & "' "
                     cmd.Connection = sqlConnectiondb
                     sqlConnectiondb.Open()
                     cmd.ExecuteNonQuery()
@@ -1577,15 +1606,10 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editarlix = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
-        Else
-            'ACA EL CODIGO SI PULSA NO
         End If
     End Sub
-
-
 
     Private Sub DgMerrilCrowe_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgMerrilCrowe.CellDoubleClick
         If MsgBox("Esta Seguro Que Desea Eliminar El Registro Seleccionado?", vbYesNo, "") = vbYes Then
@@ -1596,11 +1620,11 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     ListMCInicio.ClearSelected()
                     ListMCFinal.ClearSelected()
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
-                    Dim cmd As New System.Data.SqlClient.SqlCommand
-                    cmd.CommandType = System.Data.CommandType.Text
-                    cmd.CommandText = "DELETE FROM PB_MerrilCrowe    WHERE HoraInicial =  '" & CStr(ListMCInicio.Text) & "'    AND Fecha = '" & Format(CDate(DateTimePickerFechaReporte.Value), "yyyy/MM/dd") & "'   "
-                    cmd.Parameters.AddWithValue("@Fecha", CDate(DateTimePickerFechaReporte.Value))
+                    Dim sqlConnectiondb As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+                    Dim cmd As New SqlCommand
+                    cmd.CommandType = CommandType.Text
+                    cmd.CommandText = "DELETE FROM PB_MerrilCrowe    WHERE HoraInicial =  '" & CStr(ListMCInicio.Text) & "'    AND Fecha = '" & Format(Convert.ToDateTime(DateTimePickerFechaReporte.Value), "yyyy/MM/dd") & "'"
+                    cmd.Parameters.AddWithValue("@Fecha", Convert.ToDateTime(DateTimePickerFechaReporte.Value))
                     cmd.Connection = sqlConnectiondb
                     sqlConnectiondb.Open()
                     cmd.ExecuteNonQuery()
@@ -1614,25 +1638,17 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editaMerril = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
-        Else
-            'ACA EL CODIGO SI PULSA NO
         End If
-
     End Sub
 
     Private Sub DgHorometro_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgHorometro.CellClick
         Try
-            'Aquí pongo lo que pasaría si el campo está en blanco o nulo
-
             If DBNull.Value.Equals(DgHorometro.CurrentRow.Cells("fecha").Value) Then
                 Me.TxtLinicialHorometro.Clear()
                 Me.TxtLfinalHorometro.Clear()
                 Me.Cmbturno.Text = "Seleccione"
-
-
             Else
                 TxtLinicialHorometro.Text = CStr(Me.DgHorometro.Rows(e.RowIndex).Cells("HoromInicial").Value())
                 TxtLfinalHorometro.Text = CStr(Me.DgHorometro.Rows(e.RowIndex).Cells("HoromFinal").Value())
@@ -1641,10 +1657,8 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
             End If
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-
     End Sub
 
     Private Sub dghorometro_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgHorometro.CellDoubleClick
@@ -1656,10 +1670,10 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     TxtLfinalHorometro.Clear()
                     Cmbturno.Text = ""
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
-                    Dim cmd As New System.Data.SqlClient.SqlCommand
-                    cmd.CommandType = System.Data.CommandType.Text
-                    cmd.CommandText = "DELETE FROM Pb_HorasMolienda    WHERE fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' and turno=  '" & CStr(Cmbturno.Text) & "'  "
+                    Dim sqlConnectiondb As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+                    Dim cmd As New SqlCommand
+                    cmd.CommandType = CommandType.Text
+                    cmd.CommandText = "DELETE FROM Pb_HorasMolienda    WHERE fecha=  '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text).ToString & "' and turno=  '" & Cmbturno.Text & "' "
                     cmd.Connection = sqlConnectiondb
                     sqlConnectiondb.Open()
                     cmd.ExecuteNonQuery()
@@ -1670,21 +1684,13 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editahorometro = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
-
-        Else
-            'ACA EL CODIGO SI PULSA NO
-
         End If
-
-
     End Sub
 
 
     Private Sub DgSamplesDay_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs)
-
         If MsgBox("Esta Seguro Que Desea Eliminar El Registro Seleccionado?", vbYesNo, "") = vbYes Then
             Try ' fue adentro
                 If DBNull.Value.Equals(DgSamplesDay.CurrentRow.Cells("Muestra").Value) Then  'Aquí pongo lo que pasaría si el campo está en blanco o nulo
@@ -1692,15 +1698,16 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     ListHFrom.ClearSelected()
                     ListHTo.ClearSelected()
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
-                    Dim cmd As New System.Data.SqlClient.SqlCommand
-                    cmd.CommandType = System.Data.CommandType.Text
-                    cmd.CommandText = "DELETE FROM PB_Samples    WHERE Muestra=  '" & CStr(TxtSample.Text) & "' "
+                    Dim sqlConnectiondb As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+                    Dim cmd As New SqlCommand
+                    cmd.CommandType = CommandType.Text
+                    cmd.CommandText = "DELETE FROM PB_Samples WHERE Muestra=  '" & TxtSample.Text & "' "
                     cmd.Connection = sqlConnectiondb
                     sqlConnectiondb.Open()
                     cmd.ExecuteNonQuery()
                     sqlConnectiondb.Close()
                 End If
+
                 Llenar_DataGridViewDgSamplesDay()
                 ListHFrom.ClearSelected()
                 ListHTo.ClearSelected()
@@ -1711,38 +1718,28 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editamuestra = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
-
-        Else
-            'ACA EL CODIGO SI PULSA NO
-
         End If
-
-
     End Sub
 
 
     Private Sub DgLecturaBandas_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgLecturaBandas.CellDoubleClick
         If MsgBox("Esta Seguro Que Desea Eliminar El Registro Seleccionado?", vbYesNo, "") = vbYes Then
             Try
-                'Aquí pongo lo que pasaría si el campo está en blanco o nulo
-
-                If DBNull.Value.Equals(DgLecturaBandas.CurrentRow.Cells("LecturaInicial").Value) Then
+                If DBNull.Value.Equals(DgLecturaBandas.CurrentRow.Cells("Lectura Inicial").Value) Then
                     TxtLecturaInicial.Clear()
                     TxtLecturaFinal.Clear()
                     TxtPercHumedad.Clear()
                     TxtMuestraBanda.Clear()
-
                     ListB12Inicio.ClearSelected()
                     ListB12Final.ClearSelected()
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
-                    Dim cmd As New System.Data.SqlClient.SqlCommand
-                    cmd.CommandType = System.Data.CommandType.Text
+                    Dim sqlConnectiondb As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+                    Dim cmd As New SqlCommand
+                    cmd.CommandType = CommandType.Text
                     'cmd.CommandText = "DELETE FROM PB_Conveyor    WHERE LecturaInicial=  '" & CDec(DgLecturaBandas.CurrentRow.Cells("LecturaInicial").Value) & "' "
-                    cmd.CommandText = "DELETE FROM PB_Conveyor    WHERE IdConsecutivo=  '" & CInt(DgLecturaBandas.CurrentRow.Cells("IdConsecutivo").Value) & "' "
+                    cmd.CommandText = "DELETE FROM PB_Conveyor WHERE IdConsecutivo=  '" & Convert.ToInt32(DgLecturaBandas.CurrentRow.Cells("IdConsecutivo").Value).ToString & "' "
                     cmd.Connection = sqlConnectiondb
                     sqlConnectiondb.Open()
                     cmd.ExecuteNonQuery()
@@ -1760,16 +1757,9 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editarbanda = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
-
-        Else
-            'ACA EL CODIGO SI PULSA NO
-
-
         End If
-
     End Sub
 
 
@@ -1808,22 +1798,23 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
 
         If MsgBox("Esta Seguro Que Desea Eliminar El Registro Seleccionado?", vbYesNo, "") = vbYes Then
             Try ' fue adentro
-                If DBNull.Value.Equals(DgFlujoE5.CurrentRow.Cells("LecturaInicial").Value) Then  'Aquí pongo lo que pasaría si el campo está en blanco o nulo
+                If DBNull.Value.Equals(DgFlujoE5.CurrentRow.Cells("Lectura Inicial").Value) Then  'Aquí pongo lo que pasaría si el campo está en blanco o nulo
                     Me.TxtInicioE5.Clear()
                     Me.TxtFinalE5.Clear()
                     Me.TxtDensidadE5.Clear()
                     Me.TxtHorasOperacione5.Clear()
                     Me.CmbTurnoE5.Text = "Seleccione"
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
-                    Dim cmd As New System.Data.SqlClient.SqlCommand
-                    cmd.CommandType = System.Data.CommandType.Text
-                    cmd.CommandText = "DELETE FROM Pb_FlowsE5    WHERE fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' and turno=  '" & CStr(CmbTurnoE5.Text) & "'  "
+                    Dim sqlConnectiondb As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+                    Dim cmd As New SqlCommand
+                    cmd.CommandType = CommandType.Text
+                    cmd.CommandText = "DELETE FROM Pb_FlowsE5    WHERE fecha=  '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text).ToString & "' and turno=  '" & CmbTurnoE5.Text & "'  "
                     cmd.Connection = sqlConnectiondb
                     sqlConnectiondb.Open()
                     cmd.ExecuteNonQuery()
                     sqlConnectiondb.Close()
                 End If
+
                 Llenar_DataGridViewDgFlujometroE5()
                 Me.TxtInicioE5.Clear()
                 Me.TxtFinalE5.Clear()
@@ -1834,21 +1825,14 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editarflujoe5 = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
-
-        Else
-            'ACA EL CODIGO SI PULSA NO
-
         End If
-
-
     End Sub
 
     Private Sub Llenar_DatagridviewColasFlotacion_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgColasFlotacion.CellClick
         Try
-            If DBNull.Value.Equals(DgColasFlotacion.CurrentRow.Cells("LecturaInicial").Value) Then
+            If DBNull.Value.Equals(DgColasFlotacion.CurrentRow.Cells("Lectura Inicial").Value) Then
                 Me.TxtInicioFl.Clear()
                 Me.TxtFinalFl.Clear()
                 Me.TxtDensidadFl.Clear()
@@ -1856,18 +1840,17 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 Me.TxtHVertimientoFl.Clear()
                 Me.CmbTurnoFl.Text = "Seleccione"
             Else
-                TxtInicioFl.Text = CStr(Me.DgColasFlotacion.Rows(e.RowIndex).Cells("LecturaInicial").Value())
-                TxtFinalFl.Text = CStr(Me.DgColasFlotacion.Rows(e.RowIndex).Cells("LecturaFinal").Value())
+                TxtInicioFl.Text = CStr(Me.DgColasFlotacion.Rows(e.RowIndex).Cells("Lectura Inicial").Value())
+                TxtFinalFl.Text = CStr(Me.DgColasFlotacion.Rows(e.RowIndex).Cells("Lectura Final").Value())
                 TxtDensidadFl.Text = CStr(Me.DgColasFlotacion.Rows(e.RowIndex).Cells("Densidad").Value())
-                TxtHorasFl.Text = CStr(Me.DgColasFlotacion.Rows(e.RowIndex).Cells("HorasOperacion").Value())
-                TxtHVertimientoFl.Text = CStr(Me.DgColasFlotacion.Rows(e.RowIndex).Cells("HorasVertimiento").Value())
+                TxtHorasFl.Text = CStr(Me.DgColasFlotacion.Rows(e.RowIndex).Cells("Horas de Operacion").Value())
+                TxtHVertimientoFl.Text = CStr(Me.DgColasFlotacion.Rows(e.RowIndex).Cells("Horas de Vertimiento").Value())
                 CmbTurnoFl.Text = CStr(Me.DgColasFlotacion.Rows(e.RowIndex).Cells("Turno").Value())
                 editaflujoflotacion = True
             End If
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
     End Sub
@@ -1877,17 +1860,17 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
 
         If MsgBox("Esta Seguro Que Desea Eliminar El Registro Seleccionado?", vbYesNo, "") = vbYes Then
             Try ' fue adentro
-                If DBNull.Value.Equals(DgColasFlotacion.CurrentRow.Cells("LecturaInicial").Value) Then  'Aquí pongo lo que pasaría si el campo está en blanco o nulo
+                If DBNull.Value.Equals(DgColasFlotacion.CurrentRow.Cells("Lectura Inicial").Value) Then  'Aquí pongo lo que pasaría si el campo está en blanco o nulo
                     Me.TxtInicioFl.Clear()
                     Me.TxtFinalFl.Clear()
                     Me.TxtDensidadFl.Clear()
                     Me.TxtHorasFl.Clear()
                     Me.CmbTurnoFl.Text = "Seleccione"
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
-                    Dim cmd As New System.Data.SqlClient.SqlCommand
-                    cmd.CommandType = System.Data.CommandType.Text
-                    cmd.CommandText = "DELETE FROM Pb_FlowsColasBulk    WHERE fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' and turno=  '" & CStr(CmbTurnoFl.Text) & "'  "
+                    Dim sqlConnectiondb As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+                    Dim cmd As New SqlCommand
+                    cmd.CommandType = CommandType.Text
+                    cmd.CommandText = "DELETE FROM Pb_FlowsColasBulk WHERE fecha=  '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text).ToString & "' and turno=  '" & CmbTurnoFl.Text & "'  "
                     cmd.Connection = sqlConnectiondb
                     sqlConnectiondb.Open()
                     cmd.ExecuteNonQuery()
@@ -1903,13 +1886,8 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editaflujoflotacion = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
-
-        Else
-            'ACA EL CODIGO SI PULSA NO
-
         End If
     End Sub
 
@@ -1917,16 +1895,16 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
 
         If MsgBox("Esta Seguro Que Desea Eliminar El Registro Seleccionado?", vbYesNo, "") = vbYes Then
             Try ' fue adentro
-                If DBNull.Value.Equals(DgFlujoHidrociclones.CurrentRow.Cells("LecturaInicial").Value) Then  'Aquí pongo lo que pasaría si el campo está en blanco o nulo
+                If DBNull.Value.Equals(DgFlujoHidrociclones.CurrentRow.Cells("Lectura Inicial").Value) Then  'Aquí pongo lo que pasaría si el campo está en blanco o nulo
                     Me.TxtInicioHidro.Clear()
                     Me.TxtFinalHidro.Clear()
                     Me.TxtDensidadHidro.Clear()
                     Me.CmbTurnoRciclon.Text = "Seleccione"
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
-                    Dim cmd As New System.Data.SqlClient.SqlCommand
-                    cmd.CommandType = System.Data.CommandType.Text
-                    cmd.CommandText = "DELETE FROM Pb_FlowsRebalseCiclon    WHERE fecha=  '" & CDate(DateTimePickerFechaReporte.Text) & "' and turno=  '" & CStr(CmbTurnoRciclon.Text) & "'  "
+                    Dim sqlConnectiondb As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+                    Dim cmd As New SqlCommand
+                    cmd.CommandType = CommandType.Text
+                    cmd.CommandText = "DELETE FROM Pb_FlowsRebalseCiclon    WHERE fecha=  '" & Convert.ToDateTime(DateTimePickerFechaReporte.Text).ToString & "' and turno=  '" & CmbTurnoRciclon.Text & "'  "
                     cmd.Connection = sqlConnectiondb
                     sqlConnectiondb.Open()
                     cmd.ExecuteNonQuery()
@@ -1942,13 +1920,8 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                 editaflujoRebalse = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
-
-        Else
-            'ACA EL CODIGO SI PULSA NO
-
         End If
     End Sub
 
@@ -1988,9 +1961,9 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
 
     Private Sub PictureBox2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox2.Click
         Dim cnstr As String
-        cnstr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnstr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         'mensaje de exportacion mientras se ejecuta el codigo
-        LblExport.Visible = True
+        'LblExport.Visible = True
         Try
             Dim objExcel As Microsoft.Office.Interop.Excel.Application
             objExcel = New Microsoft.Office.Interop.Excel.Application
@@ -2025,18 +1998,16 @@ ByVal e As EventArgs) Handles ChkTenorBanda.CheckedChanged
                     End If
                     recorrido = recorrido + 1
                 Next dRow
-                LblExport.Visible = False
+                'LblExport.Visible = False
                 objExcel.Visible = True
             End With
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
-    Private Sub ChkTenor_CheckedChanged(ByVal sender As Object,
-ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
+    Private Sub ChkTenor_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         If ChkTenor.Checked Then
             Llenar_TenorDataGridViewDgSamplesDay()
         Else
@@ -2050,14 +2021,10 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         If ChkTimeView.Checked Then
             CmbHoraInicio.Visible = True
             CmbHoraFinal.Visible = True
-
         Else
             CmbHoraInicio.Visible = False
             CmbHoraFinal.Visible = False
-
         End If
-
-
     End Sub
 
     Private Sub CmbFlujodeMasa_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmbFlujodeMasa.SelectedIndexChanged
@@ -2069,10 +2036,11 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
     Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
 
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
-" WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarMineralPlant'  ) ", Cn)
+        Dim EPermisos As New SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarMineralPlant'  ) ", Cn)
+
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
+
         If myDataViewpermisos.Count = 0 Then
             MsgBox("El usuario no tiene privilegios para Modificar en este Formulario. Contacte a su administrador.")
             Exit Sub
@@ -2083,9 +2051,10 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
-                Dim cmd As New System.Data.SqlClient.SqlCommand
-                cmd.CommandType = System.Data.CommandType.Text
+                Dim sqlConnectiondb As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+                Dim cmd As New SqlCommand
+                cmd.CommandType = CommandType.Text
+
                 If editarlix = True Then
                     'CONSULTA CUANDO EDITAR ES VERDADERO
                     cmd.CommandText = "UPDATE  PB_Leaching  SET   HoraFinal= @HoraFinal , Densidad = @Densidad , Porc_Pasante=@Porc_Pasante , SGmineral=@SGmineral , VolumenLt=@VolumenLt ,  TonConcentrado= @TonConcentrado WHERE  Espesador = @Espesador AND Fecha = @Fecha  AND  HoraInicial = @HoraInicial "
@@ -2093,7 +2062,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                     ' consulta sql si editar es falso 
                     cmd.CommandText = "INSERT INTO PB_Leaching (Fecha,HoraInicial,HoraFinal, Espesador,  Densidad, Porc_Pasante, SGmineral, VolumenLt , TonConcentrado)VALUES(@Fecha ,@HoraInicial,@HoraFinal,@Espesador,@Densidad, @Porc_Pasante, @SGmineral, @VolumenLt, @TonConcentrado)"
                 End If
-                cmd.Parameters.AddWithValue("@Fecha", CDate(DateTimePickerFechaReporte.Text))
+
+                cmd.Parameters.AddWithValue("@Fecha", Convert.ToDateTime(DateTimePickerFechaReporte.Text))
                 cmd.Parameters.AddWithValue("@HoraInicial", Convert.ToString(ListHoraInicio.Text))
                 cmd.Parameters.AddWithValue("@HoraFinal", Convert.ToString(ListHoraFinal.Text))
                 cmd.Parameters.AddWithValue("@Espesador", Convert.ToString(CmbFlujodeMasa.Text))
@@ -2115,7 +2085,6 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                     cmd.Parameters.AddWithValue("@Densidad", Convert.ToDecimal(TxtDensidad.Text))
                 End If
 
-
                 cmd.Parameters.AddWithValue("@VolumenLt", Convert.ToDecimal(TxtMCubicosH.Text))
                 cmd.Parameters.AddWithValue("@TonConcentrado", Convert.ToDecimal(TxtLixiConcentrado.Text))
                 cmd.Connection = sqlConnectiondb
@@ -2126,11 +2095,9 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 Llenar_DataGridViewDgLixiviacion()
                 ListHoraInicio.Text = ListHoraFinal.Text
                 TxtDensidad.Focus()
-                If editarlix = True Then
 
-                Else
+                If Not editarlix Then
                     If ListHoraFinal.SelectedIndex + 3 > 23 Then
-
                         ListHoraFinal.SelectedIndex = 2
                     Else
                         ListHoraFinal.SelectedIndex = ListHoraFinal.SelectedIndex + 3
@@ -2143,16 +2110,14 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 DgLixiviacion.FirstDisplayedScrollingRowIndex = DgLixiviacion.RowCount - 1
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         End If
     End Sub
 
     Private Sub CmdSaveBanda_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdSaveBanda.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
-" WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarBanda'  ) ", Cn)
+        Dim EPermisos As New SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarBanda'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
 
@@ -2160,24 +2125,25 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             MsgBox("El usuario no tiene privilegios para Modificar en este Formulario. Contacte a su administrador.")
             Exit Sub
         End If
+
         If ListB12Inicio.Text = "" Or ListB12Final.Text = "" Or TxtLecturaInicial.Text = "" Or TxtLecturaFinal.Text = "" Then
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
-                Dim cmd As New System.Data.SqlClient.SqlCommand
-                cmd.CommandType = System.Data.CommandType.Text
+                Dim sqlConnectiondb As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+                Dim cmd As New SqlCommand
+                cmd.CommandType = CommandType.Text
 
                 If editarbanda = True Then
                     'CONSULTA CUANDO EDITAR ES VERDADERO
-                    cmd.CommandText = "UPDATE  PB_Conveyor  SET HoraInicial = @HoraInicial,  HoraFinal= @HoraFinal , Fecha=@Fecha,  LecturaFinal = @LecturaFinal , Porc_Humedad=@Porc_Humedad , TonHumedaManual=@TonHumedaManual, Muestra=@Muestra WHERE IdConsecutivo=@IdConsecutivo  "
+                    cmd.CommandText = "UPDATE  PB_Conveyor  SET HoraInicial = @HoraInicial,  HoraFinal= @HoraFinal , Fecha=@Fecha,  LecturaFinal = @LecturaFinal , Porc_Humedad=@Porc_Humedad , TonHumedaManual=@TonHumedaManual, Muestra=@Muestra WHERE IdConsecutivo = @IdConsecutivo"
                 Else
                     ' consulta sql si editar es falso 
                     cmd.CommandText = "INSERT INTO PB_Conveyor (HoraInicial,HoraFinal,Fecha, LecturaInicial,  LecturaFinal, Porc_Humedad, TonHumedaManual, Muestra)VALUES(@HoraInicial,@HoraFinal,@Fecha, @LecturaInicial,  @LecturaFinal, @Porc_Humedad, @TonHumedaManual, @Muestra)"
                 End If
                 cmd.Parameters.AddWithValue("@HoraInicial", Convert.ToString(ListB12Inicio.Text))
                 cmd.Parameters.AddWithValue("@HoraFinal", Convert.ToString(ListB12Final.Text))
-                cmd.Parameters.AddWithValue("@Fecha", CDate(DateTimePickerFechaReporte.Text))
+                cmd.Parameters.AddWithValue("@Fecha", Convert.ToDateTime(DateTimePickerFechaReporte.Text))
                 cmd.Parameters.AddWithValue("@LecturaInicial", Convert.ToDecimal(TxtLecturaInicial.Text))
                 cmd.Parameters.AddWithValue("@LecturaFinal", Convert.ToDecimal(TxtLecturaFinal.Text))
                 cmd.Parameters.AddWithValue("@Porc_Humedad", Convert.ToDecimal(TxtPercHumedad.Text))
@@ -2210,8 +2176,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 DgLecturaBandas.FirstDisplayedScrollingRowIndex = DgLecturaBandas.RowCount - 1
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
         End If
@@ -2221,9 +2186,10 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
     Private Sub CmdReporteMineras_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdReporteMineras.Click
         Dim fechainicio As Date
         Dim fechafin As Date
-        fechainicio = CDate(DtFechaInicio.Value)
-        fechafin = CDate(DtFechaFinal.Value)
+        fechainicio = Convert.ToDateTime(DtFechaInicio.Value)
+        fechafin = Convert.ToDateTime(DtFechaFinal.Value)
         Dim dias As Double
+
         dias = (DtFechaFinal.Value - DtFechaInicio.Value).TotalDays
         If dias > 31 Then
             MsgBox("Por Favor Seleccione un rango de Fecha no superior a 30 dias.")
@@ -2232,11 +2198,13 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
         Try
             Dim fechactual As Date
-            cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
-            conn.Open(cnStr)
+            cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
+            conn.Open(cnStr, "", "", -1)
+
             Dim objExcel As Microsoft.Office.Interop.Excel.Application
             objExcel = New Microsoft.Office.Interop.Excel.Application
             Dim hoja As Microsoft.Office.Interop.Excel.Worksheet
+
             objExcel.Workbooks.Open("\\athenea\pampaverde\mineria\Data\DataBase\Templates\PlantaBeneficio_140123_TemplateMinerasReportDaily.xlsx")
             Dim recorrido As Integer
             Dim columna As Integer
@@ -2245,26 +2213,27 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             LblExportar.Visible = True
             recorrido = 3
             objExcel.Visible = False
-            rstoperacionrep = conn.Execute("  SELECT        Fecha, ConsumoEnergia, TonHora, OperacionHorasDia, DetencionMtto, DetencionOperacion, TonMolidasZandor, TonMolidasMineras FROM            dbo.PB_Operation  WHERE (   PB_Operation.Fecha >= '" & Format(fechainicio, "yyyy/MM/dd") & "' )and  (PB_Operation.Fecha <= '" & Format(fechafin, "yyyy/MM/dd") & "')   ")
+
+            rstoperacionrep = conn.Execute("SELECT Fecha, ConsumoEnergia, TonHora, OperacionHorasDia, DetencionMtto, DetencionOperacion, TonMolidasZandor, TonMolidasMineras FROM  dbo.PB_Operation  WHERE ( PB_Operation.Fecha >= '" & Format(Convert.ToDateTime(fechainicio), "yyyy/MM/dd") & "' )and  (PB_Operation.Fecha <= '" & Format(Convert.ToDateTime(fechafin), "yyyy/MM/dd") & "')", RuntimeHelpers.GetObjectValue(System.Reflection.Missing.Value), -1)
             With objExcel
                 hoja = CType(.Sheets("Report"), Microsoft.Office.Interop.Excel.Worksheet)
                 Do While Not rstoperacionrep.EOF
                     columna = 2
-                    rstoperationContract = conn.Execute(" SELECT        TOP (100) PERCENT Id, Name, enabled   FROM dbo.RfOperationContracts                WHERE Enabled = 1 ORDER BY Name ")
-                    hoja.Cells(recorrido, 1) = CDate(rstoperacionrep.Fields("Fecha").Value)
+                    rstoperationContract = conn.Execute("SELECT TOP (100) PERCENT Id, Name, enabled   FROM dbo.RfOperationContracts WHERE Enabled = 1 ORDER BY Name", RuntimeHelpers.GetObjectValue(System.Reflection.Missing.Value), -1)
+                    hoja.Cells(recorrido, 1) = Convert.ToDateTime(rstoperacionrep.Fields("Fecha").Value)
                     totaltoneladas = 0
                     totalonzas = 0
                     Do While Not rstoperationContract.EOF
                         Dim nombremina As String
                         nombremina = CStr(rstoperationContract.Fields("name").Value)
-                        fechactual = CDate(rstoperacionrep.Fields("Fecha").Value)
+                        fechactual = Convert.ToDateTime(rstoperacionrep.Fields("Fecha").Value)
                         If recorrido = 3 Then
                             hoja.Cells(1, columna) = CStr(rstoperationContract.Fields("name").Value)
                             hoja.Cells(2, columna) = "Toneladas"
                             hoja.Cells(2, columna + 1) = "Tenor"
                             hoja.Cells(2, columna + 2) = "Onzas"
                         End If
-                        rstmineras = conn.Execute("  SELECT       Fecha, Mina, NombreMina,  SUM(TonMineralS) AS TotalSeca , TenorPromedio FROM            dbo.vw_Pb_PequenaMinera  GROUP BY Fecha, NombreMina, Mina, TenorPromedio HAVING           (   dbo.vw_Pb_PequenaMinera.Fecha = '" & Format(fechactual, "yyyy/MM/dd") & "' )  and (NombreMina= '" & nombremina & "' )   ")
+                        rstmineras = conn.Execute("SELECT Fecha, Mina, NombreMina,  SUM(TonMineralS) AS TotalSeca , TenorPromedio FROM dbo.vw_Pb_PequenaMinera  GROUP BY Fecha, NombreMina, Mina, TenorPromedio HAVING (dbo.vw_Pb_PequenaMinera.Fecha = '" & Format(Convert.ToDateTime(fechactual), "yyyy/MM/dd") & "' )  and (NombreMina= '" & nombremina & "' )", RuntimeHelpers.GetObjectValue(System.Reflection.Missing.Value), -1)
                         If rstmineras.EOF = True And rstmineras.BOF = True Then
                             'no hay mineral
                             hoja.Cells(recorrido, columna) = 0
@@ -2279,10 +2248,10 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                             columna = columna + 1
                             hoja.Cells(recorrido, columna) = rstmineras.Fields("TenorPromedio").Value
                             columna = columna + 1
-                            hoja.Cells(recorrido, columna) = (CDec(rstmineras.Fields("TenorPromedio").Value) * CDec(rstmineras.Fields("TotalSeca").Value)) / 31.1035
+                            hoja.Cells(recorrido, columna) = (Convert.ToDecimal(rstmineras.Fields("TenorPromedio").Value) * Convert.ToDecimal(rstmineras.Fields("TotalSeca").Value)) / 31.1035
                             columna = columna + 1
-                            totaltoneladas = totaltoneladas + CDec(rstmineras.Fields("TotalSeca").Value)
-                            totalonzas = CDec(totalonzas + ((CDec(rstmineras.Fields("TenorPromedio").Value) * CDec(rstmineras.Fields("TotalSeca").Value)) / 31.1035))
+                            totaltoneladas = totaltoneladas + Convert.ToDecimal(rstmineras.Fields("TotalSeca").Value)
+                            totalonzas = Convert.ToDecimal(totalonzas + ((Convert.ToDecimal(rstmineras.Fields("TenorPromedio").Value) * Convert.ToDecimal(rstmineras.Fields("TotalSeca").Value)) / 31.1035))
 
                         End If
                         rstoperationContract.MoveNext()
@@ -2298,8 +2267,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             LblExportar.Visible = False
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             conn.Close()
             LblExportar.Visible = False
         End Try
@@ -2308,8 +2276,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
     Private Sub CmdExportDaily_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdExportDaily.Click
         Dim fechainicio As Date
         Dim fechafin As Date
-        fechainicio = CDate(DtFechaInicio.Value)
-        fechafin = CDate(DtFechaFinal.Value)
+        fechainicio = Convert.ToDateTime(DtFechaInicio.Value)
+        fechafin = Convert.ToDateTime(DtFechaFinal.Value)
         Dim dias As Double
         dias = (DtFechaFinal.Value - DtFechaInicio.Value).TotalDays
         If dias > 31 Then
@@ -2317,10 +2285,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             Exit Sub
         End If
         exportarsolidos()
-
-
-
     End Sub
+
     Private Sub exportarsolidos()
         Dim totaltoneladas As Double
         Dim totalgramos As Double
@@ -2329,7 +2295,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         Dim RstResumenTenor As New ADODB.Recordset()
         Dim RstResumenTenorsolucion As New ADODB.Recordset()
         Dim cnStr As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application
@@ -2340,10 +2306,12 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         totaltoneladas = 0
         totalgramos = 0
         objExcel.Visible = False
-        RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoFlotacion where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-        RstResumenTenor = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.Pb_ConcentradoFlotacionTenor where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-        'RstR = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.Pb_ConcentradoFlotacionTenor where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-        'RstResumenTenorSolucion = conn.Execute("SELECT     TOP (100) PERCENT dbo.PB_MerrilCrowe.Fecha, SUM(dbo.PB_MerrilCrowe.Volumen) AS VolumenTotal, SUM(dbo.PB_MerrilCrowe.Onzas) AS OnzasTotal,  AVG(dbo.PB_MerrilCrowe.TenorCabeza) AS TenorPromedio, AVG(dbo.PB_MerrilCrowe.TenorCola) AS TenorColas FROM         dbo.PB_MerrilCrowe INNER JOIN     dbo.RfTime ON dbo.PB_MerrilCrowe.HoraInicial = dbo.RfTime.Hora GROUP BY dbo.PB_MerrilCrowe.Fecha    HAVING        (Fecha >= '" & CDate(DtFechainicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')")
+        RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoFlotacion where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
+                                  "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
+        RstResumenTenor = conn.Execute(" SELECT Fecha, Turno, AuFinal_ppm FROM dbo.Pb_ConcentradoFlotacionTenor where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
+                                       "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
+        'RstR = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.Pb_ConcentradoFlotacionTenor where     (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
+        'RstResumenTenorSolucion = conn.Execute("SELECT     TOP (100) PERCENT dbo.PB_MerrilCrowe.Fecha, SUM(dbo.PB_MerrilCrowe.Volumen) AS VolumenTotal, SUM(dbo.PB_MerrilCrowe.Onzas) AS OnzasTotal,  AVG(dbo.PB_MerrilCrowe.TenorCabeza) AS TenorPromedio, AVG(dbo.PB_MerrilCrowe.TenorCola) AS TenorColas FROM         dbo.PB_MerrilCrowe INNER JOIN     dbo.RfTime ON dbo.PB_MerrilCrowe.HoraInicial = dbo.RfTime.Hora GROUP BY dbo.PB_MerrilCrowe.Fecha    HAVING        (Fecha >= '" & Convert.ToDateTime(DtFechainicio.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text) & "')")
         With objExcel
             'concentrado de flotacion
             hoja = CType(.Sheets("ConcentradoFlotacion"), Microsoft.Office.Interop.Excel.Worksheet)
@@ -2369,9 +2337,12 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
 
             'agitador 1
-            RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoAAG1 where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-            RstResumenTenor = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.Pb_AlimentoAG1Solido where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-            RstResumenTenorsolucion = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.Pb_AlimentoAG1Solido where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
+            RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoAAG1 where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
+                                      "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
+            RstResumenTenor = conn.Execute(" SELECT Fecha, Turno, AuFinal_ppm FROM dbo.Pb_AlimentoAG1Solido where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
+                                           "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
+            RstResumenTenorsolucion = conn.Execute(" SELECT  Fecha, Turno, AuFinal_ppm FROM dbo.Pb_AlimentoAG1Solido where     (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
+                                                   "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
 
             recorrido = 2
             'concentrado de flotacion
@@ -2409,9 +2380,12 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
 
             'espesador5 solido
-            RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoEsp5 where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-            RstResumenTenor = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.PB_ColasESp5SolidoTenor where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-            RstResumenTenorsolucion = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.PB_ColasEsp5Solucion where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
+            RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoEsp5 where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
+                                      "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
+            RstResumenTenor = conn.Execute(" SELECT  Fecha, Turno, AuFinal_ppm FROM  dbo.PB_ColasESp5SolidoTenor where  (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
+                                           "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
+            RstResumenTenorsolucion = conn.Execute(" SELECT  Fecha, Turno, AuFinal_ppm FROM dbo.PB_ColasEsp5Solucion where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
+                                                   "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
 
 
             recorrido = 2
@@ -2452,9 +2426,11 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
             ' descarga agitador 3
 
-            'RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoEsp5 where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-            RstResumenTenor = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.PB_DescargaAgitadorSolido where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-            RstResumenTenorsolucion = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.PB_DescargaAgitadorSolucion where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
+            'RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoEsp5 where     (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
+            RstResumenTenor = conn.Execute(" SELECT  Fecha, Turno, AuFinal_ppm FROM dbo.PB_DescargaAgitadorSolido where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
+                                           "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
+            RstResumenTenorsolucion = conn.Execute(" SELECT Fecha, Turno, AuFinal_ppm FROM dbo.PB_DescargaAgitadorSolucion where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
+                                                   "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
 
 
 
@@ -2481,7 +2457,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             Loop
 
 
-            RstResumen = conn.Execute(" SELECT Fecha, TotalOnzas , OrigenBarra FROM  dbo.Pb_FundicionTotal where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
+            RstResumen = conn.Execute(" SELECT Fecha, TotalOnzas , OrigenBarra FROM  dbo.Pb_FundicionTotal where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
+                                      "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
             'FUNDICION
             recorrido = 2
             hoja = CType(.Sheets("Fundicion"), Microsoft.Office.Interop.Excel.Worksheet)
@@ -2496,9 +2473,9 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
             ' descarga agitador 4
 
-            '****RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoEsp5 where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-            '  RstResumenTenor = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.PB_DescargaAG4Solido where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-            ' RstResumenTenorsolucion = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.PB_DescargaAG4Solucion where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
+            '****RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoEsp5 where     (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
+            '  RstResumenTenor = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.PB_DescargaAG4Solido where     (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
+            ' RstResumenTenorsolucion = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.PB_DescargaAG4Solucion where     (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
 
             'recorrido = 2
             'hoja = CType(.Sheets("TenorSolidoAg3"), Microsoft.Office.Interop.Excel.Worksheet)
@@ -2520,8 +2497,9 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             'RstResumenTenorsolucion.MoveNext()
             'Loop
             'merrilcrowe
-            '* RstResumenTenor = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.PB_DescargaAG3Solido where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-            RstResumenTenorsolucion = conn.Execute("SELECT Fecha , Turno , Volumen , TenorCabeza , TenorCola , OnzasCabeza , OnzasCola  FROM         Pb_MerrilCroweBalance where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
+            '* RstResumenTenor = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.PB_DescargaAG3Solido where     (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
+            RstResumenTenorsolucion = conn.Execute("SELECT Fecha , Turno , Volumen , TenorCabeza , TenorCola , OnzasCabeza , OnzasCola  FROM  Pb_MerrilCroweBalance where  (Fecha >= '" &
+                                                   Convert.ToDateTime(DtFechaInicio.Text).ToString & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
             recorrido = 2
             hoja = CType(.Sheets("MerrilCrowe"), Microsoft.Office.Interop.Excel.Worksheet)
             Do While Not RstResumenTenorsolucion.EOF
@@ -2536,7 +2514,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 RstResumenTenorsolucion.MoveNext()
             Loop
             'banda 12 
-            RstResumenTenorsolucion = conn.Execute("SELECT  Fecha, turno , PromedioTenorTurno , ToneladaSeca , ToneladaHumeda , PromedioHumedad   FROM   Pb_TenorPromedioB12 where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
+            RstResumenTenorsolucion = conn.Execute("SELECT  Fecha, turno , PromedioTenorTurno , ToneladaSeca , ToneladaHumeda , PromedioHumedad   FROM   Pb_TenorPromedioB12 where (Fecha >= '" &
+                                                   Convert.ToDateTime(DtFechaInicio.Text).ToString & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
             recorrido = 2
             hoja = CType(.Sheets("TenorB12"), Microsoft.Office.Interop.Excel.Worksheet)
             Do While Not RstResumenTenorsolucion.EOF
@@ -2551,7 +2530,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             Loop
 
             'Colas Bulk 
-            RstResumenTenorsolucion = conn.Execute("SELECT  Fecha, turno , AuFinal_ppm  FROM   PB_ColasBulk where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
+            RstResumenTenorsolucion = conn.Execute("SELECT  Fecha, turno , AuFinal_ppm  FROM   PB_ColasBulk where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
+                                                   "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
             recorrido = 2
             hoja = CType(.Sheets("TenorColasBulk"), Microsoft.Office.Interop.Excel.Worksheet)
             Do While Not RstResumenTenorsolucion.EOF
@@ -2563,10 +2543,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             Loop
 
 
-            RstResumenTenor = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.Pb_RebalseCiclon_Tenor where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-            '   RstResumenTenorsolucion = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.PB_DescargaAgitadorSolucion where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-
-
+            RstResumenTenor = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM  dbo.Pb_RebalseCiclon_Tenor where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
+                                           "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
 
             recorrido = 2
             hoja = CType(.Sheets("RebalseCiclon"), Microsoft.Office.Interop.Excel.Worksheet)
@@ -2578,7 +2556,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 RstResumenTenor.MoveNext()
             Loop
 
-            RstResumen = conn.Execute(" SELECT Fecha, DetencionMtto, DetencionOperacion FROM  dbo.PB_Operation where     (Fecha >= '" & CDate(DtFechaInicio.Text) & "') AND (Fecha <= '" & CDate(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
+            RstResumen = conn.Execute(" SELECT Fecha, DetencionMtto, DetencionOperacion FROM  dbo.PB_Operation where  (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
+                                      "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
             recorrido = 2
             hoja = CType(.Sheets("Operacion"), Microsoft.Office.Interop.Excel.Worksheet)
             Do While Not RstResumen.EOF
@@ -2589,45 +2568,38 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 RstResumen.MoveNext()
             Loop
 
-
-
             recorrido = 5
             hoja = CType(.Sheets("Report"), Microsoft.Office.Interop.Excel.Worksheet)
             Dim fecha1, fecha2 As Date
             fecha1 = DtFechaInicio.Value
             fecha2 = DtFechaFinal.Value
             Do While fecha1 <= fecha2
-                hoja.Cells(recorrido, 2) = fecha1
+                hoja.Cells(recorrido, 2) = Convert.ToDateTime(fecha1).ToString
                 recorrido = recorrido + 1
                 fecha1 = fecha1.AddDays(1)
                 'fecha2 = fecha1.AddDays(1)
             Loop
-            'LblExport.Visible = False
-
-            ' objExcel.Sheets("TenorColasBulk").visible = False
-            'objExcel.Sheets("Hoja").visible = True
             objExcel.Visible = True
         End With
 
         conn.Close()
-
-
     End Sub
     Private Sub CmdSaveMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdSaveMC.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
-" WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarMerrilCrowe'  ) ", Cn)
+        Dim EPermisos As New SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarMerrilCrowe'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
+
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
         If myDataViewpermisos.Count = 0 Then
             MsgBox("El usuario no tiene privilegios para Modificar en este Formulario. Contacte a su administrador.")
             Exit Sub
         End If
+
         If ListMCInicio.Text = "" Or ListMCFinal.Text = "" Or TxtInicioMC.Text = "" Or TxTFinalMC.Text = "" Then
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editaMerril = True Then
@@ -2639,9 +2611,9 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 End If
                 cmd.Parameters.AddWithValue("@HoraInicial", Convert.ToString(ListMCInicio.Text))
                 cmd.Parameters.AddWithValue("@HoraFinal", Convert.ToString(ListMCFinal.Text))
-                cmd.Parameters.AddWithValue("@Fecha", CDate(DateTimePickerFechaReporte.Text))
-                cmd.Parameters.AddWithValue("@LecturaInicial", CDbl(TxtInicioMC.Text))
-                cmd.Parameters.AddWithValue("@LecturaFinal", CDbl(TxTFinalMC.Text))
+                cmd.Parameters.AddWithValue("@Fecha", Convert.ToDateTime(DateTimePickerFechaReporte.Text))
+                cmd.Parameters.AddWithValue("@LecturaInicial", Convert.ToDouble(TxtInicioMC.Text))
+                cmd.Parameters.AddWithValue("@LecturaFinal", Convert.ToDouble(TxTFinalMC.Text))
                 cmd.Connection = sqlConnectiondb
                 sqlConnectiondb.Open()
                 cmd.ExecuteNonQuery()
@@ -2655,11 +2627,10 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 If editaMerril = True Then
 
                 Else
-                    If ListMCFinal.SelectedIndex + 8 > 23 Then
-
+                    If (ListMCFinal.SelectedIndex + 8) > 23 Then
                         ListMCFinal.SelectedIndex = 7
                     Else
-                        ListMCFinal.SelectedIndex = ListMCFinal.SelectedIndex + 8
+                        ListMCFinal.SelectedIndex = (ListMCFinal.SelectedIndex + 8)
                     End If
                 End If
                 TxTFinalMC.Clear()
@@ -2667,8 +2638,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 DgMerrilCrowe.FirstDisplayedScrollingRowIndex = DgMerrilCrowe.RowCount - 1
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
         End If
@@ -2680,10 +2650,10 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
     Private Sub CmdOperacion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdOperacion.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
-" WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarMineralPlant'  ) ", Cn)
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarMineralPlant'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
+
         If myDataViewpermisos.Count = 0 Then
             MsgBox("El usuario no tiene privilegios para Modificar en este Formulario. Contacte a su administrador.")
             Exit Sub
@@ -2691,14 +2661,16 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         Try
             Dim fechaestimada As Date
             fechaestimada = DateTimePickerFechaReporte.Value
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
+
             If editaroperacion = True Then
-                cmd.CommandText = "UPDATE PB_Operation SET  [OrigenconcentradoFlotacion] = @OrigenconcentradoFlotacion ,  [LecturaFlujoAgua] = @LecturaFlujoAgua , [TonHora] = @TonHora , [OperacionHorasDia] =@OperacionHorasDia , [DetencionMtto] = @DetencionMtto, [DetencionOperacion]=@DetencionOperacion,  [TonHumedasZC]=@TonHumedasZC, [TonhumedasPM]=@TonhumedasPM, [StockZCGruesos]=@StockZCGruesos, [StockZCFinos]=@StockZCFinos, [StockPMFinos]=@StockPMFinos, [TonMolidasZandor]=@TonMolidasZandor , [TonMolidasMineras]=@TonMolidasMineras ,[MotivoParada]=@MotivoParada   WHERE [Fecha] =   '" & Format(fechaestimada, "yyyy/MM/dd") & "'   "
+                cmd.CommandText = "UPDATE PB_Operation SET  [OrigenconcentradoFlotacion] = @OrigenconcentradoFlotacion ,  [LecturaFlujoAgua] = @LecturaFlujoAgua , [TonHora] = @TonHora , [OperacionHorasDia] =@OperacionHorasDia , [DetencionMtto] = @DetencionMtto, [DetencionOperacion]=@DetencionOperacion,  [TonHumedasZC]=@TonHumedasZC, [TonhumedasPM]=@TonhumedasPM, [StockZCGruesos]=@StockZCGruesos, [StockZCFinos]=@StockZCFinos, [StockPMFinos]=@StockPMFinos, [TonMolidasZandor]=@TonMolidasZandor , [TonMolidasMineras]=@TonMolidasMineras ,[MotivoParada]=@MotivoParada   WHERE [Fecha] = '" & Format(Convert.ToDateTime(fechaestimada), "yyyy/MM/dd") & "'"
             Else
                 cmd.CommandText = "INSERT INTO PB_Operation (OrigenconcentradoFlotacion ,Fecha,LecturaFlujoAgua,TonHora, OperacionHorasDia,  DetencionMtto, DetencionOperacion, TonHumedasZC, TonhumedasPM, StockZCGruesos, StockZCFinos, StockPMFinos, TonMolidasZandor ,TonMolidasMineras, MotivoParada)VALUES( @OrigenconcentradoFlotacion, @Fecha,@LecturaFlujoAgua,@TonHora, @OperacionHorasDia,  @DetencionMtto, @DetencionOperacion, @TonHumedasZC, @TonhumedasPM, @StockZCGruesos, @StockZCFinos, @StockPMFinos , @TonMolidasZandor , @TonMolidasMineras, @MotivoParada)"
             End If
+
             cmd.Parameters.AddWithValue("@OrigenconcentradoFlotacion", Convert.ToString(CmbConcentradoFlotacion.Text))
             cmd.Parameters.AddWithValue("@Fecha", Convert.ToDateTime(DateTimePickerFechaReporte.Value))
             cmd.Parameters.AddWithValue("@LecturaFlujoAgua", Convert.ToDecimal(Txtconsumo.Text))
@@ -2720,13 +2692,14 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             sqlConnectiondb.Open()
             cmd.ExecuteNonQuery()
             sqlConnectiondb.Close()
-            Call FrmMineralPlant_Load(Nothing, Nothing)
+
+            FrmMineralPlant_Load(Nothing, Nothing)
             editaroperacion = False
+
             MessageBox.Show("Los datos se han guardado Correctamente.")
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
     End Sub
@@ -2764,7 +2737,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         Dim smtp As New SmtpClient("smtp.gmail.com")
         ' Dim SMTP As New SmtpClient("outmail.profilter.co.uk")
         smtp.EnableSsl = False
-        smtp.Credentials = New System.Net.NetworkCredential("juanfernandopalacioa", "colombia12*")
+        smtp.Credentials = New System.Net.NetworkCredential("alvaroaraujo3", "A1042418697")
         smtp.Port = 25
         mm.Subject = MessageSubject
         mm.Body = MessageBody
@@ -2775,16 +2748,11 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             smtp.Send(mm)
 
             ReturnMessage = "Email has been dispatched"
-
         Catch ex As Exception
             ReturnMessage = "We're sorry, there has been an error: " & ex.Message
         End Try
 
         'SendEmail = ReturnMessage
-
-
-
-
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -2792,8 +2760,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         Try
             Dim SmtpServer As New SmtpClient()
             Dim mail As New MailMessage()
-            SmtpServer.Credentials = New _
-  Net.NetworkCredential("planta.beneficio@grancolombiagold.com.co", "colombia12*")
+            SmtpServer.Credentials = New Net.NetworkCredential("planta.beneficio@grancolombiagold.com.co", "colombia12*")
             SmtpServer.Port = 587
             SmtpServer.Host = "smtp-mail.outlook.com"
             mail = New MailMessage()
@@ -2832,8 +2799,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
     Private Sub Button1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
-" WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
         If myDataViewpermisos.Count = 0 Then
@@ -2844,8 +2810,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
-                Dim cmd As New System.Data.SqlClient.SqlCommand
+                Dim sqlConnectiondb As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+                Dim cmd As New SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editahorometro = True Then
                     'CONSULTA CUANDO EDITAR ES VERDADERO
@@ -2856,7 +2822,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 End If
                 cmd.Parameters.AddWithValue("@HoromInicial", Convert.ToDecimal(TxtLinicialHorometro.Text))
                 cmd.Parameters.AddWithValue("@HoromFinal", Convert.ToDecimal(TxtLfinalHorometro.Text))
-                cmd.Parameters.AddWithValue("@Fecha", CDate(DateTimePickerFechaReporte.Text))
+                cmd.Parameters.AddWithValue("@Fecha", Convert.ToDateTime(DateTimePickerFechaReporte.Text))
                 cmd.Parameters.AddWithValue("@Turno", Convert.ToString(Cmbturno.Text))
                 cmd.Connection = sqlConnectiondb
                 sqlConnectiondb.Open()
@@ -2881,8 +2847,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
     Private Sub Button2_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
-" WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
         If myDataViewpermisos.Count = 0 Then
@@ -2893,9 +2858,9 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
-                Dim cmd As New System.Data.SqlClient.SqlCommand
-                cmd.CommandType = System.Data.CommandType.Text
+                Dim sqlConnectiondb As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+                Dim cmd As New SqlCommand
+                cmd.CommandType = CommandType.Text
                 If editahorometroknelson = True Then
                     'CONSULTA CUANDO EDITAR ES VERDADERO
                     cmd.CommandText = "UPDATE  Pb_HorasKNelson  SET HoromInicial = @HoromInicial,  HoromFinal= @HoromFinal   WHERE Turno=@Turno and Fecha=@Fecha  "
@@ -2905,7 +2870,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 End If
                 cmd.Parameters.AddWithValue("@HoromInicial", Convert.ToDecimal(TxtHKNelsonI.Text))
                 cmd.Parameters.AddWithValue("@HoromFinal", Convert.ToDecimal(TxtHKNelsonF.Text))
-                cmd.Parameters.AddWithValue("@Fecha", CDate(DateTimePickerFechaReporte.Text))
+                cmd.Parameters.AddWithValue("@Fecha", Convert.ToDateTime(DateTimePickerFechaReporte.Text))
                 cmd.Parameters.AddWithValue("@Turno", Convert.ToString(CmbKNelsonTurn.Text))
                 cmd.Connection = sqlConnectiondb
                 sqlConnectiondb.Open()
@@ -2933,8 +2898,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
     Private Sub Button3_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
-" WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
         If myDataViewpermisos.Count = 0 Then
@@ -2945,7 +2909,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editarflujoe5 = True Then
@@ -2960,7 +2924,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 cmd.Parameters.AddWithValue("@densidad", Convert.ToDecimal(TxtDensidadE5.Text))
                 cmd.Parameters.AddWithValue("@HorasOperacion", Convert.ToDecimal(TxtHorasOperacione5.Text))
                 cmd.Parameters.AddWithValue("@HorasVertimiento", Convert.ToDecimal(TxtHVertCep5.Text))
-                cmd.Parameters.AddWithValue("@Fecha", CDate(DateTimePickerFechaReporte.Text))
+                cmd.Parameters.AddWithValue("@Fecha", Convert.ToDateTime(DateTimePickerFechaReporte.Text))
                 cmd.Parameters.AddWithValue("@Turno", Convert.ToString(CmbTurnoE5.Text))
                 cmd.Connection = sqlConnectiondb
                 sqlConnectiondb.Open()
@@ -2990,24 +2954,25 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
     Private Sub CmdExportarFlowsE5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdExportarFlowsE5.Click
         Dim fechainicio As Date
         Dim fechafin As Date
-        fechainicio = CDate(DtInicioE5.Value)
-        fechafin = CDate(DtFinalE5.Value)
+        fechainicio = Convert.ToDateTime(DtInicioE5.Value)
+        fechafin = Convert.ToDateTime(DtFinalE5.Value)
         Dim dias As Double
         dias = (DtFinalE5.Value - DtInicioE5.Value).TotalDays
         If dias > 31 Then
             MsgBox("Por Favor Seleccione un rango de Fecha no superior a 30 dias.")
             Exit Sub
-
         End If
         exportarflujoE5()
     End Sub
+
+
     Private Sub exportarColasFlotacion()
         Dim conn As New ADODB.Connection()
         Dim RstResumen As New ADODB.Recordset()
         Dim RstResumenTenor As New ADODB.Recordset()
 
         Dim cnStr As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application
@@ -3016,7 +2981,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         Dim recorrido As Integer
         recorrido = 2
         objExcel.Visible = False
-        RstResumen = conn.Execute(" SELECT  Turno, FlujoM3, TonsTurno, HorasOperacion, Densidad, Fecha , ToneladasVertidas FROM  dbo.Pb_FlowsColasBulk where     (Fecha >= '" & CDate(DtInicioFl.Text) & "') AND (Fecha <= '" & CDate(DtFinalFl.Text) & "')  ORDER BY Fecha ")
+        RstResumen = conn.Execute(" SELECT  Turno, FlujoM3, TonsTurno, HorasOperacion, Densidad, Fecha , ToneladasVertidas FROM  dbo.Pb_FlowsColasBulk where (Fecha >= '" & Convert.ToDateTime(DtInicioFl.Text).ToString &
+                                  "') AND (Fecha <= '" & Convert.ToDateTime(DtFinalFl.Text).ToString & "')  ORDER BY Fecha ")
         With objExcel
             'concentrado de flotacion
             hoja = CType(.Sheets("Data"), Microsoft.Office.Interop.Excel.Worksheet)
@@ -3034,7 +3000,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
             recorrido = 2
             objExcel.Visible = False
-            RstResumen = conn.Execute(" SELECT  fecha, turno, AuFinal_ppm FROM  dbo.PB_ColasBulk where     (Fecha >= '" & CDate(DtInicioFl.Text) & "') AND (Fecha <= '" & CDate(DtFinalFl.Text) & "')  ORDER BY Fecha ")
+            RstResumen = conn.Execute(" SELECT fecha, turno, AuFinal_ppm FROM  dbo.PB_ColasBulk where (Fecha >= '" & Convert.ToDateTime(DtInicioFl.Text).ToString & "') AND (Fecha <= '" & Convert.ToDateTime(DtFinalFl.Text).ToString & "')  ORDER BY Fecha ")
 
             'concentrado de flotacion
             hoja = CType(.Sheets("tenor"), Microsoft.Office.Interop.Excel.Worksheet)
@@ -3068,8 +3034,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
-" WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
         If myDataViewpermisos.Count = 0 Then
@@ -3082,7 +3047,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editaflujoflotacion = True Then
@@ -3097,7 +3062,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 cmd.Parameters.AddWithValue("@densidad", Convert.ToDecimal(TxtDensidadFl.Text))
                 cmd.Parameters.AddWithValue("@HorasOperacion", Convert.ToDecimal(TxtHorasFl.Text))
                 cmd.Parameters.AddWithValue("@HorasVertimiento", Convert.ToDecimal(TxtHVertimientoFl.Text))
-                cmd.Parameters.AddWithValue("@Fecha", CDate(DateTimePickerFechaReporte.Text))
+                cmd.Parameters.AddWithValue("@Fecha", Convert.ToDateTime(DateTimePickerFechaReporte.Text))
                 cmd.Parameters.AddWithValue("@Turno", Convert.ToString(CmbTurnoFl.Text))
                 cmd.Connection = sqlConnectiondb
                 sqlConnectiondb.Open()
@@ -3115,8 +3080,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
         End If
@@ -3125,14 +3089,13 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
     Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
         Dim fechainicio As Date
         Dim fechafin As Date
-        fechainicio = CDate(DtInicioFl.Value)
-        fechafin = CDate(DtFinalFl.Value)
+        fechainicio = Convert.ToDateTime(DtInicioFl.Value)
+        fechafin = Convert.ToDateTime(DtFinalFl.Value)
         Dim dias As Double
         dias = (DtFinalFl.Value - DtInicioFl.Value).TotalDays
         If dias > 31 Then
             MsgBox("Por Favor Seleccione un rango de Fecha no superior a 30 dias.")
             Exit Sub
-
         End If
         exportarColasFlotacion()
     End Sub
@@ -3142,7 +3105,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         Dim RstResumenTenor As New ADODB.Recordset()
 
         Dim cnStr As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application
@@ -3151,7 +3114,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         Dim recorrido As Integer
         recorrido = 2
         objExcel.Visible = False
-        RstResumen = conn.Execute(" SELECT  Turno, FlujoM3, TonsTurno, HorasOperacion, Densidad, Fecha , ToneladasVertidas FROM  dbo.Pb_FlowsE5 where     (Fecha >= '" & CDate(DtInicioE5.Text) & "') AND (Fecha <= '" & CDate(DtFinalE5.Text) & "')  ORDER BY Fecha ")
+        RstResumen = conn.Execute(" SELECT  Turno, FlujoM3, TonsTurno, HorasOperacion, Densidad, Fecha , ToneladasVertidas FROM  dbo.Pb_FlowsE5 where     (Fecha >= '" & Convert.ToDateTime(DtInicioE5.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFinalE5.Text) & "')  ORDER BY Fecha ")
         With objExcel
             'concentrado de flotacion
             hoja = CType(.Sheets("Data"), Microsoft.Office.Interop.Excel.Worksheet)
@@ -3188,8 +3151,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
     Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
         Dim fechainicio As Date
         Dim fechafin As Date
-        fechainicio = CDate(DtInicioB12.Value)
-        fechafin = CDate(DtFinalB12.Value)
+        fechainicio = Convert.ToDateTime(DtInicioB12.Value)
+        fechafin = Convert.ToDateTime(DtFinalB12.Value)
         Dim dias As Double
         dias = (DtFinalB12.Value - DtInicioB12.Value).TotalDays
         If dias > 31 Then
@@ -3206,8 +3169,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         Dim RstResumenTenor As New ADODB.Recordset()
 
         Dim cnStr As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
-        conn.Open(cnStr)
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
+        conn.Open(cnStr, "", "", -1)
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application
         Dim hoja As Microsoft.Office.Interop.Excel.Worksheet
@@ -3215,7 +3178,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         Dim recorrido As Integer
         recorrido = 2
         objExcel.Visible = False
-        RstResumen = conn.Execute(" SELECT   Fecha, ToneladaSeca ,PromedioHumedad , PromedioTenorTurno, Turno   FROM  dbo.Pb_TenorPromedioB12 where     (Fecha >= '" & CDate(DtInicioB12.Text) & "') AND (Fecha <= '" & CDate(DtFinalB12.Text) & "')  ORDER BY Fecha ")
+        RstResumen = conn.Execute("SELECT Fecha, ToneladaSeca ,PromedioHumedad , PromedioTenorTurno, Turno FROM  dbo.Pb_TenorPromedioB12 where (Fecha >= '" & Convert.ToDateTime(DtInicioB12.Text).ToString &
+                                  "') AND (Fecha <= '" & Convert.ToDateTime(DtFinalB12.Text).ToString & "')  ORDER BY Fecha ", RuntimeHelpers.GetObjectValue(System.Reflection.Missing.Value), -1)
         With objExcel
             'concentrado de flotacion
             hoja = CType(.Sheets("Data"), Microsoft.Office.Interop.Excel.Worksheet)
@@ -3235,8 +3199,9 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             Dim fecha1, fecha2 As Date
             fecha1 = DtInicioB12.Value
             fecha2 = DtFinalB12.Value
+
             Do While fecha1 <= fecha2
-                hoja.Cells(recorrido, 1) = fecha1
+                hoja.Cells(recorrido, 1) = Convert.ToDateTime(fecha1)
                 recorrido = recorrido + 1
                 fecha1 = fecha1.AddDays(1)
                 'fecha2 = fecha1.AddDays(1)
@@ -3250,8 +3215,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
     Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
         Dim fechainicio As Date
         Dim fechafin As Date
-        fechainicio = CDate(DtInicioMerril.Value)
-        fechafin = CDate(DtFinalMerril.Value)
+        fechainicio = Convert.ToDateTime(DtInicioMerril.Value)
+        fechafin = Convert.ToDateTime(DtFinalMerril.Value)
         Dim dias As Double
         dias = (DtFinalMerril.Value - DtInicioMerril.Value).TotalDays
         If dias > 31 Then
@@ -3269,7 +3234,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         Dim RstResumenTenor As New ADODB.Recordset()
 
         Dim cnStr As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application
@@ -3278,7 +3243,8 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
         Dim recorrido As Integer
         recorrido = 2
         objExcel.Visible = False
-        RstResumen = conn.Execute(" SELECT   Fecha, Volumen, TenorCabeza, TenorCola, Turno  FROM  dbo.Pb_MerrilCroweBalance where     (Fecha >= '" & CDate(DtInicioMerril.Text) & "') AND (Fecha <= '" & CDate(DtFinalMerril.Text) & "')  ORDER BY Fecha ")
+        RstResumen = conn.Execute(" SELECT Fecha, Volumen, TenorCabeza, TenorCola, Turno  FROM  dbo.Pb_MerrilCroweBalance where (Fecha >= '" & Convert.ToDateTime(DtInicioMerril.Text).ToString &
+                                  "') AND (Fecha <= '" & Convert.ToDateTime(DtFinalMerril.Text).ToString & "')  ORDER BY Fecha ")
         With objExcel
             'concentrado de flotacion
             hoja = CType(.Sheets("Data"), Microsoft.Office.Interop.Excel.Worksheet)
@@ -3297,8 +3263,9 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
             Dim fecha1, fecha2 As Date
             fecha1 = DtInicioMerril.Value
             fecha2 = DtFinalMerril.Value
+
             Do While fecha1 <= fecha2
-                hoja.Cells(recorrido, 1) = fecha1
+                hoja.Cells(recorrido, 1) = Convert.ToDateTime(fecha1).ToString
                 recorrido = recorrido + 1
                 fecha1 = fecha1.AddDays(1)
                 'fecha2 = fecha1.AddDays(1)
@@ -3312,21 +3279,20 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
-" WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarHorometro'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
+
         If myDataViewpermisos.Count = 0 Then
             MsgBox("El usuario no tiene privilegios para Modificar en este Formulario. Contacte a su administrador.")
             Exit Sub
         End If
 
-
         If TxtInicioHidro.Text = "" Or TxtFinalHidro.Text = "" Or TxtDensidadHidro.Text = "" Then
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editaflujoRebalse = True Then
@@ -3341,7 +3307,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
                 cmd.Parameters.AddWithValue("@densidad", Convert.ToDecimal(TxtDensidadHidro.Text))
                 'cmd.Parameters.AddWithValue("@HorasOperacion", Convert.ToDecimal(TxtHorasFl.Text))
                 'cmd.Parameters.AddWithValue("@HorasVertimiento", Convert.ToDecimal(TxtHVertimientoFl.Text))
-                cmd.Parameters.AddWithValue("@Fecha", CDate(DateTimePickerFechaReporte.Text))
+                cmd.Parameters.AddWithValue("@Fecha", Convert.ToDateTime(DateTimePickerFechaReporte.Text))
                 cmd.Parameters.AddWithValue("@Turno", Convert.ToString(CmbTurnoRciclon.Text))
                 cmd.Connection = sqlConnectiondb
                 sqlConnectiondb.Open()
@@ -3357,8 +3323,7 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
         End If
@@ -3366,5 +3331,36 @@ ByVal e As EventArgs) Handles ChkTenor.CheckedChanged
 
     Private Sub Button9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button9.Click
         My.Forms.FrmReporte.ShowDialog()
+    End Sub
+
+    Private Sub DgSamplesDay_CellDoubleClick_1(sender As Object, e As DataGridViewCellEventArgs) Handles DgSamplesDay.CellDoubleClick
+        If MsgBox("Esta Seguro Que Desea Eliminar El Registro Seleccionado?", vbYesNo, "") = vbYes Then
+            Try ' fue adentro
+                If DBNull.Value.Equals(DgSamplesDay.CurrentRow.Cells("Muestra").Value) Then  'Aquí pongo lo que pasaría si el campo está en blanco o nulo
+                    TxtDuplicado.Clear()
+                    ListHFrom.ClearSelected()
+                    ListHTo.ClearSelected()
+                    CmbLocation.Text = "Seleccione"
+                    CmbSampleType.Text = "Seleccione"
+                    TxtDuplicado.Clear()
+                    TxtCommentSamples.Clear()
+                Else
+                    Dim sqlConnectiondb As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+                    Dim cmd As New SqlCommand
+                    cmd.CommandType = CommandType.Text
+                    cmd.CommandText = "DELETE FROM PB_Samples WHERE Muestra =  '" & TxtSample.Text & "' AND Fecha = '" & Format(Convert.ToDateTime(DateTimePickerFechaReporte.Value), "yyyy/MM/dd").ToString & "'"
+                    cmd.Connection = sqlConnectiondb
+                    sqlConnectiondb.Open()
+                    cmd.ExecuteNonQuery()
+                    sqlConnectiondb.Close()
+                End If
+
+                Llenar_DataGridViewDgSamplesDay()
+
+            Catch ex As Exception
+                ' Handle the exception.
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        End If
     End Sub
 End Class

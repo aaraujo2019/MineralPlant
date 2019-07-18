@@ -7,7 +7,7 @@ Imports System.Windows.Forms
 Imports System.Configuration
 
 Public Class FmConsTotalProyectoFinal
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
@@ -54,7 +54,7 @@ Public Class FmConsTotalProyectoFinal
         Dim conn As New ADODB.Connection()
         Dim RstResumen As New ADODB.Recordset()
         Dim cnStr As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application
@@ -121,7 +121,7 @@ Public Class FmConsTotalProyectoFinal
 
     End Sub
     Private Sub cargararea()
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
         rsarea = conn.Execute(" SELECT * FROM         usuario WHERE (IdUsusario = '" & (LblUsuario.Text) & "')         ")
         If rsarea.EOF = True Then

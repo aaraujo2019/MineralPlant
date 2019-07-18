@@ -7,7 +7,7 @@ Imports System.Windows.Forms
 Imports System.Configuration
 
 Public Class FrmExportDensidadvb
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
@@ -19,7 +19,7 @@ Public Class FrmExportDensidadvb
         Dim conn As New ADODB.Connection()
         Dim RstResumen As New ADODB.Recordset()
         Dim cnStr As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
 
         conn.Open(cnStr)
         RstResumen = conn.Execute(" SELECT     Fecha, HoraInicio, Densidad, Ubicacion FROM         dbo.PB_Flows  INNER JOIN RfFlows ON PB_Flows.Ubicacion = RfFlows.Name  where      (Fecha >= '" & CDate(DtFechainicio.Text) & "') AND (Fecha <= '" & CDate(DTFechaFinal.Text) & "')  ORDER BY Fecha, Ubicacion ")

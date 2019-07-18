@@ -15,7 +15,7 @@ Public Class FrmAssayMineralPlant
 
     Dim rst As New ADODB.Recordset()
     Dim cnStr As String
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
 
 
     Private Sub CmdExaminar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdExaminar.Click
@@ -150,7 +150,7 @@ Public Class FrmAssayMineralPlant
             Dim FicheroExcel As String
             Dim NombreHoja As String
             'variables de insercion
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             FicheroExcel = Txtruta.Text
@@ -652,7 +652,7 @@ Public Class FrmAssayMineralPlant
     Private Function ValidaSiExiste(ByVal ID As String, ByVal Muestra As String) As Boolean
         Try
             ' Dim Resultado As Boolean
-            Using cnn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+            Using cnn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim sqlbuscar As String = String.Format("SELECT COUNT(*) FROM PB_Assay WHERE Jobno = @Jobno and Muestra = @Muestra")
                 Dim cmd As New SqlCommand(sqlbuscar, cnn)
                 cmd.Parameters.AddWithValue("@Jobno", ID)

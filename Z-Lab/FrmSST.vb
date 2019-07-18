@@ -11,7 +11,7 @@ Public Class FrmSST
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
     Dim editarinstantanea As Boolean
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Dim cnStr As String
     Dim editarsst As Boolean
 
@@ -113,7 +113,7 @@ Public Class FrmSST
         Dim RstResumenTenor As New ADODB.Recordset()
 
         Dim cnStr As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application
@@ -171,7 +171,7 @@ Public Class FrmSST
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
 

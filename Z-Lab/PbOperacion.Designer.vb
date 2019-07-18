@@ -1800,7 +1800,7 @@ Namespace PbOperacionTableAdapters
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>
         Private Sub InitConnection()
             Me._connection = New Global.System.Data.SqlClient.SqlConnection()
-            Me._connection.ConnectionString = ConfigurationManager.AppSettings("StringConexion").ToString
+            Me._connection.ConnectionString = ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString()
         End Sub
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),

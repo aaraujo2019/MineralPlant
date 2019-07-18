@@ -12,8 +12,8 @@ Public Class FrmEficienciaProcesos
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
-    Public cadena As String = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Public cadena As String = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Public dt As DataTable
     Dim Series1 As Series
     Dim Series2 As Series

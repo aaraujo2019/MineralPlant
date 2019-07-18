@@ -8,7 +8,7 @@ Imports System.Windows.Forms
 Imports System.Configuration
 
 Public Class FrmPrincipal
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Dim tipoflujo As String
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
@@ -54,8 +54,6 @@ Public Class FrmPrincipal
         Else
             MsgBox("No tiene Permisos para ingresar al formulario contacte a su administrador")
         End If
-
-
     End Sub
 
     Private Sub PreparacionToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)

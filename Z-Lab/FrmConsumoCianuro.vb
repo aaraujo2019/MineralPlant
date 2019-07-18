@@ -13,7 +13,7 @@ Public Class FrmConsumoCianuro
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Dim editarfundicion As Boolean
     Dim conn As New ADODB.Connection()
     Dim rstoperacion As New ADODB.Recordset()
@@ -21,7 +21,7 @@ Public Class FrmConsumoCianuro
     Dim cnStr As String
     Private Sub CmdBuscar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdBuscar.Click
         ' AND PERIODO = '" & (cmbperiodo2.Text) & "' 
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
         Rsfundicion = conn.Execute(" SELECT * FROM         Pb_ConsumoDeCianuro WHERE ubicacion  = '" & (CmbUbicacion.Text) & "'  AND fecha >= '" & CDate(DtInicio.Text) & "'  AND fecha <= '" & CDate(DtFinal.Text) & "'       ")
         If Rsfundicion.EOF = True Then

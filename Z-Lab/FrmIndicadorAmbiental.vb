@@ -13,7 +13,7 @@ Public Class FrmIndicadorAmbiental
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Dim editarfundicion As Boolean
     Dim conn As New ADODB.Connection()
     Dim rstoperacion As New ADODB.Recordset()

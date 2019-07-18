@@ -7,7 +7,7 @@ Imports System.Windows.Forms
 Imports System.Configuration
 
 Public Class FrmLabPreparacion
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
@@ -32,7 +32,7 @@ Public Class FrmLabPreparacion
 
     Private Sub cargararea()
 
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
         rsarea = conn.Execute(" SELECT * FROM         usuario WHERE (IdUsusario = '" & (LblUsuario.Text) & "')         ")
         If rsarea.EOF = True Then
@@ -137,7 +137,7 @@ Public Class FrmLabPreparacion
         End If
 
         Try
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             cmd.CommandText = "UPDATE  Lab_Muestras  SET   PesoBandejaMuestra= @PesoBandejaMuestra ,  PesoHumedoMuestra= @PesoHumedoMuestra , PesoSecoMuestra = @PesoSecoMuestra  WHERE  Muestra = @Muestra  "
@@ -160,7 +160,7 @@ Public Class FrmLabPreparacion
 
     End Sub
     Private Sub BuscarMuestra()
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
         rsmuestra = conn.Execute(" SELECT * FROM         Lab_Muestras WHERE (Muestra = '" & (TxtMuestra.Text) & "')         ")
         If rsmuestra.EOF = True Then

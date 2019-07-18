@@ -16,7 +16,7 @@ Public Class FrmAssayLabZandor
 
     Dim rst As New ADODB.Recordset()
     Dim cnStr As String
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
 
 
     Private Sub Label1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label1.Click
@@ -139,13 +139,13 @@ Public Class FrmAssayLabZandor
         Dim LibroExcel As Excel.Workbook
         Dim HojaExcel As Excel.Worksheet
         Dim celda As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         Try
 
             Dim FicheroExcel As String
             Dim NombreHoja As String
             'variables de insercion
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             FicheroExcel = Txtruta.Text
@@ -243,7 +243,7 @@ Public Class FrmAssayLabZandor
         au_gtm = "NO"
         ag_ppm = "NO"
 
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
 
         'campos de tabla muestra
         Dim horainicio As String
@@ -265,7 +265,7 @@ Public Class FrmAssayLabZandor
             Dim FicheroExcel As String
             Dim NombreHoja As String
             'variables de insercion
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             FicheroExcel = Txtruta.Text
@@ -505,7 +505,7 @@ Public Class FrmAssayLabZandor
     Private Function ValidaSiExiste(ByVal Idlab As String, ByVal muestra As String) As Boolean
         Try
 
-            Using cnn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+            Using cnn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim sqlbuscar As String = String.Format("SELECT COUNT(*) FROM PB_Assay WHERE Jobno = @IdLab and muestra = @muestra  ")
                 Dim cmd As New SqlCommand(sqlbuscar, cnn)
                 cmd.Parameters.AddWithValue("@IdLab", Idlab)

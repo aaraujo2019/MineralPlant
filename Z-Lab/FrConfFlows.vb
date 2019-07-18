@@ -13,7 +13,7 @@ Public Class FrConfFlows
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
     Dim editarflujo As Boolean
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Private Sub FrConfFlows_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Llenar_DataGridViewDgFlujos()
         Me.LblUsuario.Text = FrmPrincipal.LblUserName.Text
@@ -79,7 +79,7 @@ Public Class FrConfFlows
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editarflujo = True Then

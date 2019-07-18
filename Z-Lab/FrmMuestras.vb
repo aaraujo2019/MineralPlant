@@ -7,7 +7,7 @@ Imports System.Windows.Forms
 Imports System.Configuration
 
 Public Class FrmMuestras
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
@@ -106,7 +106,7 @@ Public Class FrmMuestras
 
     Public Sub cargarduplicado()
         For index As Integer = 1 To 3
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             cmd.CommandText = "INSERT INTO MN_Muestras (muestra,Ubicacion,Observaciones, Fecha ,TipoMuestra , DupMuestra)VALUES(@Muestra ,@Ubicacion,@Observaciones,@Fecha,   @TipoMuestra , @DupMuestra )"
@@ -132,7 +132,7 @@ Public Class FrmMuestras
     End Sub
     Private Sub cargararea()
 
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
         rsarea = conn.Execute(" SELECT * FROM         usuario WHERE (IdUsusario = '" & (LblUsuario.Text) & "')         ")
         If rsarea.EOF = True Then
@@ -161,7 +161,7 @@ Public Class FrmMuestras
         End If
         Dim DsPriv As New DataSet
         Try
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             If editamuestra = True Then
@@ -223,7 +223,7 @@ Public Class FrmMuestras
         If ChkAnalisis.Checked = True Then
             For Each dRow As DataGridViewRow In DgMuestra.Rows
                 If (dRow.Cells.Item("Muestra").Value) IsNot Nothing Then
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "UPDATE  MN_Assay  SET   QAQC= @QAQc  WHERE  Muestra = @Muestra  "
@@ -276,7 +276,7 @@ Public Class FrmMuestras
                     TxtObservacion.Clear()
                     CmbUbicacion.Text = "Seleccione"
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM Muestras    WHERE Muestra=  '" & CStr(TxtMuestra.Text) & "' "

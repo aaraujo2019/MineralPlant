@@ -107,7 +107,7 @@ Public Class FrmQc
         ExceldeCorreo()
     End Sub
     Private Sub actualizarfinal()
-        Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+        Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
         Dim cmd As New System.Data.SqlClient.SqlCommand
         cmd.CommandType = System.Data.CommandType.Text
         cmd.CommandText = "UPDATE  Assay  SET     Aufinal= Au_Gtm   WHERE Au_Gtm = '<1'   "
@@ -124,13 +124,13 @@ Public Class FrmQc
         Dim HojaExcel As Excel.Worksheet
         Dim celda As String
 
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=PlantaBeneficio;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
 
         Try
             Dim FicheroExcel As String
             Dim NombreHoja As String
             'variables de insercion
-            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+            Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
             Dim cmd As New System.Data.SqlClient.SqlCommand
             cmd.CommandType = System.Data.CommandType.Text
             FicheroExcel = TxtRuta.Text

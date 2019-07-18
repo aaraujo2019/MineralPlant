@@ -11,7 +11,7 @@ Public Class FrmGravedadEspecifica
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
     Dim editarinstantanea As Boolean
-    Dim Cn As New SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Dim cnStr As String
     Private Sub FrmGravedadEspecifica_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         llenar_datagridviewGravedad()
@@ -53,7 +53,7 @@ Public Class FrmGravedadEspecifica
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
                 If editarinstantanea = True Then
@@ -145,7 +145,7 @@ Public Class FrmGravedadEspecifica
                     CmbHoraFinal.Text = ""
                     Cmbubicacion.Text = ""
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings("StringConexion").ToString)
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     cmd.CommandText = "DELETE FROM Pb_gravedadespecifica    WHERE id=  '" & CStr(Lblid.Text) & "' "
