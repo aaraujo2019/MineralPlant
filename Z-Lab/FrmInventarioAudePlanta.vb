@@ -14,11 +14,11 @@ Public Class FrmInventarioAudePlanta
     Dim Dataset As DataSet
     Dim editar As Boolean
     Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+
     Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
         Dim DsPriv As New DataSet
 
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
-" WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarFlujos'  ) ", Cn)
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarFlujos'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
 
@@ -75,9 +75,8 @@ Public Class FrmInventarioAudePlanta
                 txtAlturaSuperior.Clear()
                 TxtDensidad.Clear()
                 TxtDensidad.Focus()
-                If editar = True Then
-                Else
 
+                If Not editar Then
                 End If
 
                 editar = False

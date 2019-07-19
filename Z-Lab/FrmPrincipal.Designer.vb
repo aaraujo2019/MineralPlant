@@ -151,7 +151,7 @@ Partial Class FrmPrincipal
         '
         Me.SSTSòlidosEnSuspensiònToolStripMenuItem.Name = "SSTSòlidosEnSuspensiònToolStripMenuItem"
         Me.SSTSòlidosEnSuspensiònToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
-        Me.SSTSòlidosEnSuspensiònToolStripMenuItem.Text = "SST - Sòlidos en Suspensiòn"
+        Me.SSTSòlidosEnSuspensiònToolStripMenuItem.Text = "SST - Sólidos en Suspensión"
         '
         'IndicadoresAmbienteToolStripMenuItem
         '

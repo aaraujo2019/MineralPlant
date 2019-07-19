@@ -54,10 +54,9 @@ Partial Class FrmSST
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Lucida Calligraphy", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(346, 28)
-        Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label5.Location = New System.Drawing.Point(260, 23)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(397, 36)
+        Me.Label5.Size = New System.Drawing.Size(306, 27)
         Me.Label5.TabIndex = 54
         Me.Label5.Text = "SST - Sòlidos en Suspensiòn"
         '
@@ -66,20 +65,18 @@ Partial Class FrmSST
         Me.LblArea.AutoSize = True
         Me.LblArea.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblArea.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.LblArea.Location = New System.Drawing.Point(360, 119)
-        Me.LblArea.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblArea.Location = New System.Drawing.Point(270, 97)
         Me.LblArea.Name = "LblArea"
-        Me.LblArea.Size = New System.Drawing.Size(155, 17)
+        Me.LblArea.Size = New System.Drawing.Size(122, 13)
         Me.LblArea.TabIndex = 51
         Me.LblArea.Text = "Laboratorio Químico"
         '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(170, 119)
-        Me.Label7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label7.Location = New System.Drawing.Point(128, 97)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(102, 17)
+        Me.Label7.Size = New System.Drawing.Size(77, 13)
         Me.Label7.TabIndex = 50
         Me.Label7.Text = "Departamento:"
         '
@@ -88,30 +85,26 @@ Partial Class FrmSST
         Me.LblUsuario.AutoSize = True
         Me.LblUsuario.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblUsuario.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.LblUsuario.Location = New System.Drawing.Point(360, 87)
-        Me.LblUsuario.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblUsuario.Location = New System.Drawing.Point(270, 71)
         Me.LblUsuario.Name = "LblUsuario"
-        Me.LblUsuario.Size = New System.Drawing.Size(155, 17)
+        Me.LblUsuario.Size = New System.Drawing.Size(122, 13)
         Me.LblUsuario.TabIndex = 49
         Me.LblUsuario.Text = "Laboratorio Químico"
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(170, 87)
-        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label4.Location = New System.Drawing.Point(128, 71)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(80, 17)
+        Me.Label4.Size = New System.Drawing.Size(61, 13)
         Me.Label4.TabIndex = 48
         Me.Label4.Text = "Id. Usuario:"
         '
         'GroupBox2
         '
-        Me.GroupBox2.Location = New System.Drawing.Point(60, 68)
-        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
+        Me.GroupBox2.Location = New System.Drawing.Point(45, 55)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox2.Size = New System.Drawing.Size(1096, 79)
+        Me.GroupBox2.Size = New System.Drawing.Size(822, 64)
         Me.GroupBox2.TabIndex = 53
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Datos de Usuario:"
@@ -119,19 +112,17 @@ Partial Class FrmSST
         'PictureBox1
         '
         Me.PictureBox1.Image = Global.Z_Lab.My.Resources.Resources.LogoGranColombiaGoldSmall
-        Me.PictureBox1.Location = New System.Drawing.Point(811, 81)
-        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(4)
+        Me.PictureBox1.Location = New System.Drawing.Point(608, 66)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(276, 62)
+        Me.PictureBox1.Size = New System.Drawing.Size(207, 50)
         Me.PictureBox1.TabIndex = 47
         Me.PictureBox1.TabStop = False
         '
         'DtFecha
         '
-        Me.DtFecha.Location = New System.Drawing.Point(43, 41)
-        Me.DtFecha.Margin = New System.Windows.Forms.Padding(4)
+        Me.DtFecha.Location = New System.Drawing.Point(32, 33)
         Me.DtFecha.Name = "DtFecha"
-        Me.DtFecha.Size = New System.Drawing.Size(265, 22)
+        Me.DtFecha.Size = New System.Drawing.Size(200, 20)
         Me.DtFecha.TabIndex = 55
         '
         'GroupBox1
@@ -149,9 +140,11 @@ Partial Class FrmSST
         Me.GroupBox1.Controls.Add(Me.dtfechainicio)
         Me.GroupBox1.Controls.Add(Me.Dgsst)
         Me.GroupBox1.Controls.Add(Me.DtFecha)
-        Me.GroupBox1.Location = New System.Drawing.Point(60, 215)
+        Me.GroupBox1.Location = New System.Drawing.Point(45, 175)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(1096, 399)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox1.Size = New System.Drawing.Size(822, 324)
         Me.GroupBox1.TabIndex = 56
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Sòlidos en suspensiòn"
@@ -159,9 +152,10 @@ Partial Class FrmSST
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(748, 18)
+        Me.Label6.Location = New System.Drawing.Point(561, 15)
+        Me.Label6.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(39, 17)
+        Me.Label6.Size = New System.Drawing.Size(31, 13)
         Me.Label6.TabIndex = 60
         Me.Label6.Text = "SST:"
         '
@@ -169,25 +163,28 @@ Partial Class FrmSST
         '
         Me.CmbTurno.FormattingEnabled = True
         Me.CmbTurno.Items.AddRange(New Object() {"Turno1", "Turno2", "Turno3"})
-        Me.CmbTurno.Location = New System.Drawing.Point(575, 39)
+        Me.CmbTurno.Location = New System.Drawing.Point(431, 32)
+        Me.CmbTurno.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.CmbTurno.Name = "CmbTurno"
-        Me.CmbTurno.Size = New System.Drawing.Size(126, 24)
+        Me.CmbTurno.Size = New System.Drawing.Size(96, 21)
         Me.CmbTurno.TabIndex = 63
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(572, 18)
+        Me.Label3.Location = New System.Drawing.Point(429, 15)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(50, 17)
+        Me.Label3.Size = New System.Drawing.Size(38, 13)
         Me.Label3.TabIndex = 59
         Me.Label3.Text = "Turno:"
         '
         'CmdGuardar
         '
-        Me.CmdGuardar.Location = New System.Drawing.Point(916, 40)
+        Me.CmdGuardar.Location = New System.Drawing.Point(687, 32)
+        Me.CmdGuardar.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.CmdGuardar.Name = "CmdGuardar"
-        Me.CmdGuardar.Size = New System.Drawing.Size(75, 23)
+        Me.CmdGuardar.Size = New System.Drawing.Size(56, 19)
         Me.CmdGuardar.TabIndex = 62
         Me.CmdGuardar.Text = "Guardar"
         Me.CmdGuardar.UseVisualStyleBackColor = True
@@ -195,9 +192,10 @@ Partial Class FrmSST
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(312, 18)
+        Me.Label2.Location = New System.Drawing.Point(234, 15)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(74, 17)
+        Me.Label2.Size = New System.Drawing.Size(58, 13)
         Me.Label2.TabIndex = 58
         Me.Label2.Text = "Ubicacion:"
         '
@@ -205,76 +203,84 @@ Partial Class FrmSST
         '
         Me.CmbUbicacion.FormattingEnabled = True
         Me.CmbUbicacion.Items.AddRange(New Object() {"Descarga Espesador 4", "Rebalse Espesador 4", "Celda #1", "Derecha Bascula", "Izquierda Bascula", "Clasificador"})
-        Me.CmbUbicacion.Location = New System.Drawing.Point(315, 38)
+        Me.CmbUbicacion.Location = New System.Drawing.Point(236, 31)
+        Me.CmbUbicacion.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.CmbUbicacion.Name = "CmbUbicacion"
-        Me.CmbUbicacion.Size = New System.Drawing.Size(219, 24)
+        Me.CmbUbicacion.Size = New System.Drawing.Size(165, 21)
         Me.CmbUbicacion.TabIndex = 61
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(40, 18)
+        Me.Label1.Location = New System.Drawing.Point(30, 15)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(51, 17)
+        Me.Label1.Size = New System.Drawing.Size(40, 13)
         Me.Label1.TabIndex = 57
         Me.Label1.Text = "Fecha:"
         '
         'TxtSST
         '
-        Me.TxtSST.Location = New System.Drawing.Point(751, 40)
+        Me.TxtSST.Location = New System.Drawing.Point(563, 32)
+        Me.TxtSST.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.TxtSST.Name = "TxtSST"
-        Me.TxtSST.Size = New System.Drawing.Size(125, 22)
+        Me.TxtSST.Size = New System.Drawing.Size(95, 20)
         Me.TxtSST.TabIndex = 60
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(608, 332)
+        Me.Button1.Location = New System.Drawing.Point(456, 270)
+        Me.Button1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.Size = New System.Drawing.Size(56, 19)
         Me.Button1.TabIndex = 59
         Me.Button1.Text = "Exportar"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'dtfechafinal
         '
-        Me.dtfechafinal.Location = New System.Drawing.Point(303, 333)
+        Me.dtfechafinal.Location = New System.Drawing.Point(227, 271)
+        Me.dtfechafinal.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.dtfechafinal.Name = "dtfechafinal"
-        Me.dtfechafinal.Size = New System.Drawing.Size(200, 22)
+        Me.dtfechafinal.Size = New System.Drawing.Size(151, 20)
         Me.dtfechafinal.TabIndex = 58
         Me.dtfechafinal.Value = New Date(2017, 10, 6, 0, 0, 0, 0)
         '
         'dtfechainicio
         '
-        Me.dtfechainicio.Location = New System.Drawing.Point(26, 333)
+        Me.dtfechainicio.Location = New System.Drawing.Point(20, 271)
+        Me.dtfechainicio.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.dtfechainicio.Name = "dtfechainicio"
-        Me.dtfechainicio.Size = New System.Drawing.Size(200, 22)
+        Me.dtfechainicio.Size = New System.Drawing.Size(151, 20)
         Me.dtfechainicio.TabIndex = 57
         Me.dtfechainicio.Value = New Date(2017, 10, 6, 0, 0, 0, 0)
         '
         'Dgsst
         '
         Me.Dgsst.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Dgsst.Location = New System.Drawing.Point(26, 72)
+        Me.Dgsst.Location = New System.Drawing.Point(20, 58)
+        Me.Dgsst.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.Dgsst.Name = "Dgsst"
         Me.Dgsst.RowTemplate.Height = 24
-        Me.Dgsst.Size = New System.Drawing.Size(965, 233)
+        Me.Dgsst.Size = New System.Drawing.Size(724, 189)
         Me.Dgsst.TabIndex = 56
         '
         'Lblidsst
         '
         Me.Lblidsst.AutoSize = True
-        Me.Lblidsst.Location = New System.Drawing.Point(977, 195)
+        Me.Lblidsst.Location = New System.Drawing.Point(733, 158)
+        Me.Lblidsst.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Lblidsst.Name = "Lblidsst"
-        Me.Lblidsst.Size = New System.Drawing.Size(24, 17)
+        Me.Lblidsst.Size = New System.Drawing.Size(19, 13)
         Me.Lblidsst.TabIndex = 64
         Me.Lblidsst.Text = "00"
         '
         'FrmSST
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightGoldenrodYellow
-        Me.ClientSize = New System.Drawing.Size(1268, 626)
+        Me.ClientSize = New System.Drawing.Size(951, 509)
         Me.Controls.Add(Me.Lblidsst)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Label5)
@@ -285,9 +291,10 @@ Partial Class FrmSST
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.GroupBox2)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.Name = "FrmSST"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "SST - Sòlidos en Suspensiòn"
+        Me.Text = "SST - Sólidos en Suspensión"
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()

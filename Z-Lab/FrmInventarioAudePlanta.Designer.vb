@@ -78,10 +78,9 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Lucida Calligraphy", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(313, 12)
-        Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label8.Location = New System.Drawing.Point(235, 10)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(422, 36)
+        Me.Label8.Size = New System.Drawing.Size(328, 27)
         Me.Label8.TabIndex = 85
         Me.Label8.Text = "Inventario de Oro en Planta"
         '
@@ -90,20 +89,18 @@ Partial Class FrmInventarioAudePlanta
         Me.LblArea.AutoSize = True
         Me.LblArea.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblArea.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.LblArea.Location = New System.Drawing.Point(316, 97)
-        Me.LblArea.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblArea.Location = New System.Drawing.Point(237, 79)
         Me.LblArea.Name = "LblArea"
-        Me.LblArea.Size = New System.Drawing.Size(57, 17)
+        Me.LblArea.Size = New System.Drawing.Size(45, 13)
         Me.LblArea.TabIndex = 84
         Me.LblArea.Text = "Label6"
         '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(125, 97)
-        Me.Label7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label7.Location = New System.Drawing.Point(94, 79)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(102, 17)
+        Me.Label7.Size = New System.Drawing.Size(77, 13)
         Me.Label7.TabIndex = 83
         Me.Label7.Text = "Departamento:"
         '
@@ -112,30 +109,27 @@ Partial Class FrmInventarioAudePlanta
         Me.LblUsuario.AutoSize = True
         Me.LblUsuario.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblUsuario.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.LblUsuario.Location = New System.Drawing.Point(316, 65)
-        Me.LblUsuario.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblUsuario.Location = New System.Drawing.Point(237, 53)
         Me.LblUsuario.Name = "LblUsuario"
-        Me.LblUsuario.Size = New System.Drawing.Size(57, 17)
+        Me.LblUsuario.Size = New System.Drawing.Size(45, 13)
         Me.LblUsuario.TabIndex = 82
         Me.LblUsuario.Text = "Label5"
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(125, 65)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Location = New System.Drawing.Point(94, 53)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(80, 17)
+        Me.Label3.Size = New System.Drawing.Size(61, 13)
         Me.Label3.TabIndex = 81
         Me.Label3.Text = "Id. Usuario:"
         '
         'PictureBox2
         '
         Me.PictureBox2.Image = Global.Z_Lab.My.Resources.Resources.LogoGranColombiaGoldSmall
-        Me.PictureBox2.Location = New System.Drawing.Point(705, 58)
-        Me.PictureBox2.Margin = New System.Windows.Forms.Padding(4)
+        Me.PictureBox2.Location = New System.Drawing.Point(529, 47)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(276, 62)
+        Me.PictureBox2.Size = New System.Drawing.Size(207, 50)
         Me.PictureBox2.TabIndex = 80
         Me.PictureBox2.TabStop = False
         '
@@ -145,11 +139,9 @@ Partial Class FrmInventarioAudePlanta
         Me.GroupBox2.Controls.Add(Me.cmbdesviacion)
         Me.GroupBox2.Controls.Add(Me.cmbmedia)
         Me.GroupBox2.Controls.Add(Me.CmbMinimo)
-        Me.GroupBox2.Location = New System.Drawing.Point(25, 52)
-        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
+        Me.GroupBox2.Location = New System.Drawing.Point(19, 42)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox2.Size = New System.Drawing.Size(1184, 79)
+        Me.GroupBox2.Size = New System.Drawing.Size(888, 64)
         Me.GroupBox2.TabIndex = 86
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Datos de Usuario:"
@@ -158,20 +150,18 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.CmbMaximo.Enabled = False
         Me.CmbMaximo.FormattingEnabled = True
-        Me.CmbMaximo.Location = New System.Drawing.Point(813, 23)
-        Me.CmbMaximo.Margin = New System.Windows.Forms.Padding(4)
+        Me.CmbMaximo.Location = New System.Drawing.Point(610, 19)
         Me.CmbMaximo.Name = "CmbMaximo"
-        Me.CmbMaximo.Size = New System.Drawing.Size(63, 24)
+        Me.CmbMaximo.Size = New System.Drawing.Size(48, 21)
         Me.CmbMaximo.TabIndex = 71
         '
         'cmbdesviacion
         '
         Me.cmbdesviacion.Enabled = False
         Me.cmbdesviacion.FormattingEnabled = True
-        Me.cmbdesviacion.Location = New System.Drawing.Point(813, 11)
-        Me.cmbdesviacion.Margin = New System.Windows.Forms.Padding(4)
+        Me.cmbdesviacion.Location = New System.Drawing.Point(610, 9)
         Me.cmbdesviacion.Name = "cmbdesviacion"
-        Me.cmbdesviacion.Size = New System.Drawing.Size(63, 24)
+        Me.cmbdesviacion.Size = New System.Drawing.Size(48, 21)
         Me.cmbdesviacion.TabIndex = 66
         '
         'cmbmedia
@@ -179,36 +169,37 @@ Partial Class FrmInventarioAudePlanta
         Me.cmbmedia.Enabled = False
         Me.cmbmedia.FormattingEnabled = True
         Me.cmbmedia.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.cmbmedia.Location = New System.Drawing.Point(746, 23)
+        Me.cmbmedia.Location = New System.Drawing.Point(560, 19)
         Me.cmbmedia.Margin = New System.Windows.Forms.Padding(0)
         Me.cmbmedia.Name = "cmbmedia"
-        Me.cmbmedia.Size = New System.Drawing.Size(63, 24)
+        Me.cmbmedia.Size = New System.Drawing.Size(48, 21)
         Me.cmbmedia.TabIndex = 64
         '
         'CmbMinimo
         '
         Me.CmbMinimo.Enabled = False
         Me.CmbMinimo.FormattingEnabled = True
-        Me.CmbMinimo.Location = New System.Drawing.Point(712, 23)
-        Me.CmbMinimo.Margin = New System.Windows.Forms.Padding(4)
+        Me.CmbMinimo.Location = New System.Drawing.Point(534, 19)
         Me.CmbMinimo.Name = "CmbMinimo"
-        Me.CmbMinimo.Size = New System.Drawing.Size(63, 24)
+        Me.CmbMinimo.Size = New System.Drawing.Size(48, 21)
         Me.CmbMinimo.TabIndex = 65
         '
         'CmbIdPeriodo
         '
         Me.CmbIdPeriodo.FormattingEnabled = True
-        Me.CmbIdPeriodo.Location = New System.Drawing.Point(34, 49)
+        Me.CmbIdPeriodo.Location = New System.Drawing.Point(26, 40)
+        Me.CmbIdPeriodo.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.CmbIdPeriodo.Name = "CmbIdPeriodo"
-        Me.CmbIdPeriodo.Size = New System.Drawing.Size(383, 24)
+        Me.CmbIdPeriodo.Size = New System.Drawing.Size(288, 21)
         Me.CmbIdPeriodo.TabIndex = 89
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(31, 18)
+        Me.Label1.Location = New System.Drawing.Point(23, 15)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(149, 17)
+        Me.Label1.Size = New System.Drawing.Size(113, 13)
         Me.Label1.TabIndex = 90
         Me.Label1.Text = "Seleccione el Periodo:"
         '
@@ -222,9 +213,11 @@ Partial Class FrmInventarioAudePlanta
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.CmbIdPeriodo)
-        Me.GroupBox1.Location = New System.Drawing.Point(25, 154)
+        Me.GroupBox1.Location = New System.Drawing.Point(19, 125)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(1184, 100)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox1.Size = New System.Drawing.Size(888, 81)
         Me.GroupBox1.TabIndex = 91
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Periodo:"
@@ -233,9 +226,10 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(709, 18)
+        Me.Label6.Location = New System.Drawing.Point(532, 15)
+        Me.Label6.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(45, 18)
+        Me.Label6.Size = New System.Drawing.Size(38, 15)
         Me.Label6.TabIndex = 96
         Me.Label6.Text = "Mes:"
         '
@@ -243,9 +237,10 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(840, 18)
+        Me.Label9.Location = New System.Drawing.Point(630, 15)
+        Me.Label9.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(72, 18)
+        Me.Label9.Size = New System.Drawing.Size(61, 15)
         Me.Label9.TabIndex = 95
         Me.Label9.Text = "Periodo:"
         '
@@ -253,36 +248,40 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(542, 18)
+        Me.Label10.Location = New System.Drawing.Point(406, 15)
+        Me.Label10.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(42, 18)
+        Me.Label10.Size = New System.Drawing.Size(35, 15)
         Me.Label10.TabIndex = 94
         Me.Label10.Text = "Año:"
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(709, 56)
+        Me.Label5.Location = New System.Drawing.Point(532, 46)
+        Me.Label5.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(51, 17)
+        Me.Label5.Size = New System.Drawing.Size(39, 13)
         Me.Label5.TabIndex = 93
         Me.Label5.Text = "Label5"
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(840, 56)
+        Me.Label4.Location = New System.Drawing.Point(630, 46)
+        Me.Label4.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(51, 17)
+        Me.Label4.Size = New System.Drawing.Size(39, 13)
         Me.Label4.TabIndex = 92
         Me.Label4.Text = "Label4"
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(542, 56)
+        Me.Label2.Location = New System.Drawing.Point(406, 46)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(51, 17)
+        Me.Label2.Size = New System.Drawing.Size(39, 13)
         Me.Label2.TabIndex = 91
         Me.Label2.Text = "Label2"
         '
@@ -304,9 +303,11 @@ Partial Class FrmInventarioAudePlanta
         Me.GroupBox3.Controls.Add(Me.Label11)
         Me.GroupBox3.Controls.Add(Me.cmbubicacion)
         Me.GroupBox3.Controls.Add(Me.DgInventario)
-        Me.GroupBox3.Location = New System.Drawing.Point(25, 283)
+        Me.GroupBox3.Location = New System.Drawing.Point(19, 230)
+        Me.GroupBox3.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(1184, 504)
+        Me.GroupBox3.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox3.Size = New System.Drawing.Size(888, 410)
         Me.GroupBox3.TabIndex = 92
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Inventario:"
@@ -319,9 +320,11 @@ Partial Class FrmInventarioAudePlanta
         Me.GroupBox4.Controls.Add(Me.Lbltotal)
         Me.GroupBox4.Controls.Add(Me.LblSolucion)
         Me.GroupBox4.Controls.Add(Me.LblSolido)
-        Me.GroupBox4.Location = New System.Drawing.Point(34, 400)
+        Me.GroupBox4.Location = New System.Drawing.Point(26, 325)
+        Me.GroupBox4.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(1124, 98)
+        Me.GroupBox4.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox4.Size = New System.Drawing.Size(843, 80)
         Me.GroupBox4.TabIndex = 102
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Resumen:"
@@ -330,9 +333,10 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.Label22.AutoSize = True
         Me.Label22.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label22.Location = New System.Drawing.Point(708, 18)
+        Me.Label22.Location = New System.Drawing.Point(604, 15)
+        Me.Label22.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(173, 20)
+        Me.Label22.Size = New System.Drawing.Size(151, 17)
         Me.Label22.TabIndex = 5
         Me.Label22.Text = "Total Au Inventario:"
         '
@@ -340,9 +344,10 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.Label21.AutoSize = True
         Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label21.Location = New System.Drawing.Point(567, 18)
+        Me.Label21.Location = New System.Drawing.Point(348, 15)
+        Me.Label21.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(115, 20)
+        Me.Label21.Size = New System.Drawing.Size(99, 17)
         Me.Label21.TabIndex = 4
         Me.Label21.Text = "Au Solución:"
         '
@@ -350,9 +355,10 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.Label20.AutoSize = True
         Me.Label20.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label20.Location = New System.Drawing.Point(425, 18)
+        Me.Label20.Location = New System.Drawing.Point(28, 15)
+        Me.Label20.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(95, 20)
+        Me.Label20.Size = New System.Drawing.Size(82, 17)
         Me.Label20.TabIndex = 3
         Me.Label20.Text = "Au Sólido:"
         '
@@ -360,9 +366,10 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.Lbltotal.AutoSize = True
         Me.Lbltotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Lbltotal.Location = New System.Drawing.Point(758, 57)
+        Me.Lbltotal.Location = New System.Drawing.Point(615, 46)
+        Me.Lbltotal.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Lbltotal.Name = "Lbltotal"
-        Me.Lbltotal.Size = New System.Drawing.Size(37, 29)
+        Me.Lbltotal.Size = New System.Drawing.Size(28, 24)
         Me.Lbltotal.TabIndex = 2
         Me.Lbltotal.Text = "---"
         '
@@ -370,9 +377,10 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.LblSolucion.AutoSize = True
         Me.LblSolucion.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblSolucion.Location = New System.Drawing.Point(566, 57)
+        Me.LblSolucion.Location = New System.Drawing.Point(347, 46)
+        Me.LblSolucion.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.LblSolucion.Name = "LblSolucion"
-        Me.LblSolucion.Size = New System.Drawing.Size(37, 29)
+        Me.LblSolucion.Size = New System.Drawing.Size(28, 24)
         Me.LblSolucion.TabIndex = 1
         Me.LblSolucion.Text = "---"
         '
@@ -380,9 +388,10 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.LblSolido.AutoSize = True
         Me.LblSolido.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblSolido.Location = New System.Drawing.Point(424, 57)
+        Me.LblSolido.Location = New System.Drawing.Point(27, 46)
+        Me.LblSolido.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.LblSolido.Name = "LblSolido"
-        Me.LblSolido.Size = New System.Drawing.Size(37, 29)
+        Me.LblSolido.Size = New System.Drawing.Size(28, 24)
         Me.LblSolido.TabIndex = 0
         Me.LblSolido.Text = "---"
         '
@@ -390,9 +399,10 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.Label16.AutoSize = True
         Me.Label16.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label16.Location = New System.Drawing.Point(866, 18)
+        Me.Label16.Location = New System.Drawing.Point(650, 15)
+        Me.Label16.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(137, 18)
+        Me.Label16.Size = New System.Drawing.Size(116, 15)
         Me.Label16.TabIndex = 101
         Me.Label16.Text = "Au Solucion Ppm"
         '
@@ -400,40 +410,45 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.Label15.AutoSize = True
         Me.Label15.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(729, 18)
+        Me.Label15.Location = New System.Drawing.Point(547, 15)
+        Me.Label15.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(117, 18)
+        Me.Label15.Size = New System.Drawing.Size(100, 15)
         Me.Label15.TabIndex = 96
         Me.Label15.Text = "Au Solido ppm"
         '
         'txtausolucion
         '
-        Me.txtausolucion.Location = New System.Drawing.Point(884, 46)
+        Me.txtausolucion.Location = New System.Drawing.Point(663, 37)
+        Me.txtausolucion.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.txtausolucion.Name = "txtausolucion"
-        Me.txtausolucion.Size = New System.Drawing.Size(100, 22)
+        Me.txtausolucion.Size = New System.Drawing.Size(76, 20)
         Me.txtausolucion.TabIndex = 7
         '
         'txtausolido
         '
-        Me.txtausolido.Location = New System.Drawing.Point(746, 47)
+        Me.txtausolido.Location = New System.Drawing.Point(560, 38)
+        Me.txtausolido.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.txtausolido.Name = "txtausolido"
-        Me.txtausolido.Size = New System.Drawing.Size(100, 22)
+        Me.txtausolido.Size = New System.Drawing.Size(76, 20)
         Me.txtausolido.TabIndex = 6
         '
         'Lblid
         '
         Me.Lblid.AutoSize = True
-        Me.Lblid.Location = New System.Drawing.Point(1140, 54)
+        Me.Lblid.Location = New System.Drawing.Point(855, 44)
+        Me.Lblid.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Lblid.Name = "Lblid"
-        Me.Lblid.Size = New System.Drawing.Size(18, 17)
+        Me.Lblid.Size = New System.Drawing.Size(13, 13)
         Me.Lblid.TabIndex = 93
         Me.Lblid.Text = "--"
         '
         'CmdGuardar
         '
-        Me.CmdGuardar.Location = New System.Drawing.Point(1059, 46)
+        Me.CmdGuardar.Location = New System.Drawing.Point(794, 37)
+        Me.CmdGuardar.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.CmdGuardar.Name = "CmdGuardar"
-        Me.CmdGuardar.Size = New System.Drawing.Size(75, 23)
+        Me.CmdGuardar.Size = New System.Drawing.Size(56, 19)
         Me.CmdGuardar.TabIndex = 98
         Me.CmdGuardar.Text = "Guardar"
         Me.CmdGuardar.UseVisualStyleBackColor = True
@@ -442,9 +457,10 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.Label14.AutoSize = True
         Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(314, 18)
+        Me.Label14.Location = New System.Drawing.Point(236, 15)
+        Me.Label14.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(83, 18)
+        Me.Label14.Size = New System.Drawing.Size(72, 15)
         Me.Label14.TabIndex = 97
         Me.Label14.Text = "Densidad:"
         '
@@ -452,9 +468,10 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.Label13.AutoSize = True
         Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(417, 18)
+        Me.Label13.Location = New System.Drawing.Point(313, 15)
+        Me.Label13.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(167, 18)
+        Me.Label13.Size = New System.Drawing.Size(144, 15)
         Me.Label13.TabIndex = 96
         Me.Label13.Text = "Altura Libre Superior:"
         '
@@ -462,65 +479,72 @@ Partial Class FrmInventarioAudePlanta
         '
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(602, 20)
+        Me.Label12.Location = New System.Drawing.Point(452, 16)
+        Me.Label12.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(108, 18)
+        Me.Label12.Size = New System.Drawing.Size(91, 15)
         Me.Label12.TabIndex = 95
         Me.Label12.Text = "Altura Lodos:"
         '
         'TxtAlturaLodos
         '
-        Me.TxtAlturaLodos.Location = New System.Drawing.Point(610, 47)
+        Me.TxtAlturaLodos.Location = New System.Drawing.Point(458, 38)
+        Me.TxtAlturaLodos.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.TxtAlturaLodos.Name = "TxtAlturaLodos"
-        Me.TxtAlturaLodos.Size = New System.Drawing.Size(100, 22)
+        Me.TxtAlturaLodos.Size = New System.Drawing.Size(76, 20)
         Me.TxtAlturaLodos.TabIndex = 5
         '
         'txtAlturaSuperior
         '
-        Me.txtAlturaSuperior.Location = New System.Drawing.Point(457, 47)
+        Me.txtAlturaSuperior.Location = New System.Drawing.Point(343, 38)
+        Me.txtAlturaSuperior.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.txtAlturaSuperior.Name = "txtAlturaSuperior"
-        Me.txtAlturaSuperior.Size = New System.Drawing.Size(100, 22)
+        Me.txtAlturaSuperior.Size = New System.Drawing.Size(76, 20)
         Me.txtAlturaSuperior.TabIndex = 4
         '
         'TxtDensidad
         '
-        Me.TxtDensidad.Location = New System.Drawing.Point(317, 47)
+        Me.TxtDensidad.Location = New System.Drawing.Point(238, 38)
+        Me.TxtDensidad.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.TxtDensidad.Name = "TxtDensidad"
-        Me.TxtDensidad.Size = New System.Drawing.Size(100, 22)
+        Me.TxtDensidad.Size = New System.Drawing.Size(76, 20)
         Me.TxtDensidad.TabIndex = 3
         '
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(31, 27)
+        Me.Label11.Location = New System.Drawing.Point(23, 22)
+        Me.Label11.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(160, 17)
+        Me.Label11.Size = New System.Drawing.Size(123, 13)
         Me.Label11.TabIndex = 2
         Me.Label11.Text = "Seleccione la ubicaciòn:"
         '
         'cmbubicacion
         '
         Me.cmbubicacion.FormattingEnabled = True
-        Me.cmbubicacion.Location = New System.Drawing.Point(34, 47)
+        Me.cmbubicacion.Location = New System.Drawing.Point(26, 38)
+        Me.cmbubicacion.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.cmbubicacion.Name = "cmbubicacion"
-        Me.cmbubicacion.Size = New System.Drawing.Size(235, 24)
+        Me.cmbubicacion.Size = New System.Drawing.Size(177, 21)
         Me.cmbubicacion.TabIndex = 1
         '
         'DgInventario
         '
         Me.DgInventario.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DgInventario.Location = New System.Drawing.Point(21, 91)
+        Me.DgInventario.Location = New System.Drawing.Point(16, 74)
+        Me.DgInventario.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.DgInventario.Name = "DgInventario"
         Me.DgInventario.RowTemplate.Height = 24
-        Me.DgInventario.Size = New System.Drawing.Size(1137, 282)
+        Me.DgInventario.Size = New System.Drawing.Size(853, 229)
         Me.DgInventario.TabIndex = 0
         '
         'FrmInventarioAudePlanta
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightGoldenrodYellow
-        Me.ClientSize = New System.Drawing.Size(1469, 799)
+        Me.ClientSize = New System.Drawing.Size(1102, 649)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Label8)
@@ -531,6 +555,7 @@ Partial Class FrmInventarioAudePlanta
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.GroupBox2)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.Name = "FrmInventarioAudePlanta"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Inventario de Au en Planta"

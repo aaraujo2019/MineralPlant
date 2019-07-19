@@ -35,15 +35,13 @@ Public Class FrmSST
             Else
                 DtFecha.Text = CStr(Me.Dgsst.Rows(e.RowIndex).Cells("fecha").Value())
 
-
-
-
                 If IsDBNull((Me.Dgsst.Rows(e.RowIndex).Cells("ubicacion").Value())) Then
                     CmbUbicacion.Text = ""
                 Else
                     CmbUbicacion.Text = CStr(Me.Dgsst.Rows(e.RowIndex).Cells("ubicacion").Value())
                 End If
             End If
+
             If IsDBNull((Me.Dgsst.Rows(e.RowIndex).Cells("turno").Value())) Then
                 CmbTurno.Text = ""
             Else
@@ -61,10 +59,8 @@ Public Class FrmSST
 
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-
     End Sub
 
     Private Sub llenar_datagridviewSST()   'cargar DataGrid de Preparacion Daily
@@ -98,12 +94,13 @@ Public Class FrmSST
         fechainicio = CDate(dtfechainicio.Value)
         fechafin = CDate(dtfechafinal.Value)
         Dim dias As Double
+
         dias = (dtfechafinal.Value - dtfechainicio.Value).TotalDays
         If dias > 31 Then
             MsgBox("Por Favor Seleccione un rango de Fecha no superior a 30 dias.")
             Exit Sub
-
         End If
+
         ExportarSST()
     End Sub
 
@@ -137,8 +134,6 @@ Public Class FrmSST
                 RstResumen.MoveNext()
             Loop
 
-
-
             recorrido = 3
             hoja = CType(.Sheets("Report"), Microsoft.Office.Interop.Excel.Worksheet)
             Dim fecha1, fecha2 As Date
@@ -158,8 +153,7 @@ Public Class FrmSST
 
     Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
-" WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarBanda'  ) ", Cn)
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarBanda'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
 
@@ -167,6 +161,7 @@ Public Class FrmSST
             MsgBox("El usuario no tiene privilegios para Modificar en este Formulario. Contacte a su administrador.")
             Exit Sub
         End If
+
         If CmbUbicacion.Text = "" Or CmbTurno.Text = "" Or TxtSST.Text = "" Then
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
@@ -203,11 +198,8 @@ Public Class FrmSST
 
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
-
         End If
-
     End Sub
 End Class

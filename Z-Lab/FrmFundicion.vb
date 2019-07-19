@@ -18,12 +18,12 @@ Public Class FrmFundicion
     Dim conn As New ADODB.Connection()
     Dim rstoperacion As New ADODB.Recordset()
     Dim Rsfundicion As New ADODB.Recordset()
-
     Dim cnStr As String
+
     Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
         Dim DsPriv As New DataSet
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
-" WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'Modificarfundicion'  ) ", Cn)
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'Modificarfundicion'  ) ", Cn)
+
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
 
@@ -46,7 +46,7 @@ Public Class FrmFundicion
                     ' consulta sql si editar es falso 
                     cmd.CommandText = "INSERT INTO PB_Fundicion (Fecha,BarraNo,Peso1Gr, Peso2Gr,  LeyAu1, LeyAu2, LeyAg1, LeyAg2 , Periodo , OrigenBarra )VALUES(@Fecha,@BarraNo,@Peso1Gr, @Peso2Gr,  @LeyAu1, @LeyAu2, @LeyAg1, @LeyAg2 , @Periodo ,@OrigenBarra)"
                 End If
-                cmd.Parameters.AddWithValue("@Fecha", CDate(DtFecha.Text))
+                cmd.Parameters.AddWithValue("@Fecha", Convert.ToDateTime(DtFecha.Text))
                 cmd.Parameters.AddWithValue("@BarraNo", Convert.ToInt16(TxtIdBarra.Text))
                 If IsDBNull(TxtPesoInicial.Text) Or TxtPesoInicial.Text = "" Then
                     cmd.Parameters.AddWithValue("@Peso1Gr", 0.0)
@@ -107,8 +107,7 @@ Public Class FrmFundicion
                 'DgLecturaBandas.FirstDisplayedScrollingRowIndex = DgLecturaBandas.RowCount - 1
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
         End If
@@ -140,8 +139,7 @@ Public Class FrmFundicion
             End If
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
     End Sub
@@ -213,35 +211,32 @@ Public Class FrmFundicion
         For Each dRow As DataGridViewRow In Dgfundicion.Rows
             If (dRow.Cells.Item("Peso1Gr").Value) IsNot Nothing Then
 
-                If IsDBNull(dRow.Cells.Item("Peso1Gr").Value) Then
-                Else
+                If Not IsDBNull(dRow.Cells.Item("Peso1Gr").Value) Then
                     pesoinicialgr = CDec(dRow.Cells.Item("Peso1Gr").Value) + pesoinicialgr
                 End If
 
-                If IsDBNull(dRow.Cells.Item("Peso2Gr").Value) Then
-                Else
+                If Not IsDBNull(dRow.Cells.Item("Peso2Gr").Value) Then
                     pesofinalgr = CDec(dRow.Cells.Item("Peso2Gr").Value) + pesofinalgr
                 End If
-                If IsDBNull(dRow.Cells.Item("ContenidoAu1").Value) Then
-                Else
+
+                If Not IsDBNull(dRow.Cells.Item("ContenidoAu1").Value) Then
                     contenidoau1 = CDec(dRow.Cells.Item("ContenidoAu1").Value) + contenidoau1
                 End If
-                If IsDBNull(dRow.Cells.Item("ContenidoAg1").Value) Then
-                Else
+
+                If Not IsDBNull(dRow.Cells.Item("ContenidoAg1").Value) Then
                     contenidoag1 = CDec(dRow.Cells.Item("ContenidoAg1").Value) + contenidoag1
                 End If
-                If IsDBNull(dRow.Cells.Item("ContenidoAu2").Value) Then
-                Else
+
+                If Not IsDBNull(dRow.Cells.Item("ContenidoAu2").Value) Then
                     contenidoau2 = CDec(dRow.Cells.Item("ContenidoAu2").Value) + contenidoau2
                 End If
-                If IsDBNull(dRow.Cells.Item("ContenidoAg2").Value) Then
-                Else
+
+                If Not IsDBNull(dRow.Cells.Item("ContenidoAg2").Value) Then
                     contenidoag2 = CDec(dRow.Cells.Item("ContenidoAg2").Value) + contenidoag2
                 End If
-
-
             End If
             registros = registros + 1
+
         Next dRow
         If registros = 0 Then
             LblPesoIGr.Text = "0"
@@ -270,6 +265,7 @@ Public Class FrmFundicion
 
         Me.Dgfundicion.ReadOnly = False
     End Sub
+
     Private Sub DtFecha_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DtFecha.ValueChanged
         llenardatagridviewFundicion()
         Llenar_TotalFundicion()
@@ -280,7 +276,7 @@ Public Class FrmFundicion
     Private Sub CargarAno()
         With Cmd
             .CommandType = CommandType.Text
-            .CommandText = " SELECT        TOP (100) PERCENT ano    FROM PB_Conveyor GROUP BY ano ORDER BY ano"
+            .CommandText = " SELECT TOP (100) PERCENT ano FROM PB_Conveyor GROUP BY ano ORDER BY ano"
             .Connection = Cn
         End With
         Da.SelectCommand = Cmd

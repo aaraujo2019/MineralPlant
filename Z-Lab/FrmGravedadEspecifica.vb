@@ -13,10 +13,12 @@ Public Class FrmGravedadEspecifica
     Dim editarinstantanea As Boolean
     Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Dim cnStr As String
+
     Private Sub FrmGravedadEspecifica_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         llenar_datagridviewGravedad()
         CargarlistHoraInicio()
     End Sub
+
     Private Sub llenar_datagridviewGravedad()   'cargar DataGrid de Preparacion Daily
         Cn.Open()
         Dim ds As New DataSet
@@ -29,7 +31,7 @@ Public Class FrmGravedadEspecifica
         Dim dt As DataTable = ds.Tables(0)
         DgGravedad.DataSource = dt
         DgGravedad.AutoResizeColumns()
-        Me.DgGravedad.Columns("id").Visible = False
+        DgGravedad.Columns("id").Visible = False
 
         DgGravedad.Columns("HoraInicio").HeaderText = "Hora Inicio"
         DgGravedad.Columns("HoraFinal").HeaderText = "Hora final"
@@ -37,14 +39,13 @@ Public Class FrmGravedadEspecifica
         DgGravedad.Columns("fecha").Visible = False
         DgGravedad.Columns("GravedadEspecifica").HeaderText = "Gravedad Especifica"
         DgGravedad.Columns("GravedadEspecifica").DefaultCellStyle.Format = "0.00"
-        Me.DgGravedad.ReadOnly = False
+        DgGravedad.ReadOnly = False
     End Sub
 
 
 
     Private Sub DtFecha_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DtFecha.ValueChanged
         llenar_datagridviewGravedad()
-
     End Sub
 
     Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
@@ -53,9 +54,9 @@ Public Class FrmGravedadEspecifica
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
-                Dim cmd As New System.Data.SqlClient.SqlCommand
-                cmd.CommandType = System.Data.CommandType.Text
+                Dim sqlConnectiondb As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
+                Dim cmd As New SqlCommand
+                cmd.CommandType = CommandType.Text
                 If editarinstantanea = True Then
                     'CONSULTA CUANDO EDITAR ES VERDADERO
                     cmd.CommandText = "UPDATE  PB_GravedadEspecifica  SET horaInicio = @horaInicio , horaFinal=@horaFinal,  ubicacion = @ubicacion ,  GravedadEspecifica=@GravedadEspecifica , fecha=@fecha WHERE id=@id  "
@@ -68,7 +69,7 @@ Public Class FrmGravedadEspecifica
                 cmd.Parameters.AddWithValue("@horaFinal", Convert.ToString(CmbHoraFinal.Text))
                 cmd.Parameters.AddWithValue("@ubicacion", Convert.ToString(Cmbubicacion.Text))
                 cmd.Parameters.AddWithValue("@GravedadEspecifica", Convert.ToString(TxtGravedad.Text))
-                cmd.Parameters.AddWithValue("@fecha", CDate(DtFecha.Text))
+                cmd.Parameters.AddWithValue("@fecha", Convert.ToDateTime(DtFecha.Text))
                 cmd.Connection = sqlConnectiondb
                 sqlConnectiondb.Open()
                 cmd.ExecuteNonQuery()
@@ -79,7 +80,7 @@ Public Class FrmGravedadEspecifica
 
                 editarinstantanea = False
             Catch ex As Exception                ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
+                MessageBox.Show(ex.Message, Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -116,22 +117,22 @@ Public Class FrmGravedadEspecifica
             'Aquí pongo lo que pasaría si el campo está en blanco o nulo
 
             If DBNull.Value.Equals(DgGravedad.CurrentRow.Cells("ubicacion").Value) Then
-                Me.CmbHoraFinal.Text = ""
-                Me.CmbHorainicio.Text = ""
-                Me.TxtGravedad.Clear()
+                CmbHoraFinal.Text = ""
+                CmbHorainicio.Text = ""
+                TxtGravedad.Clear()
             Else
-                CmbHorainicio.Text = CStr(Me.DgGravedad.Rows(e.RowIndex).Cells("HoraInicio").Value())
-                CmbHoraFinal.Text = CStr(Me.DgGravedad.Rows(e.RowIndex).Cells("HoraFinal").Value())
-                Cmbubicacion.Text = CStr(Me.DgGravedad.Rows(e.RowIndex).Cells("Ubicacion").Value())
-                TxtGravedad.Text = CStr(Me.DgGravedad.Rows(e.RowIndex).Cells("GravedadEspecifica").Value())
-                Lblid.Text = CStr(Me.DgGravedad.Rows(e.RowIndex).Cells("id").Value())
+                CmbHorainicio.Text = Convert.ToString(DgGravedad.Rows(e.RowIndex).Cells("HoraInicio").Value())
+                CmbHoraFinal.Text = Convert.ToString(DgGravedad.Rows(e.RowIndex).Cells("HoraFinal").Value())
+                Cmbubicacion.Text = Convert.ToString(DgGravedad.Rows(e.RowIndex).Cells("Ubicacion").Value())
+                TxtGravedad.Text = Convert.ToString(DgGravedad.Rows(e.RowIndex).Cells("GravedadEspecifica").Value())
+                Lblid.Text = Convert.ToString(DgGravedad.Rows(e.RowIndex).Cells("id").Value())
 
                 editarinstantanea = True
             End If
 
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
+            MessageBox.Show(ex.Message, Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
@@ -148,7 +149,7 @@ Public Class FrmGravedadEspecifica
                     Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
-                    cmd.CommandText = "DELETE FROM Pb_gravedadespecifica    WHERE id=  '" & CStr(Lblid.Text) & "' "
+                    cmd.CommandText = "DELETE FROM Pb_gravedadespecifica WHERE id=  '" & Lblid.Text & "' "
                     cmd.Connection = sqlConnectiondb
                     sqlConnectiondb.Open()
                     cmd.ExecuteNonQuery()
@@ -162,7 +163,7 @@ Public Class FrmGravedadEspecifica
                 editarinstantanea = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 

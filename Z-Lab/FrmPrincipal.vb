@@ -170,8 +170,6 @@ Public Class FrmPrincipal
     End Sub
 
     Private Sub FundiciónToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FundiciónToolStripMenuItem.Click
-
-
         If permisos("FrmFundicion") = True Then
             FrmFundicion.ShowDialog()
         Else
@@ -435,8 +433,6 @@ Public Class FrmPrincipal
         Else
             MsgBox("No tiene Permisos para ingresar al formulario contacte a su administrador")
         End If
-
-
     End Sub
 
     Private Sub SSTSolidosEnSuspencionToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SSTSolidosEnSuspencionToolStripMenuItem.Click
@@ -445,8 +441,6 @@ Public Class FrmPrincipal
         Else
             MsgBox("No tiene Permisos para ingresar al formulario contacte a su administrador")
         End If
-
-
     End Sub
 
     Private Sub SSTSòlidosEnSuspensiònToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SSTSòlidosEnSuspensiònToolStripMenuItem.Click
@@ -455,8 +449,6 @@ Public Class FrmPrincipal
         Else
             MsgBox("No tiene Permisos para ingresar al formulario contacte a su administrador")
         End If
-
-
     End Sub
 
     Private Sub GraficosEficienciaProcesosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GraficosEficienciaProcesosToolStripMenuItem.Click
@@ -486,5 +478,9 @@ Public Class FrmPrincipal
         Else
             MsgBox("No tiene Permisos para ingresar al formulario contacte a su administrador")
         End If
+    End Sub
+
+    Private Sub DespacharMuestraLabToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DespacharMuestraLabToolStripMenuItem.Click
+
     End Sub
 End Class

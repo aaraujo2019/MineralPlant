@@ -29,6 +29,7 @@ Partial Class FrmMineralPlant
         Me.LblUsuario = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.DateTimePickerFechaReporte = New System.Windows.Forms.DateTimePicker()
         Me.Label46 = New System.Windows.Forms.Label()
         Me.ChkTimeView = New System.Windows.Forms.CheckBox()
@@ -331,9 +332,9 @@ Partial Class FrmMineralPlant
         Me.TxtFinalHidro = New System.Windows.Forms.TextBox()
         Me.TxtInicioHidro = New System.Windows.Forms.TextBox()
         Me.Label121 = New System.Windows.Forms.Label()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.LblFechaReporte = New System.Windows.Forms.Label()
         Me.GroupBox2.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage9.SuspendLayout()
         Me.GroupBox20.SuspendLayout()
         Me.GroupBox21.SuspendLayout()
@@ -382,7 +383,6 @@ Partial Class FrmMineralPlant
         Me.GroupBox28.SuspendLayout()
         CType(Me.DgFlujoHidrociclones, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox27.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label8
@@ -409,9 +409,10 @@ Partial Class FrmMineralPlant
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(11, 46)
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(11, 44)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(77, 13)
+        Me.Label7.Size = New System.Drawing.Size(97, 16)
         Me.Label7.TabIndex = 23
         Me.Label7.Text = "Departamento:"
         '
@@ -429,11 +430,12 @@ Partial Class FrmMineralPlant
         'Label4
         '
         Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.Location = New System.Drawing.Point(11, 20)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(61, 13)
+        Me.Label4.Size = New System.Drawing.Size(64, 18)
         Me.Label4.TabIndex = 21
-        Me.Label4.Text = "Id. Usuario:"
+        Me.Label4.Text = "Usuario:"
         '
         'GroupBox2
         '
@@ -448,6 +450,15 @@ Partial Class FrmMineralPlant
         Me.GroupBox2.TabIndex = 26
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Datos de Usuario:"
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = Global.Z_Lab.My.Resources.Resources.LogoGranColombiaGoldSmall
+        Me.PictureBox1.Location = New System.Drawing.Point(810, 16)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(207, 50)
+        Me.PictureBox1.TabIndex = 20
+        Me.PictureBox1.TabStop = False
         '
         'DateTimePickerFechaReporte
         '
@@ -503,10 +514,10 @@ Partial Class FrmMineralPlant
         Me.TabPage9.Controls.Add(Me.Label104)
         Me.TabPage9.Controls.Add(Me.GroupBox19)
         Me.TabPage9.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage9.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage9.Margin = New System.Windows.Forms.Padding(2)
         Me.TabPage9.Name = "TabPage9"
-        Me.TabPage9.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.TabPage9.Size = New System.Drawing.Size(982, 479)
+        Me.TabPage9.Padding = New System.Windows.Forms.Padding(2)
+        Me.TabPage9.Size = New System.Drawing.Size(1022, 503)
         Me.TabPage9.TabIndex = 8
         Me.TabPage9.Text = "Colas Flotacion"
         '
@@ -515,19 +526,19 @@ Partial Class FrmMineralPlant
         Me.GroupBox20.Controls.Add(Me.Button5)
         Me.GroupBox20.Controls.Add(Me.DtFinalFl)
         Me.GroupBox20.Controls.Add(Me.DtInicioFl)
-        Me.GroupBox20.Location = New System.Drawing.Point(40, 414)
-        Me.GroupBox20.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox20.Location = New System.Drawing.Point(23, 360)
+        Me.GroupBox20.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox20.Name = "GroupBox20"
-        Me.GroupBox20.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.GroupBox20.Size = New System.Drawing.Size(788, 63)
+        Me.GroupBox20.Padding = New System.Windows.Forms.Padding(2)
+        Me.GroupBox20.Size = New System.Drawing.Size(964, 63)
         Me.GroupBox20.TabIndex = 45
         Me.GroupBox20.TabStop = False
         Me.GroupBox20.Text = "Exportar Datos"
         '
         'Button5
         '
-        Me.Button5.Location = New System.Drawing.Point(554, 18)
-        Me.Button5.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.Button5.Location = New System.Drawing.Point(313, 22)
+        Me.Button5.Margin = New System.Windows.Forms.Padding(2)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(58, 25)
         Me.Button5.TabIndex = 2
@@ -536,19 +547,21 @@ Partial Class FrmMineralPlant
         '
         'DtFinalFl
         '
-        Me.DtFinalFl.Location = New System.Drawing.Point(317, 18)
-        Me.DtFinalFl.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.DtFinalFl.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtFinalFl.Location = New System.Drawing.Point(173, 24)
+        Me.DtFinalFl.Margin = New System.Windows.Forms.Padding(2)
         Me.DtFinalFl.Name = "DtFinalFl"
-        Me.DtFinalFl.Size = New System.Drawing.Size(151, 20)
+        Me.DtFinalFl.Size = New System.Drawing.Size(107, 20)
         Me.DtFinalFl.TabIndex = 1
         Me.DtFinalFl.Value = New Date(2017, 1, 1, 0, 0, 0, 0)
         '
         'DtInicioFl
         '
-        Me.DtInicioFl.Location = New System.Drawing.Point(118, 18)
-        Me.DtInicioFl.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.DtInicioFl.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtInicioFl.Location = New System.Drawing.Point(38, 24)
+        Me.DtInicioFl.Margin = New System.Windows.Forms.Padding(2)
         Me.DtInicioFl.Name = "DtInicioFl"
-        Me.DtInicioFl.Size = New System.Drawing.Size(151, 20)
+        Me.DtInicioFl.Size = New System.Drawing.Size(112, 20)
         Me.DtInicioFl.TabIndex = 0
         Me.DtInicioFl.Value = New Date(2017, 1, 1, 0, 0, 0, 0)
         '
@@ -560,11 +573,11 @@ Partial Class FrmMineralPlant
         Me.GroupBox21.Controls.Add(Me.Label116)
         Me.GroupBox21.Controls.Add(Me.Label117)
         Me.GroupBox21.Controls.Add(Me.LbltonsFlotacion)
-        Me.GroupBox21.Location = New System.Drawing.Point(40, 316)
-        Me.GroupBox21.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox21.Location = New System.Drawing.Point(23, 265)
+        Me.GroupBox21.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox21.Name = "GroupBox21"
-        Me.GroupBox21.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.GroupBox21.Size = New System.Drawing.Size(788, 77)
+        Me.GroupBox21.Padding = New System.Windows.Forms.Padding(2)
+        Me.GroupBox21.Size = New System.Drawing.Size(964, 91)
         Me.GroupBox21.TabIndex = 44
         Me.GroupBox21.TabStop = False
         Me.GroupBox21.Text = "Resumen:"
@@ -573,7 +586,7 @@ Partial Class FrmMineralPlant
         '
         Me.LblHorasFlotacion.AutoSize = True
         Me.LblHorasFlotacion.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblHorasFlotacion.Location = New System.Drawing.Point(550, 42)
+        Me.LblHorasFlotacion.Location = New System.Drawing.Point(686, 50)
         Me.LblHorasFlotacion.Name = "LblHorasFlotacion"
         Me.LblHorasFlotacion.Size = New System.Drawing.Size(38, 22)
         Me.LblHorasFlotacion.TabIndex = 58
@@ -583,7 +596,7 @@ Partial Class FrmMineralPlant
         '
         Me.LbldensidadFlotacion.AutoSize = True
         Me.LbldensidadFlotacion.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LbldensidadFlotacion.Location = New System.Drawing.Point(318, 50)
+        Me.LbldensidadFlotacion.Location = New System.Drawing.Point(397, 50)
         Me.LbldensidadFlotacion.Name = "LbldensidadFlotacion"
         Me.LbldensidadFlotacion.Size = New System.Drawing.Size(38, 22)
         Me.LbldensidadFlotacion.TabIndex = 57
@@ -594,7 +607,7 @@ Partial Class FrmMineralPlant
         Me.Label115.AutoSize = True
         Me.Label115.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label115.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.Label115.Location = New System.Drawing.Point(520, 20)
+        Me.Label115.Location = New System.Drawing.Point(656, 28)
         Me.Label115.Name = "Label115"
         Me.Label115.Size = New System.Drawing.Size(120, 13)
         Me.Label115.TabIndex = 55
@@ -605,7 +618,7 @@ Partial Class FrmMineralPlant
         Me.Label116.AutoSize = True
         Me.Label116.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label116.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.Label116.Location = New System.Drawing.Point(315, 28)
+        Me.Label116.Location = New System.Drawing.Point(394, 28)
         Me.Label116.Name = "Label116"
         Me.Label116.Size = New System.Drawing.Size(60, 13)
         Me.Label116.TabIndex = 54
@@ -617,7 +630,7 @@ Partial Class FrmMineralPlant
         Me.Label117.AutoSize = True
         Me.Label117.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label117.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.Label117.Location = New System.Drawing.Point(123, 28)
+        Me.Label117.Location = New System.Drawing.Point(84, 28)
         Me.Label117.Name = "Label117"
         Me.Label117.Size = New System.Drawing.Size(66, 13)
         Me.Label117.TabIndex = 53
@@ -627,7 +640,7 @@ Partial Class FrmMineralPlant
         '
         Me.LbltonsFlotacion.AutoSize = True
         Me.LbltonsFlotacion.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LbltonsFlotacion.Location = New System.Drawing.Point(129, 50)
+        Me.LbltonsFlotacion.Location = New System.Drawing.Point(90, 50)
         Me.LbltonsFlotacion.Name = "LbltonsFlotacion"
         Me.LbltonsFlotacion.Size = New System.Drawing.Size(38, 22)
         Me.LbltonsFlotacion.TabIndex = 51
@@ -638,18 +651,18 @@ Partial Class FrmMineralPlant
         Me.DgColasFlotacion.AllowUserToAddRows = False
         Me.DgColasFlotacion.AllowUserToDeleteRows = False
         Me.DgColasFlotacion.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DgColasFlotacion.Location = New System.Drawing.Point(72, 167)
-        Me.DgColasFlotacion.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.DgColasFlotacion.Location = New System.Drawing.Point(23, 139)
+        Me.DgColasFlotacion.Margin = New System.Windows.Forms.Padding(2)
         Me.DgColasFlotacion.Name = "DgColasFlotacion"
         Me.DgColasFlotacion.RowTemplate.Height = 24
-        Me.DgColasFlotacion.Size = New System.Drawing.Size(757, 122)
+        Me.DgColasFlotacion.Size = New System.Drawing.Size(964, 122)
         Me.DgColasFlotacion.TabIndex = 6
         '
         'Label104
         '
         Me.Label104.AutoSize = True
         Me.Label104.Font = New System.Drawing.Font("Baskerville Old Face", 16.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label104.Location = New System.Drawing.Point(158, 21)
+        Me.Label104.Location = New System.Drawing.Point(18, 22)
         Me.Label104.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label104.Name = "Label104"
         Me.Label104.Size = New System.Drawing.Size(359, 25)
@@ -671,9 +684,9 @@ Partial Class FrmMineralPlant
         Me.GroupBox19.Controls.Add(Me.CmbTurnoFl)
         Me.GroupBox19.Controls.Add(Me.TxtFinalFl)
         Me.GroupBox19.Controls.Add(Me.TxtInicioFl)
-        Me.GroupBox19.Location = New System.Drawing.Point(43, 50)
+        Me.GroupBox19.Location = New System.Drawing.Point(23, 50)
         Me.GroupBox19.Name = "GroupBox19"
-        Me.GroupBox19.Size = New System.Drawing.Size(884, 84)
+        Me.GroupBox19.Size = New System.Drawing.Size(964, 84)
         Me.GroupBox19.TabIndex = 4
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Lectura Flujometro Cola Flotacion  "
@@ -751,7 +764,7 @@ Partial Class FrmMineralPlant
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(776, 37)
+        Me.Button4.Location = New System.Drawing.Point(836, 37)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(75, 23)
         Me.Button4.TabIndex = 3
@@ -800,10 +813,10 @@ Partial Class FrmMineralPlant
         Me.TabPage8.Controls.Add(Me.Label32)
         Me.TabPage8.Controls.Add(Me.GroupBox16)
         Me.TabPage8.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage8.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage8.Margin = New System.Windows.Forms.Padding(2)
         Me.TabPage8.Name = "TabPage8"
-        Me.TabPage8.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.TabPage8.Size = New System.Drawing.Size(982, 479)
+        Me.TabPage8.Padding = New System.Windows.Forms.Padding(2)
+        Me.TabPage8.Size = New System.Drawing.Size(1022, 503)
         Me.TabPage8.TabIndex = 7
         Me.TabPage8.Text = "Flujometro Cesp5"
         '
@@ -812,10 +825,10 @@ Partial Class FrmMineralPlant
         Me.GroupBox18.Controls.Add(Me.CmdExportarFlowsE5)
         Me.GroupBox18.Controls.Add(Me.DtFinalE5)
         Me.GroupBox18.Controls.Add(Me.DtInicioE5)
-        Me.GroupBox18.Location = New System.Drawing.Point(58, 401)
-        Me.GroupBox18.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox18.Location = New System.Drawing.Point(128, 368)
+        Me.GroupBox18.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox18.Name = "GroupBox18"
-        Me.GroupBox18.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox18.Padding = New System.Windows.Forms.Padding(2)
         Me.GroupBox18.Size = New System.Drawing.Size(788, 63)
         Me.GroupBox18.TabIndex = 43
         Me.GroupBox18.TabStop = False
@@ -823,8 +836,8 @@ Partial Class FrmMineralPlant
         '
         'CmdExportarFlowsE5
         '
-        Me.CmdExportarFlowsE5.Location = New System.Drawing.Point(554, 18)
-        Me.CmdExportarFlowsE5.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.CmdExportarFlowsE5.Location = New System.Drawing.Point(278, 22)
+        Me.CmdExportarFlowsE5.Margin = New System.Windows.Forms.Padding(2)
         Me.CmdExportarFlowsE5.Name = "CmdExportarFlowsE5"
         Me.CmdExportarFlowsE5.Size = New System.Drawing.Size(58, 25)
         Me.CmdExportarFlowsE5.TabIndex = 2
@@ -833,19 +846,21 @@ Partial Class FrmMineralPlant
         '
         'DtFinalE5
         '
-        Me.DtFinalE5.Location = New System.Drawing.Point(317, 18)
-        Me.DtFinalE5.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.DtFinalE5.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtFinalE5.Location = New System.Drawing.Point(147, 25)
+        Me.DtFinalE5.Margin = New System.Windows.Forms.Padding(2)
         Me.DtFinalE5.Name = "DtFinalE5"
-        Me.DtFinalE5.Size = New System.Drawing.Size(151, 20)
+        Me.DtFinalE5.Size = New System.Drawing.Size(108, 20)
         Me.DtFinalE5.TabIndex = 1
         Me.DtFinalE5.Value = New Date(2017, 1, 1, 0, 0, 0, 0)
         '
         'DtInicioE5
         '
-        Me.DtInicioE5.Location = New System.Drawing.Point(118, 18)
-        Me.DtInicioE5.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.DtInicioE5.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtInicioE5.Location = New System.Drawing.Point(20, 25)
+        Me.DtInicioE5.Margin = New System.Windows.Forms.Padding(2)
         Me.DtInicioE5.Name = "DtInicioE5"
-        Me.DtInicioE5.Size = New System.Drawing.Size(151, 20)
+        Me.DtInicioE5.Size = New System.Drawing.Size(108, 20)
         Me.DtInicioE5.TabIndex = 0
         Me.DtInicioE5.Value = New Date(2017, 1, 1, 0, 0, 0, 0)
         '
@@ -857,10 +872,10 @@ Partial Class FrmMineralPlant
         Me.GroupBox17.Controls.Add(Me.Label107)
         Me.GroupBox17.Controls.Add(Me.Label108)
         Me.GroupBox17.Controls.Add(Me.LblTonsE5)
-        Me.GroupBox17.Location = New System.Drawing.Point(58, 306)
-        Me.GroupBox17.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox17.Location = New System.Drawing.Point(128, 277)
+        Me.GroupBox17.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox17.Name = "GroupBox17"
-        Me.GroupBox17.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox17.Padding = New System.Windows.Forms.Padding(2)
         Me.GroupBox17.Size = New System.Drawing.Size(788, 77)
         Me.GroupBox17.TabIndex = 42
         Me.GroupBox17.TabStop = False
@@ -935,18 +950,18 @@ Partial Class FrmMineralPlant
         Me.DgFlujoE5.AllowUserToAddRows = False
         Me.DgFlujoE5.AllowUserToDeleteRows = False
         Me.DgFlujoE5.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DgFlujoE5.Location = New System.Drawing.Point(72, 167)
-        Me.DgFlujoE5.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.DgFlujoE5.Location = New System.Drawing.Point(24, 139)
+        Me.DgFlujoE5.Margin = New System.Windows.Forms.Padding(2)
         Me.DgFlujoE5.Name = "DgFlujoE5"
         Me.DgFlujoE5.RowTemplate.Height = 24
-        Me.DgFlujoE5.Size = New System.Drawing.Size(757, 122)
+        Me.DgFlujoE5.Size = New System.Drawing.Size(985, 122)
         Me.DgFlujoE5.TabIndex = 3
         '
         'Label32
         '
         Me.Label32.AutoSize = True
         Me.Label32.Font = New System.Drawing.Font("Baskerville Old Face", 16.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label32.Location = New System.Drawing.Point(158, 21)
+        Me.Label32.Location = New System.Drawing.Point(23, 22)
         Me.Label32.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label32.Name = "Label32"
         Me.Label32.Size = New System.Drawing.Size(401, 25)
@@ -968,9 +983,9 @@ Partial Class FrmMineralPlant
         Me.GroupBox16.Controls.Add(Me.CmbTurnoE5)
         Me.GroupBox16.Controls.Add(Me.TxtFinalE5)
         Me.GroupBox16.Controls.Add(Me.TxtInicioE5)
-        Me.GroupBox16.Location = New System.Drawing.Point(43, 50)
+        Me.GroupBox16.Location = New System.Drawing.Point(25, 50)
         Me.GroupBox16.Name = "GroupBox16"
-        Me.GroupBox16.Size = New System.Drawing.Size(913, 84)
+        Me.GroupBox16.Size = New System.Drawing.Size(984, 84)
         Me.GroupBox16.TabIndex = 1
         Me.GroupBox16.TabStop = False
         Me.GroupBox16.Text = "Lectura Flujometro Bomba Peristaltica "
@@ -1096,10 +1111,10 @@ Partial Class FrmMineralPlant
         Me.TabPage7.Controls.Add(Me.DgHorometroKnelson)
         Me.TabPage7.Controls.Add(Me.GroupBox15)
         Me.TabPage7.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage7.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage7.Margin = New System.Windows.Forms.Padding(2)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.TabPage7.Size = New System.Drawing.Size(982, 479)
+        Me.TabPage7.Padding = New System.Windows.Forms.Padding(2)
+        Me.TabPage7.Size = New System.Drawing.Size(1022, 503)
         Me.TabPage7.TabIndex = 6
         Me.TabPage7.Text = "Concentrador Knelson"
         '
@@ -1107,10 +1122,10 @@ Partial Class FrmMineralPlant
         '
         Me.GroupBox23.Controls.Add(Me.LblHorasConcentrador)
         Me.GroupBox23.Controls.Add(Me.Label114)
-        Me.GroupBox23.Location = New System.Drawing.Point(38, 294)
-        Me.GroupBox23.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox23.Location = New System.Drawing.Point(25, 293)
+        Me.GroupBox23.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox23.Name = "GroupBox23"
-        Me.GroupBox23.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox23.Padding = New System.Windows.Forms.Padding(2)
         Me.GroupBox23.Size = New System.Drawing.Size(735, 77)
         Me.GroupBox23.TabIndex = 44
         Me.GroupBox23.TabStop = False
@@ -1120,7 +1135,7 @@ Partial Class FrmMineralPlant
         '
         Me.LblHorasConcentrador.AutoSize = True
         Me.LblHorasConcentrador.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblHorasConcentrador.Location = New System.Drawing.Point(508, 42)
+        Me.LblHorasConcentrador.Location = New System.Drawing.Point(45, 43)
         Me.LblHorasConcentrador.Name = "LblHorasConcentrador"
         Me.LblHorasConcentrador.Size = New System.Drawing.Size(38, 22)
         Me.LblHorasConcentrador.TabIndex = 58
@@ -1131,7 +1146,7 @@ Partial Class FrmMineralPlant
         Me.Label114.AutoSize = True
         Me.Label114.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label114.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.Label114.Location = New System.Drawing.Point(472, 14)
+        Me.Label114.Location = New System.Drawing.Point(9, 15)
         Me.Label114.Name = "Label114"
         Me.Label114.Size = New System.Drawing.Size(120, 13)
         Me.Label114.TabIndex = 55
@@ -1141,7 +1156,7 @@ Partial Class FrmMineralPlant
         '
         Me.Label48.AutoSize = True
         Me.Label48.Font = New System.Drawing.Font("Baskerville Old Face", 16.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label48.Location = New System.Drawing.Point(158, 20)
+        Me.Label48.Location = New System.Drawing.Point(20, 19)
         Me.Label48.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label48.Name = "Label48"
         Me.Label48.Size = New System.Drawing.Size(455, 25)
@@ -1151,11 +1166,11 @@ Partial Class FrmMineralPlant
         'DgHorometroKnelson
         '
         Me.DgHorometroKnelson.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DgHorometroKnelson.Location = New System.Drawing.Point(68, 154)
-        Me.DgHorometroKnelson.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.DgHorometroKnelson.Location = New System.Drawing.Point(25, 154)
+        Me.DgHorometroKnelson.Margin = New System.Windows.Forms.Padding(2)
         Me.DgHorometroKnelson.Name = "DgHorometroKnelson"
         Me.DgHorometroKnelson.RowTemplate.Height = 24
-        Me.DgHorometroKnelson.Size = New System.Drawing.Size(624, 122)
+        Me.DgHorometroKnelson.Size = New System.Drawing.Size(735, 122)
         Me.DgHorometroKnelson.TabIndex = 2
         '
         'GroupBox15
@@ -1167,7 +1182,7 @@ Partial Class FrmMineralPlant
         Me.GroupBox15.Controls.Add(Me.CmbKNelsonTurn)
         Me.GroupBox15.Controls.Add(Me.TxtHKNelsonF)
         Me.GroupBox15.Controls.Add(Me.TxtHKNelsonI)
-        Me.GroupBox15.Location = New System.Drawing.Point(38, 64)
+        Me.GroupBox15.Location = New System.Drawing.Point(25, 64)
         Me.GroupBox15.Name = "GroupBox15"
         Me.GroupBox15.Size = New System.Drawing.Size(735, 84)
         Me.GroupBox15.TabIndex = 1
@@ -1245,8 +1260,8 @@ Partial Class FrmMineralPlant
         Me.TabPage6.Controls.Add(Me.GroupBox14)
         Me.TabPage6.Location = New System.Drawing.Point(4, 22)
         Me.TabPage6.Name = "TabPage6"
-        Me.TabPage6.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
-        Me.TabPage6.Size = New System.Drawing.Size(982, 479)
+        Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage6.Size = New System.Drawing.Size(1022, 503)
         Me.TabPage6.TabIndex = 5
         Me.TabPage6.Text = "Horometro Molino"
         '
@@ -1254,11 +1269,11 @@ Partial Class FrmMineralPlant
         '
         Me.GroupBox22.Controls.Add(Me.LblHorasMolienda)
         Me.GroupBox22.Controls.Add(Me.Label118)
-        Me.GroupBox22.Location = New System.Drawing.Point(84, 326)
-        Me.GroupBox22.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox22.Location = New System.Drawing.Point(21, 304)
+        Me.GroupBox22.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox22.Name = "GroupBox22"
-        Me.GroupBox22.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.GroupBox22.Size = New System.Drawing.Size(788, 77)
+        Me.GroupBox22.Padding = New System.Windows.Forms.Padding(2)
+        Me.GroupBox22.Size = New System.Drawing.Size(735, 77)
         Me.GroupBox22.TabIndex = 43
         Me.GroupBox22.TabStop = False
         Me.GroupBox22.Text = "Resumen:"
@@ -1267,7 +1282,7 @@ Partial Class FrmMineralPlant
         '
         Me.LblHorasMolienda.AutoSize = True
         Me.LblHorasMolienda.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblHorasMolienda.Location = New System.Drawing.Point(508, 42)
+        Me.LblHorasMolienda.Location = New System.Drawing.Point(14, 42)
         Me.LblHorasMolienda.Name = "LblHorasMolienda"
         Me.LblHorasMolienda.Size = New System.Drawing.Size(38, 22)
         Me.LblHorasMolienda.TabIndex = 58
@@ -1278,7 +1293,7 @@ Partial Class FrmMineralPlant
         Me.Label118.AutoSize = True
         Me.Label118.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label118.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.Label118.Location = New System.Drawing.Point(472, 14)
+        Me.Label118.Location = New System.Drawing.Point(9, 24)
         Me.Label118.Name = "Label118"
         Me.Label118.Size = New System.Drawing.Size(120, 13)
         Me.Label118.TabIndex = 55
@@ -1288,7 +1303,7 @@ Partial Class FrmMineralPlant
         '
         Me.Label50.AutoSize = True
         Me.Label50.Font = New System.Drawing.Font("Baskerville Old Face", 16.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label50.Location = New System.Drawing.Point(158, 16)
+        Me.Label50.Location = New System.Drawing.Point(16, 16)
         Me.Label50.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label50.Name = "Label50"
         Me.Label50.Size = New System.Drawing.Size(292, 25)
@@ -1298,9 +1313,9 @@ Partial Class FrmMineralPlant
         'DgHorometro
         '
         Me.DgHorometro.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DgHorometro.Location = New System.Drawing.Point(122, 162)
+        Me.DgHorometro.Location = New System.Drawing.Point(21, 134)
         Me.DgHorometro.Name = "DgHorometro"
-        Me.DgHorometro.Size = New System.Drawing.Size(597, 150)
+        Me.DgHorometro.Size = New System.Drawing.Size(735, 165)
         Me.DgHorometro.TabIndex = 1
         '
         'GroupBox14
@@ -1312,7 +1327,7 @@ Partial Class FrmMineralPlant
         Me.GroupBox14.Controls.Add(Me.Cmbturno)
         Me.GroupBox14.Controls.Add(Me.TxtLfinalHorometro)
         Me.GroupBox14.Controls.Add(Me.TxtLinicialHorometro)
-        Me.GroupBox14.Location = New System.Drawing.Point(94, 63)
+        Me.GroupBox14.Location = New System.Drawing.Point(21, 44)
         Me.GroupBox14.Name = "GroupBox14"
         Me.GroupBox14.Size = New System.Drawing.Size(735, 84)
         Me.GroupBox14.TabIndex = 0
@@ -1390,10 +1405,10 @@ Partial Class FrmMineralPlant
         Me.TabPage5.Controls.Add(Me.DgMerrilCrowe)
         Me.TabPage5.Controls.Add(Me.GroupBox12)
         Me.TabPage5.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage5.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage5.Margin = New System.Windows.Forms.Padding(2)
         Me.TabPage5.Name = "TabPage5"
-        Me.TabPage5.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.TabPage5.Size = New System.Drawing.Size(982, 479)
+        Me.TabPage5.Padding = New System.Windows.Forms.Padding(2)
+        Me.TabPage5.Size = New System.Drawing.Size(1022, 503)
         Me.TabPage5.TabIndex = 4
         Me.TabPage5.Text = "Merril Crowe"
         '
@@ -1403,18 +1418,18 @@ Partial Class FrmMineralPlant
         Me.GroupBox25.Controls.Add(Me.DtFinalMerril)
         Me.GroupBox25.Controls.Add(Me.DtInicioMerril)
         Me.GroupBox25.Location = New System.Drawing.Point(22, 402)
-        Me.GroupBox25.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox25.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox25.Name = "GroupBox25"
-        Me.GroupBox25.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.GroupBox25.Size = New System.Drawing.Size(868, 63)
+        Me.GroupBox25.Padding = New System.Windows.Forms.Padding(2)
+        Me.GroupBox25.Size = New System.Drawing.Size(980, 63)
         Me.GroupBox25.TabIndex = 47
         Me.GroupBox25.TabStop = False
         Me.GroupBox25.Text = "Exportar Datos"
         '
         'Button7
         '
-        Me.Button7.Location = New System.Drawing.Point(602, 11)
-        Me.Button7.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.Button7.Location = New System.Drawing.Point(285, 20)
+        Me.Button7.Margin = New System.Windows.Forms.Padding(2)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(58, 25)
         Me.Button7.TabIndex = 2
@@ -1423,19 +1438,21 @@ Partial Class FrmMineralPlant
         '
         'DtFinalMerril
         '
-        Me.DtFinalMerril.Location = New System.Drawing.Point(317, 18)
-        Me.DtFinalMerril.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.DtFinalMerril.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtFinalMerril.Location = New System.Drawing.Point(157, 23)
+        Me.DtFinalMerril.Margin = New System.Windows.Forms.Padding(2)
         Me.DtFinalMerril.Name = "DtFinalMerril"
-        Me.DtFinalMerril.Size = New System.Drawing.Size(151, 20)
+        Me.DtFinalMerril.Size = New System.Drawing.Size(110, 20)
         Me.DtFinalMerril.TabIndex = 1
         Me.DtFinalMerril.Value = New Date(2017, 1, 1, 0, 0, 0, 0)
         '
         'DtInicioMerril
         '
-        Me.DtInicioMerril.Location = New System.Drawing.Point(118, 18)
-        Me.DtInicioMerril.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.DtInicioMerril.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtInicioMerril.Location = New System.Drawing.Point(16, 23)
+        Me.DtInicioMerril.Margin = New System.Windows.Forms.Padding(2)
         Me.DtInicioMerril.Name = "DtInicioMerril"
-        Me.DtInicioMerril.Size = New System.Drawing.Size(151, 20)
+        Me.DtInicioMerril.Size = New System.Drawing.Size(121, 20)
         Me.DtInicioMerril.TabIndex = 0
         Me.DtInicioMerril.Value = New Date(2017, 1, 1, 0, 0, 0, 0)
         '
@@ -1460,10 +1477,10 @@ Partial Class FrmMineralPlant
         Me.GroupBox13.Controls.Add(Me.Label68)
         Me.GroupBox13.Controls.Add(Me.LbltonMerril)
         Me.GroupBox13.Location = New System.Drawing.Point(22, 317)
-        Me.GroupBox13.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox13.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox13.Name = "GroupBox13"
-        Me.GroupBox13.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.GroupBox13.Size = New System.Drawing.Size(868, 81)
+        Me.GroupBox13.Padding = New System.Windows.Forms.Padding(2)
+        Me.GroupBox13.Size = New System.Drawing.Size(980, 81)
         Me.GroupBox13.TabIndex = 41
         Me.GroupBox13.TabStop = False
         Me.GroupBox13.Text = "Resumen:"
@@ -1472,7 +1489,7 @@ Partial Class FrmMineralPlant
         '
         Me.ChkResumerril.AutoSize = True
         Me.ChkResumerril.Enabled = False
-        Me.ChkResumerril.Location = New System.Drawing.Point(753, 50)
+        Me.ChkResumerril.Location = New System.Drawing.Point(839, 37)
         Me.ChkResumerril.Name = "ChkResumerril"
         Me.ChkResumerril.Size = New System.Drawing.Size(73, 17)
         Me.ChkResumerril.TabIndex = 61
@@ -1551,7 +1568,7 @@ Partial Class FrmMineralPlant
         Me.DgMerrilCrowe.Location = New System.Drawing.Point(22, 150)
         Me.DgMerrilCrowe.Name = "DgMerrilCrowe"
         Me.DgMerrilCrowe.RowTemplate.Height = 24
-        Me.DgMerrilCrowe.Size = New System.Drawing.Size(858, 154)
+        Me.DgMerrilCrowe.Size = New System.Drawing.Size(980, 154)
         Me.DgMerrilCrowe.TabIndex = 40
         '
         'GroupBox12
@@ -1566,10 +1583,10 @@ Partial Class FrmMineralPlant
         Me.GroupBox12.Controls.Add(Me.ListMCInicio)
         Me.GroupBox12.Controls.Add(Me.ListMCFinal)
         Me.GroupBox12.Location = New System.Drawing.Point(22, 54)
-        Me.GroupBox12.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox12.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.GroupBox12.Size = New System.Drawing.Size(858, 81)
+        Me.GroupBox12.Padding = New System.Windows.Forms.Padding(2)
+        Me.GroupBox12.Size = New System.Drawing.Size(980, 81)
         Me.GroupBox12.TabIndex = 0
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Lectura Merril Crowe."
@@ -1577,7 +1594,7 @@ Partial Class FrmMineralPlant
         'CmdSaveMC
         '
         Me.CmdSaveMC.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmdSaveMC.Location = New System.Drawing.Point(590, 41)
+        Me.CmdSaveMC.Location = New System.Drawing.Point(440, 33)
         Me.CmdSaveMC.Name = "CmdSaveMC"
         Me.CmdSaveMC.Size = New System.Drawing.Size(75, 23)
         Me.CmdSaveMC.TabIndex = 49
@@ -1587,7 +1604,7 @@ Partial Class FrmMineralPlant
         'Label71
         '
         Me.Label71.AutoSize = True
-        Me.Label71.Location = New System.Drawing.Point(93, 25)
+        Me.Label71.Location = New System.Drawing.Point(24, 25)
         Me.Label71.Name = "Label71"
         Me.Label71.Size = New System.Drawing.Size(61, 13)
         Me.Label71.TabIndex = 53
@@ -1596,7 +1613,7 @@ Partial Class FrmMineralPlant
         'Label72
         '
         Me.Label72.AutoSize = True
-        Me.Label72.Location = New System.Drawing.Point(453, 24)
+        Me.Label72.Location = New System.Drawing.Point(325, 24)
         Me.Label72.Name = "Label72"
         Me.Label72.Size = New System.Drawing.Size(71, 13)
         Me.Label72.TabIndex = 52
@@ -1605,7 +1622,7 @@ Partial Class FrmMineralPlant
         'Label73
         '
         Me.Label73.AutoSize = True
-        Me.Label73.Location = New System.Drawing.Point(207, 24)
+        Me.Label73.Location = New System.Drawing.Point(123, 24)
         Me.Label73.Name = "Label73"
         Me.Label73.Size = New System.Drawing.Size(58, 13)
         Me.Label73.TabIndex = 51
@@ -1614,7 +1631,7 @@ Partial Class FrmMineralPlant
         'Label74
         '
         Me.Label74.AutoSize = True
-        Me.Label74.Location = New System.Drawing.Point(350, 24)
+        Me.Label74.Location = New System.Drawing.Point(226, 24)
         Me.Label74.Name = "Label74"
         Me.Label74.Size = New System.Drawing.Size(76, 13)
         Me.Label74.TabIndex = 50
@@ -1622,14 +1639,14 @@ Partial Class FrmMineralPlant
         '
         'TxtInicioMC
         '
-        Me.TxtInicioMC.Location = New System.Drawing.Point(338, 44)
+        Me.TxtInicioMC.Location = New System.Drawing.Point(223, 44)
         Me.TxtInicioMC.Name = "TxtInicioMC"
         Me.TxtInicioMC.Size = New System.Drawing.Size(80, 20)
         Me.TxtInicioMC.TabIndex = 47
         '
         'TxTFinalMC
         '
-        Me.TxTFinalMC.Location = New System.Drawing.Point(440, 44)
+        Me.TxTFinalMC.Location = New System.Drawing.Point(325, 44)
         Me.TxTFinalMC.Name = "TxTFinalMC"
         Me.TxTFinalMC.Size = New System.Drawing.Size(80, 20)
         Me.TxTFinalMC.TabIndex = 48
@@ -1639,7 +1656,7 @@ Partial Class FrmMineralPlant
         Me.ListMCInicio.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListMCInicio.FormattingEnabled = True
         Me.ListMCInicio.ItemHeight = 16
-        Me.ListMCInicio.Location = New System.Drawing.Point(78, 44)
+        Me.ListMCInicio.Location = New System.Drawing.Point(21, 44)
         Me.ListMCInicio.Name = "ListMCInicio"
         Me.ListMCInicio.Size = New System.Drawing.Size(80, 20)
         Me.ListMCInicio.TabIndex = 45
@@ -1649,7 +1666,7 @@ Partial Class FrmMineralPlant
         Me.ListMCFinal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListMCFinal.FormattingEnabled = True
         Me.ListMCFinal.ItemHeight = 16
-        Me.ListMCFinal.Location = New System.Drawing.Point(200, 44)
+        Me.ListMCFinal.Location = New System.Drawing.Point(120, 44)
         Me.ListMCFinal.Name = "ListMCFinal"
         Me.ListMCFinal.Size = New System.Drawing.Size(80, 20)
         Me.ListMCFinal.TabIndex = 46
@@ -1667,17 +1684,17 @@ Partial Class FrmMineralPlant
         Me.TabPage4.Controls.Add(Me.GroupBox10)
         Me.TabPage4.Controls.Add(Me.GroupBox7)
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage4.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage4.Margin = New System.Windows.Forms.Padding(2)
         Me.TabPage4.Name = "TabPage4"
-        Me.TabPage4.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.TabPage4.Size = New System.Drawing.Size(982, 479)
+        Me.TabPage4.Padding = New System.Windows.Forms.Padding(2)
+        Me.TabPage4.Size = New System.Drawing.Size(1022, 503)
         Me.TabPage4.TabIndex = 3
         Me.TabPage4.Text = "Operacion"
         '
         'Button9
         '
         Me.Button9.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button9.Location = New System.Drawing.Point(265, 299)
+        Me.Button9.Location = New System.Drawing.Point(545, 279)
         Me.Button9.Name = "Button9"
         Me.Button9.Size = New System.Drawing.Size(75, 23)
         Me.Button9.TabIndex = 27
@@ -1689,9 +1706,9 @@ Partial Class FrmMineralPlant
         Me.GroupBox26.Controls.Add(Me.Label120)
         Me.GroupBox26.Controls.Add(Me.CmbConcentradoFlotacion)
         Me.GroupBox26.Location = New System.Drawing.Point(265, 165)
-        Me.GroupBox26.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox26.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox26.Name = "GroupBox26"
-        Me.GroupBox26.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox26.Padding = New System.Windows.Forms.Padding(2)
         Me.GroupBox26.Size = New System.Drawing.Size(176, 81)
         Me.GroupBox26.TabIndex = 26
         Me.GroupBox26.TabStop = False
@@ -1711,7 +1728,7 @@ Partial Class FrmMineralPlant
         '
         Me.CmbConcentradoFlotacion.FormattingEnabled = True
         Me.CmbConcentradoFlotacion.Location = New System.Drawing.Point(19, 37)
-        Me.CmbConcentradoFlotacion.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.CmbConcentradoFlotacion.Margin = New System.Windows.Forms.Padding(2)
         Me.CmbConcentradoFlotacion.Name = "CmbConcentradoFlotacion"
         Me.CmbConcentradoFlotacion.Size = New System.Drawing.Size(144, 21)
         Me.CmbConcentradoFlotacion.TabIndex = 0
@@ -1726,10 +1743,10 @@ Partial Class FrmMineralPlant
         Me.GroupBox11.Controls.Add(Me.DtFechaFinal)
         Me.GroupBox11.Controls.Add(Me.DtFechaInicio)
         Me.GroupBox11.Location = New System.Drawing.Point(11, 339)
-        Me.GroupBox11.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox11.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox11.Name = "GroupBox11"
-        Me.GroupBox11.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.GroupBox11.Size = New System.Drawing.Size(927, 81)
+        Me.GroupBox11.Padding = New System.Windows.Forms.Padding(2)
+        Me.GroupBox11.Size = New System.Drawing.Size(989, 81)
         Me.GroupBox11.TabIndex = 25
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "Exportar Resumen Diario:"
@@ -1737,9 +1754,9 @@ Partial Class FrmMineralPlant
         'CmdReporteMineras
         '
         Me.CmdReporteMineras.Font = New System.Drawing.Font("Arial Narrow", 7.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmdReporteMineras.Location = New System.Drawing.Point(562, 13)
+        Me.CmdReporteMineras.Location = New System.Drawing.Point(430, 24)
         Me.CmdReporteMineras.Name = "CmdReporteMineras"
-        Me.CmdReporteMineras.Size = New System.Drawing.Size(62, 54)
+        Me.CmdReporteMineras.Size = New System.Drawing.Size(113, 38)
         Me.CmdReporteMineras.TabIndex = 64
         Me.CmdReporteMineras.Text = "Mineras"
         Me.CmdReporteMineras.UseVisualStyleBackColor = True
@@ -1748,7 +1765,7 @@ Partial Class FrmMineralPlant
         '
         Me.LblExportar.AutoSize = True
         Me.LblExportar.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblExportar.Location = New System.Drawing.Point(777, 41)
+        Me.LblExportar.Location = New System.Drawing.Point(838, 29)
         Me.LblExportar.Name = "LblExportar"
         Me.LblExportar.Size = New System.Drawing.Size(140, 25)
         Me.LblExportar.TabIndex = 63
@@ -1758,9 +1775,9 @@ Partial Class FrmMineralPlant
         'CmdExportDaily
         '
         Me.CmdExportDaily.Font = New System.Drawing.Font("Arial Narrow", 7.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmdExportDaily.Location = New System.Drawing.Point(453, 13)
+        Me.CmdExportDaily.Location = New System.Drawing.Point(312, 24)
         Me.CmdExportDaily.Name = "CmdExportDaily"
-        Me.CmdExportDaily.Size = New System.Drawing.Size(63, 54)
+        Me.CmdExportDaily.Size = New System.Drawing.Size(112, 38)
         Me.CmdExportDaily.TabIndex = 62
         Me.CmdExportDaily.Text = "Planta"
         Me.CmdExportDaily.UseVisualStyleBackColor = True
@@ -1768,7 +1785,7 @@ Partial Class FrmMineralPlant
         'Label49
         '
         Me.Label49.AutoSize = True
-        Me.Label49.Location = New System.Drawing.Point(86, 54)
+        Me.Label49.Location = New System.Drawing.Point(86, 53)
         Me.Label49.Name = "Label49"
         Me.Label49.Size = New System.Drawing.Size(62, 13)
         Me.Label49.TabIndex = 61
@@ -1785,24 +1802,26 @@ Partial Class FrmMineralPlant
         '
         'DtFechaFinal
         '
-        Me.DtFechaFinal.Location = New System.Drawing.Point(180, 47)
+        Me.DtFechaFinal.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtFechaFinal.Location = New System.Drawing.Point(157, 49)
         Me.DtFechaFinal.Name = "DtFechaFinal"
-        Me.DtFechaFinal.Size = New System.Drawing.Size(200, 20)
+        Me.DtFechaFinal.Size = New System.Drawing.Size(117, 20)
         Me.DtFechaFinal.TabIndex = 59
         Me.DtFechaFinal.Value = New Date(2017, 1, 1, 0, 0, 0, 0)
         '
         'DtFechaInicio
         '
-        Me.DtFechaInicio.Location = New System.Drawing.Point(178, 13)
+        Me.DtFechaInicio.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtFechaInicio.Location = New System.Drawing.Point(157, 17)
         Me.DtFechaInicio.Name = "DtFechaInicio"
-        Me.DtFechaInicio.Size = New System.Drawing.Size(200, 20)
+        Me.DtFechaInicio.Size = New System.Drawing.Size(117, 20)
         Me.DtFechaInicio.TabIndex = 58
         Me.DtFechaInicio.Value = New Date(2017, 1, 1, 0, 0, 0, 0)
         '
         'CmdOperacionEdit
         '
         Me.CmdOperacionEdit.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmdOperacionEdit.Location = New System.Drawing.Point(24, 299)
+        Me.CmdOperacionEdit.Location = New System.Drawing.Point(430, 279)
         Me.CmdOperacionEdit.Name = "CmdOperacionEdit"
         Me.CmdOperacionEdit.Size = New System.Drawing.Size(75, 23)
         Me.CmdOperacionEdit.TabIndex = 24
@@ -1812,7 +1831,7 @@ Partial Class FrmMineralPlant
         'CmdOperacion
         '
         Me.CmdOperacion.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmdOperacion.Location = New System.Drawing.Point(143, 299)
+        Me.CmdOperacion.Location = New System.Drawing.Point(323, 279)
         Me.CmdOperacion.Name = "CmdOperacion"
         Me.CmdOperacion.Size = New System.Drawing.Size(75, 23)
         Me.CmdOperacion.TabIndex = 23
@@ -1827,10 +1846,10 @@ Partial Class FrmMineralPlant
         Me.GroupBox9.Controls.Add(Me.TxtTonMinera)
         Me.GroupBox9.Controls.Add(Me.TxtTonZandor)
         Me.GroupBox9.Location = New System.Drawing.Point(489, 167)
-        Me.GroupBox9.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox9.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.GroupBox9.Size = New System.Drawing.Size(449, 81)
+        Me.GroupBox9.Padding = New System.Windows.Forms.Padding(2)
+        Me.GroupBox9.Size = New System.Drawing.Size(511, 81)
         Me.GroupBox9.TabIndex = 3
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "Toneladas Molidas:"
@@ -1899,31 +1918,31 @@ Partial Class FrmMineralPlant
         Me.GroupBox8.Controls.Add(Me.Label53)
         Me.GroupBox8.Controls.Add(Me.Label52)
         Me.GroupBox8.Location = New System.Drawing.Point(489, 24)
-        Me.GroupBox8.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox8.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.GroupBox8.Size = New System.Drawing.Size(449, 123)
+        Me.GroupBox8.Padding = New System.Windows.Forms.Padding(2)
+        Me.GroupBox8.Size = New System.Drawing.Size(511, 123)
         Me.GroupBox8.TabIndex = 1
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "Inventario Mineral:"
         '
         'TxtStockPMFinos
         '
-        Me.TxtStockPMFinos.Location = New System.Drawing.Point(362, 89)
+        Me.TxtStockPMFinos.Location = New System.Drawing.Point(412, 89)
         Me.TxtStockPMFinos.Name = "TxtStockPMFinos"
         Me.TxtStockPMFinos.Size = New System.Drawing.Size(70, 20)
         Me.TxtStockPMFinos.TabIndex = 51
         '
         'TxtStockZCGruesos
         '
-        Me.TxtStockZCGruesos.Location = New System.Drawing.Point(190, 89)
+        Me.TxtStockZCGruesos.Location = New System.Drawing.Point(240, 89)
         Me.TxtStockZCGruesos.Name = "TxtStockZCGruesos"
         Me.TxtStockZCGruesos.Size = New System.Drawing.Size(70, 20)
         Me.TxtStockZCGruesos.TabIndex = 49
         '
         'TxtStockZCFinos
         '
-        Me.TxtStockZCFinos.Location = New System.Drawing.Point(276, 89)
+        Me.TxtStockZCFinos.Location = New System.Drawing.Point(326, 89)
         Me.TxtStockZCFinos.Name = "TxtStockZCFinos"
         Me.TxtStockZCFinos.Size = New System.Drawing.Size(70, 20)
         Me.TxtStockZCFinos.TabIndex = 50
@@ -1947,7 +1966,7 @@ Partial Class FrmMineralPlant
         Me.Label59.AutoSize = True
         Me.Label59.BackColor = System.Drawing.Color.LightGray
         Me.Label59.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label59.Location = New System.Drawing.Point(368, 56)
+        Me.Label59.Location = New System.Drawing.Point(418, 56)
         Me.Label59.Name = "Label59"
         Me.Label59.Size = New System.Drawing.Size(51, 13)
         Me.Label59.TabIndex = 61
@@ -1958,7 +1977,7 @@ Partial Class FrmMineralPlant
         Me.Label58.AutoSize = True
         Me.Label58.BackColor = System.Drawing.Color.LightGray
         Me.Label58.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label58.Location = New System.Drawing.Point(244, 55)
+        Me.Label58.Location = New System.Drawing.Point(294, 55)
         Me.Label58.Name = "Label58"
         Me.Label58.Size = New System.Drawing.Size(47, 13)
         Me.Label58.TabIndex = 60
@@ -1968,7 +1987,7 @@ Partial Class FrmMineralPlant
         '
         Me.Label60.AutoSize = True
         Me.Label60.ForeColor = System.Drawing.SystemColors.AppWorkspace
-        Me.Label60.Location = New System.Drawing.Point(188, 71)
+        Me.Label60.Location = New System.Drawing.Point(238, 71)
         Me.Label60.Name = "Label60"
         Me.Label60.Size = New System.Drawing.Size(79, 13)
         Me.Label60.TabIndex = 59
@@ -1978,7 +1997,7 @@ Partial Class FrmMineralPlant
         '
         Me.Label61.AutoSize = True
         Me.Label61.ForeColor = System.Drawing.SystemColors.AppWorkspace
-        Me.Label61.Location = New System.Drawing.Point(273, 71)
+        Me.Label61.Location = New System.Drawing.Point(323, 71)
         Me.Label61.Name = "Label61"
         Me.Label61.Size = New System.Drawing.Size(65, 13)
         Me.Label61.TabIndex = 58
@@ -1988,7 +2007,7 @@ Partial Class FrmMineralPlant
         '
         Me.Label57.AutoSize = True
         Me.Label57.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label57.Location = New System.Drawing.Point(248, 30)
+        Me.Label57.Location = New System.Drawing.Point(298, 30)
         Me.Label57.Name = "Label57"
         Me.Label57.Size = New System.Drawing.Size(130, 16)
         Me.Label57.TabIndex = 57
@@ -2047,9 +2066,9 @@ Partial Class FrmMineralPlant
         Me.GroupBox10.Controls.Add(Me.CmbParada)
         Me.GroupBox10.Controls.Add(Me.Label81)
         Me.GroupBox10.Location = New System.Drawing.Point(11, 165)
-        Me.GroupBox10.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox10.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox10.Padding = New System.Windows.Forms.Padding(2)
         Me.GroupBox10.Size = New System.Drawing.Size(249, 81)
         Me.GroupBox10.TabIndex = 2
         Me.GroupBox10.TabStop = False
@@ -2060,7 +2079,7 @@ Partial Class FrmMineralPlant
         Me.CmbParada.FormattingEnabled = True
         Me.CmbParada.Items.AddRange(New Object() {"Corte de Energia", "Mantenimiento Programado", "Cambio Forros Molino", "Falla Prematura de Forros", "Fallas en Relleno Hidraulico", "Falta de Mineral", "Falla Bomba Warman", "Falta de Agua"})
         Me.CmbParada.Location = New System.Drawing.Point(12, 37)
-        Me.CmbParada.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.CmbParada.Margin = New System.Windows.Forms.Padding(2)
         Me.CmbParada.Name = "CmbParada"
         Me.CmbParada.Size = New System.Drawing.Size(225, 21)
         Me.CmbParada.TabIndex = 65
@@ -2095,9 +2114,9 @@ Partial Class FrmMineralPlant
         Me.GroupBox7.Controls.Add(Me.Label1)
         Me.GroupBox7.Controls.Add(Me.Label2)
         Me.GroupBox7.Location = New System.Drawing.Point(11, 24)
-        Me.GroupBox7.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox7.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox7.Padding = New System.Windows.Forms.Padding(2)
         Me.GroupBox7.Size = New System.Drawing.Size(440, 123)
         Me.GroupBox7.TabIndex = 0
         Me.GroupBox7.TabStop = False
@@ -2272,9 +2291,9 @@ Partial Class FrmMineralPlant
         Me.TabPage3.Controls.Add(Me.DgLecturaBandas)
         Me.TabPage3.Controls.Add(Me.GroupBox5)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage3.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage3.Margin = New System.Windows.Forms.Padding(2)
         Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage3.Padding = New System.Windows.Forms.Padding(2)
         Me.TabPage3.Size = New System.Drawing.Size(1022, 503)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Lectura de Banda"
@@ -2285,9 +2304,9 @@ Partial Class FrmMineralPlant
         Me.GroupBox24.Controls.Add(Me.DtFinalB12)
         Me.GroupBox24.Controls.Add(Me.DtInicioB12)
         Me.GroupBox24.Location = New System.Drawing.Point(11, 424)
-        Me.GroupBox24.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox24.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox24.Name = "GroupBox24"
-        Me.GroupBox24.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox24.Padding = New System.Windows.Forms.Padding(2)
         Me.GroupBox24.Size = New System.Drawing.Size(1002, 63)
         Me.GroupBox24.TabIndex = 46
         Me.GroupBox24.TabStop = False
@@ -2295,8 +2314,8 @@ Partial Class FrmMineralPlant
         '
         'Button6
         '
-        Me.Button6.Location = New System.Drawing.Point(541, 17)
-        Me.Button6.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.Button6.Location = New System.Drawing.Point(329, 22)
+        Me.Button6.Margin = New System.Windows.Forms.Padding(2)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(58, 25)
         Me.Button6.TabIndex = 2
@@ -2305,19 +2324,21 @@ Partial Class FrmMineralPlant
         '
         'DtFinalB12
         '
-        Me.DtFinalB12.Location = New System.Drawing.Point(317, 18)
-        Me.DtFinalB12.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.DtFinalB12.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtFinalB12.Location = New System.Drawing.Point(170, 25)
+        Me.DtFinalB12.Margin = New System.Windows.Forms.Padding(2)
         Me.DtFinalB12.Name = "DtFinalB12"
-        Me.DtFinalB12.Size = New System.Drawing.Size(151, 20)
+        Me.DtFinalB12.Size = New System.Drawing.Size(131, 20)
         Me.DtFinalB12.TabIndex = 1
         Me.DtFinalB12.Value = New Date(2017, 1, 1, 0, 0, 0, 0)
         '
         'DtInicioB12
         '
-        Me.DtInicioB12.Location = New System.Drawing.Point(118, 18)
-        Me.DtInicioB12.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.DtInicioB12.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtInicioB12.Location = New System.Drawing.Point(15, 25)
+        Me.DtInicioB12.Margin = New System.Windows.Forms.Padding(2)
         Me.DtInicioB12.Name = "DtInicioB12"
-        Me.DtInicioB12.Size = New System.Drawing.Size(151, 20)
+        Me.DtInicioB12.Size = New System.Drawing.Size(135, 20)
         Me.DtInicioB12.TabIndex = 0
         Me.DtInicioB12.Value = New Date(2017, 1, 1, 0, 0, 0, 0)
         '
@@ -2348,9 +2369,9 @@ Partial Class FrmMineralPlant
         Me.GroupBox6.Controls.Add(Me.Label82)
         Me.GroupBox6.Controls.Add(Me.LblTotalSeca)
         Me.GroupBox6.Location = New System.Drawing.Point(11, 339)
-        Me.GroupBox6.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox6.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox6.Padding = New System.Windows.Forms.Padding(2)
         Me.GroupBox6.Size = New System.Drawing.Size(1002, 81)
         Me.GroupBox6.TabIndex = 17
         Me.GroupBox6.TabStop = False
@@ -2528,9 +2549,9 @@ Partial Class FrmMineralPlant
         Me.GroupBox5.Controls.Add(Me.ListB12Inicio)
         Me.GroupBox5.Controls.Add(Me.ListB12Final)
         Me.GroupBox5.Location = New System.Drawing.Point(11, 34)
-        Me.GroupBox5.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox5.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox5.Padding = New System.Windows.Forms.Padding(2)
         Me.GroupBox5.Size = New System.Drawing.Size(1002, 95)
         Me.GroupBox5.TabIndex = 0
         Me.GroupBox5.TabStop = False
@@ -2716,9 +2737,9 @@ Partial Class FrmMineralPlant
         Me.TabPage2.Controls.Add(Me.DgLixiviacion)
         Me.TabPage2.Controls.Add(Me.GroupBox3)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage2.Margin = New System.Windows.Forms.Padding(2)
         Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(2)
         Me.TabPage2.Size = New System.Drawing.Size(1022, 503)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Flotacion - Lixiviacion"
@@ -2741,9 +2762,9 @@ Partial Class FrmMineralPlant
         Me.GroupBox4.Controls.Add(Me.Label88)
         Me.GroupBox4.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox4.Location = New System.Drawing.Point(21, 392)
-        Me.GroupBox4.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox4.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox4.Padding = New System.Windows.Forms.Padding(2)
         Me.GroupBox4.Size = New System.Drawing.Size(913, 73)
         Me.GroupBox4.TabIndex = 29
         Me.GroupBox4.TabStop = False
@@ -2933,9 +2954,9 @@ Partial Class FrmMineralPlant
         Me.GroupBox3.Controls.Add(Me.ListHoraFinal)
         Me.GroupBox3.Controls.Add(Me.ListHoraInicio)
         Me.GroupBox3.Location = New System.Drawing.Point(11, 24)
-        Me.GroupBox3.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox3.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox3.Padding = New System.Windows.Forms.Padding(2)
         Me.GroupBox3.Size = New System.Drawing.Size(950, 116)
         Me.GroupBox3.TabIndex = 0
         Me.GroupBox3.TabStop = False
@@ -2983,14 +3004,14 @@ Partial Class FrmMineralPlant
         '
         'TxtPorc_Pasante
         '
-        Me.TxtPorc_Pasante.Location = New System.Drawing.Point(536, 72)
+        Me.TxtPorc_Pasante.Location = New System.Drawing.Point(533, 72)
         Me.TxtPorc_Pasante.Name = "TxtPorc_Pasante"
         Me.TxtPorc_Pasante.Size = New System.Drawing.Size(57, 20)
         Me.TxtPorc_Pasante.TabIndex = 48
         '
         'TxtDensidad
         '
-        Me.TxtDensidad.Location = New System.Drawing.Point(454, 72)
+        Me.TxtDensidad.Location = New System.Drawing.Point(435, 72)
         Me.TxtDensidad.Name = "TxtDensidad"
         Me.TxtDensidad.Size = New System.Drawing.Size(57, 20)
         Me.TxtDensidad.TabIndex = 47
@@ -3035,7 +3056,7 @@ Partial Class FrmMineralPlant
         'Label24
         '
         Me.Label24.AutoSize = True
-        Me.Label24.Location = New System.Drawing.Point(552, 54)
+        Me.Label24.Location = New System.Drawing.Point(538, 54)
         Me.Label24.Name = "Label24"
         Me.Label24.Size = New System.Drawing.Size(33, 13)
         Me.Label24.TabIndex = 63
@@ -3045,7 +3066,7 @@ Partial Class FrmMineralPlant
         '
         Me.Label23.AutoSize = True
         Me.Label23.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label23.Location = New System.Drawing.Point(523, 24)
+        Me.Label23.Location = New System.Drawing.Point(521, 24)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(82, 16)
         Me.Label23.TabIndex = 62
@@ -3066,7 +3087,7 @@ Partial Class FrmMineralPlant
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(364, 54)
+        Me.Label15.Location = New System.Drawing.Point(317, 54)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(55, 13)
         Me.Label15.TabIndex = 57
@@ -3075,7 +3096,7 @@ Partial Class FrmMineralPlant
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(244, 54)
+        Me.Label14.Location = New System.Drawing.Point(226, 54)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(58, 13)
         Me.Label14.TabIndex = 56
@@ -3084,7 +3105,7 @@ Partial Class FrmMineralPlant
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(464, 54)
+        Me.Label13.Location = New System.Drawing.Point(437, 54)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(43, 13)
         Me.Label13.TabIndex = 55
@@ -3094,7 +3115,7 @@ Partial Class FrmMineralPlant
         '
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(445, 25)
+        Me.Label10.Location = New System.Drawing.Point(426, 25)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(75, 16)
         Me.Label10.TabIndex = 54
@@ -3112,7 +3133,7 @@ Partial Class FrmMineralPlant
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(244, 25)
+        Me.Label5.Location = New System.Drawing.Point(227, 25)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(146, 16)
         Me.Label5.TabIndex = 53
@@ -3123,7 +3144,7 @@ Partial Class FrmMineralPlant
         Me.ListHoraFinal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListHoraFinal.FormattingEnabled = True
         Me.ListHoraFinal.ItemHeight = 16
-        Me.ListHoraFinal.Location = New System.Drawing.Point(351, 72)
+        Me.ListHoraFinal.Location = New System.Drawing.Point(314, 72)
         Me.ListHoraFinal.Name = "ListHoraFinal"
         Me.ListHoraFinal.Size = New System.Drawing.Size(80, 20)
         Me.ListHoraFinal.TabIndex = 46
@@ -3133,7 +3154,7 @@ Partial Class FrmMineralPlant
         Me.ListHoraInicio.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListHoraInicio.FormattingEnabled = True
         Me.ListHoraInicio.ItemHeight = 16
-        Me.ListHoraInicio.Location = New System.Drawing.Point(236, 72)
+        Me.ListHoraInicio.Location = New System.Drawing.Point(222, 72)
         Me.ListHoraInicio.Name = "ListHoraInicio"
         Me.ListHoraInicio.Size = New System.Drawing.Size(80, 20)
         Me.ListHoraInicio.TabIndex = 45
@@ -3147,9 +3168,9 @@ Partial Class FrmMineralPlant
         Me.TabPage1.Controls.Add(Me.ChkTenor)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage1.Margin = New System.Windows.Forms.Padding(2)
         Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(2)
         Me.TabPage1.Size = New System.Drawing.Size(1022, 503)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Muestras"
@@ -3158,7 +3179,7 @@ Partial Class FrmMineralPlant
         '
         Me.DgSamplesDay.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DgSamplesDay.Location = New System.Drawing.Point(13, 188)
-        Me.DgSamplesDay.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.DgSamplesDay.Margin = New System.Windows.Forms.Padding(2)
         Me.DgSamplesDay.Name = "DgSamplesDay"
         Me.DgSamplesDay.RowTemplate.Height = 24
         Me.DgSamplesDay.Size = New System.Drawing.Size(993, 228)
@@ -3179,7 +3200,7 @@ Partial Class FrmMineralPlant
         '
         Me.PictureBox2.Image = Global.Z_Lab.My.Resources.Resources.excel
         Me.PictureBox2.Location = New System.Drawing.Point(950, 430)
-        Me.PictureBox2.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.PictureBox2.Margin = New System.Windows.Forms.Padding(2)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(56, 58)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
@@ -3220,9 +3241,9 @@ Partial Class FrmMineralPlant
         Me.GroupBox1.Controls.Add(Me.ListHTo)
         Me.GroupBox1.Controls.Add(Me.ListHFrom)
         Me.GroupBox1.Location = New System.Drawing.Point(13, 42)
-        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(2)
         Me.GroupBox1.Size = New System.Drawing.Size(993, 132)
         Me.GroupBox1.TabIndex = 60
         Me.GroupBox1.TabStop = False
@@ -3431,7 +3452,7 @@ Partial Class FrmMineralPlant
         Me.Horometro.Controls.Add(Me.TabPage9)
         Me.Horometro.Controls.Add(Me.TabPage10)
         Me.Horometro.Location = New System.Drawing.Point(15, 187)
-        Me.Horometro.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.Horometro.Margin = New System.Windows.Forms.Padding(2)
         Me.Horometro.Name = "Horometro"
         Me.Horometro.SelectedIndex = 0
         Me.Horometro.Size = New System.Drawing.Size(1030, 529)
@@ -3445,10 +3466,10 @@ Partial Class FrmMineralPlant
         Me.TabPage10.Controls.Add(Me.GroupBox27)
         Me.TabPage10.Controls.Add(Me.Label121)
         Me.TabPage10.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage10.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage10.Margin = New System.Windows.Forms.Padding(2)
         Me.TabPage10.Name = "TabPage10"
-        Me.TabPage10.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.TabPage10.Size = New System.Drawing.Size(982, 479)
+        Me.TabPage10.Padding = New System.Windows.Forms.Padding(2)
+        Me.TabPage10.Size = New System.Drawing.Size(1022, 503)
         Me.TabPage10.TabIndex = 9
         Me.TabPage10.Text = "Flujometro Rebalse H."
         '
@@ -3460,11 +3481,11 @@ Partial Class FrmMineralPlant
         Me.GroupBox28.Controls.Add(Me.Label130)
         Me.GroupBox28.Controls.Add(Me.Label131)
         Me.GroupBox28.Controls.Add(Me.Label132)
-        Me.GroupBox28.Location = New System.Drawing.Point(14, 348)
-        Me.GroupBox28.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GroupBox28.Location = New System.Drawing.Point(44, 318)
+        Me.GroupBox28.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox28.Name = "GroupBox28"
-        Me.GroupBox28.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.GroupBox28.Size = New System.Drawing.Size(788, 77)
+        Me.GroupBox28.Padding = New System.Windows.Forms.Padding(2)
+        Me.GroupBox28.Size = New System.Drawing.Size(814, 90)
         Me.GroupBox28.TabIndex = 43
         Me.GroupBox28.TabStop = False
         Me.GroupBox28.Text = "Resumen:"
@@ -3536,11 +3557,11 @@ Partial Class FrmMineralPlant
         'DgFlujoHidrociclones
         '
         Me.DgFlujoHidrociclones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DgFlujoHidrociclones.Location = New System.Drawing.Point(44, 145)
-        Me.DgFlujoHidrociclones.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.DgFlujoHidrociclones.Location = New System.Drawing.Point(44, 131)
+        Me.DgFlujoHidrociclones.Margin = New System.Windows.Forms.Padding(2)
         Me.DgFlujoHidrociclones.Name = "DgFlujoHidrociclones"
         Me.DgFlujoHidrociclones.RowTemplate.Height = 24
-        Me.DgFlujoHidrociclones.Size = New System.Drawing.Size(631, 172)
+        Me.DgFlujoHidrociclones.Size = New System.Drawing.Size(814, 172)
         Me.DgFlujoHidrociclones.TabIndex = 5
         '
         'GroupBox27
@@ -3554,7 +3575,7 @@ Partial Class FrmMineralPlant
         Me.GroupBox27.Controls.Add(Me.CmbTurnoRciclon)
         Me.GroupBox27.Controls.Add(Me.TxtFinalHidro)
         Me.GroupBox27.Controls.Add(Me.TxtInicioHidro)
-        Me.GroupBox27.Location = New System.Drawing.Point(14, 43)
+        Me.GroupBox27.Location = New System.Drawing.Point(44, 42)
         Me.GroupBox27.Name = "GroupBox27"
         Me.GroupBox27.Size = New System.Drawing.Size(814, 84)
         Me.GroupBox27.TabIndex = 4
@@ -3651,22 +3672,14 @@ Partial Class FrmMineralPlant
         Me.Label121.TabIndex = 3
         Me.Label121.Text = "Lectura Flujómetro - Rebalse Hidrociclónes"
         '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = Global.Z_Lab.My.Resources.Resources.LogoGranColombiaGoldSmall
-        Me.PictureBox1.Location = New System.Drawing.Point(810, 16)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(207, 50)
-        Me.PictureBox1.TabIndex = 20
-        Me.PictureBox1.TabStop = False
-        '
         'LblFechaReporte
         '
         Me.LblFechaReporte.AutoSize = True
+        Me.LblFechaReporte.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblFechaReporte.Location = New System.Drawing.Point(17, 135)
         Me.LblFechaReporte.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.LblFechaReporte.Name = "LblFechaReporte"
-        Me.LblFechaReporte.Size = New System.Drawing.Size(51, 13)
+        Me.LblFechaReporte.Size = New System.Drawing.Size(63, 16)
         Me.LblFechaReporte.TabIndex = 42
         Me.LblFechaReporte.Text = "Label123"
         '
@@ -3686,12 +3699,13 @@ Partial Class FrmMineralPlant
         Me.Controls.Add(Me.DateTimePickerFechaReporte)
         Me.Controls.Add(Me.GroupBox2)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.Margin = New System.Windows.Forms.Padding(2)
         Me.Name = "FrmMineralPlant"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Reporte Diario de Planta"
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage9.ResumeLayout(False)
         Me.TabPage9.PerformLayout()
         Me.GroupBox20.ResumeLayout(False)
@@ -3771,7 +3785,6 @@ Partial Class FrmMineralPlant
         CType(Me.DgFlujoHidrociclones, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox27.ResumeLayout(False)
         Me.GroupBox27.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

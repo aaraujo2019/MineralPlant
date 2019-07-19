@@ -23,25 +23,26 @@ Public Class FrmConsumoReactivos
     Dim rentrada As New ADODB.Recordset()
     Dim reactivo As String
     Dim nombreArchivo As String
-    Private Sub FrmConsumoReactivos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        CargarReactivo()
-        llenar_datagridviewReactivos()
-    End Sub
-    Private Sub CalcularStock()
 
+    Private Sub FrmConsumoReactivos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        LblUsuario.Text = FrmPrincipal.LblUserName.Text
+        CargarReactivo()
+        cargararea()
+        llenar_datagridviewReactivosCargaInicial()
+    End Sub
+
+    Private Sub CalcularStock()
         cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
         conn.Open(cnStr)
-        rsalida = conn.Execute(" SELECT * FROM         usuario WHERE (IdUsusario = '" & (LblUsuario.Text) & "')         ")
+        rsalida = conn.Execute(" SELECT * FROM usuario WHERE (IdUsusario = '" & (LblUsuario.Text) & "')")
         If rsalida.EOF = True Then
             Me.LblArea.Text = "NO"
         Else
             Me.LblArea.Text = CStr((rsalida.Fields("Area").Value))
         End If
         conn.Close()
-
-
-
     End Sub
+
     Private Sub CargarReactivo()
         With Cmd
             .CommandType = CommandType.Text
@@ -61,13 +62,62 @@ Public Class FrmConsumoReactivos
         End With
     End Sub
 
-    Private Sub llenar_datagridviewReactivos()
-        'cargar DataGrid de Preparacion Daily
+    Private Sub cargararea()
         Cn.Open()
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT     Fecha, NombreReactivo, Entrada, Salida, Saldo, SolTraslado, SolSalida ,  SolConsumo , RutaSoltraslado, RutaSolConsumo , id FROM         PB_Reactivos   WHERE        Fecha=  '" & CDate(DtFecha.Text) & "' and NombreReactivo= '" & (CmbReactivo.Text) & "'   ORDER BY Id "
+        sql = "SELECT * FROM usuario WHERE (IdUsusario = '" & (LblUsuario.Text) & "')"
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+        Cn.Close()
+        Dim dt As DataTable = ds.Tables(0)
+
+        If dt.Rows.Count > 0 Then
+            LblArea.Text = dt.Rows(0)(9).ToString
+        Else
+            LblArea.Text = "NO"
+        End If
+    End Sub
+
+    Private Sub llenar_datagridviewReactivosCargaInicial()
+        Dim strFecha As String = System.String.Empty
+        If (DtFecha.Text = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(DtFecha.Text).ToString("yyyy-MM-dd")
+        End If
+
+        Cn.Open()
+        Dim ds As New DataSet
+        Dim da As New SqlDataAdapter
+        Dim sql As String
+        sql = "SELECT Fecha, NombreReactivo, Entrada, Salida, Saldo, SolTraslado, SolSalida, SolConsumo , RutaSoltraslado, RutaSolConsumo , id FROM PB_Reactivos WHERE Fecha=  '" & strFecha & "' ORDER BY Id "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+        Cn.Close()
+        Dim dt As DataTable = ds.Tables(0)
+        DgReactivos.DataSource = dt
+        DgReactivos.AutoResizeColumns()
+        DgReactivos.Columns("fecha").Visible = False
+        DgReactivos.Columns("id").Visible = False
+        DgReactivos.ReadOnly = False
+    End Sub
+
+    Private Sub llenar_datagridviewReactivos()
+        Dim strFecha As String = System.String.Empty
+        If (DtFecha.Text = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(DtFecha.Text).ToString("yyyy-MM-dd")
+        End If
+
+
+        Cn.Open()
+        Dim ds As New DataSet
+        Dim da As New SqlDataAdapter
+        Dim sql As String
+        sql = "SELECT Fecha, NombreReactivo, Entrada, Salida, Saldo, SolTraslado, SolSalida, SolConsumo , RutaSoltraslado, RutaSolConsumo , id FROM PB_Reactivos WHERE Fecha=  '" & strFecha & "' and NombreReactivo= '" & (CmbReactivo.Text) & "'   ORDER BY Id "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
@@ -143,8 +193,7 @@ Public Class FrmConsumoReactivos
                 editarreactivo = False
             Catch ex As Exception
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text,
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         Else
             'ACA EL CODIGO SI PULSA NO
@@ -155,9 +204,6 @@ Public Class FrmConsumoReactivos
         If IsDBNull(TxtEntrada.Text) And IsDBNull(TxtConsumo.Text) Then
             MsgBox("Por favor Diligencie correctamente el formulario")
             Exit Sub
-            ' ElseIf IsNumeric(TxtEntrada.Text) And IsNumeric(TxtConsumo.Text) Then
-            '    MsgBox("Por favor Diligencie correctamente el formulario")
-            ' Exit Sub
         End If
 
         If CmbReactivo.Text = "" Or CmbReactivo.Text = "Seleccione" Then
@@ -223,47 +269,38 @@ Public Class FrmConsumoReactivos
                 BtonTraslado.Enabled = False
                 BtnSalconsumo.Enabled = False
             Catch ex As Exception                ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
-      MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
         End If
     End Sub
 
 
-
-    'Dim DsPriv As New DataSet
-    'Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT     NombreReactivo, SUM(Entrada) - SUM(Salida) AS exp1 FROM         dbo.PB_Reactivos GROUP BY NombreReactivo HAVING      (NombreReactivo = '" & CmbReactivo.Text & "') ", Cn)
     Private Sub CalcularStock(ByVal reactivo As String)
         Try
+            Cn.Open()
+            Dim ds As New DataSet
+            Dim da As New SqlDataAdapter
+            Dim sql As String
+            sql = " SELECT SUM(Entrada) - SUM(Salida) AS saldo FROM dbo.PB_Reactivos WHERE   NombreReactivo= '" & (reactivo) & "'   "
+            da.SelectCommand = New SqlCommand(sql, Cn)
+            da.Fill(ds)
+            Cn.Close()
+            Dim dt As DataTable = ds.Tables(0)
 
-
-            cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
-            conn.Open(cnStr)
-            rsreactivos = conn.Execute(" SELECT     SUM(Entrada) - SUM(Salida) AS saldo FROM         dbo.PB_Reactivos WHERE   NombreReactivo= '" & (reactivo) & "'   ")
-            If rsreactivos.EOF = True Then
-                ' Me.LblArea.Text = "NO"
-            Else
-                If IsDBNull(rsreactivos.Fields("saldo").Value) Then
+            If dt.Rows.Count > 0 Then
+                If dt.Rows(0)(0).ToString = String.Empty Then
                     LblSaldo.Text = "0"
                 Else
-                    LblSaldo.Text = CStr(CDbl((rsreactivos.Fields("saldo").Value)))
+                    LblSaldo.Text = dt.Rows(0)(0).ToString
                 End If
-
+            Else
+                LblSaldo.Text = "0"
             End If
-
-            conn.Close()
-
-
-
         Catch ex As Exception
             Throw
         End Try
     End Sub
-
-    'End Sub
-
-
 
     Private Sub listBox1_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles LblSolConsumo.DoubleClick
 
