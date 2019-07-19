@@ -68,7 +68,7 @@ Public Class FrmSST
         Dim ds As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
-        sql = "SELECT     fecha, ubicacion, sst , turno    FROM PB_sst WHERE    (Fecha = '" & CDate(DtFecha.Text) & "') ORDER BY turno "
+        sql = "SELECT     fecha, ubicacion, sst , turno    FROM PB_sst WHERE    (Fecha = '" & Convert.ToDateTime(DtFecha.Text) & "') ORDER BY turno "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
         Cn.Close()
@@ -91,8 +91,8 @@ Public Class FrmSST
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         Dim fechainicio As Date
         Dim fechafin As Date
-        fechainicio = CDate(dtfechainicio.Value)
-        fechafin = CDate(dtfechafinal.Value)
+        fechainicio = Convert.ToDateTime(dtfechainicio.Value)
+        fechafin = Convert.ToDateTime(dtfechafinal.Value)
         Dim dias As Double
 
         dias = (dtfechafinal.Value - dtfechainicio.Value).TotalDays
@@ -105,13 +105,25 @@ Public Class FrmSST
     End Sub
 
     Private Sub ExportarSST()
-        Dim conn As New ADODB.Connection()
-        Dim RstResumen As New ADODB.Recordset()
-        Dim RstResumenTenor As New ADODB.Recordset()
+        Cn.Open()
+        Dim ds As New DataSet
+        Dim da As New SqlDataAdapter
+        Dim sql As String
 
-        Dim cnStr As String
-        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
-        conn.Open(cnStr)
+        Dim strFechaInicio As String = System.String.Empty
+        If (dtfechainicio.Text = System.String.Empty) Then
+            strFechaInicio = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFechaInicio = Convert.ToDateTime(dtfechainicio.Text).ToString("yyyy-MM-dd")
+        End If
+
+        Dim strFecha As String = System.String.Empty
+        If (dtfechafinal.Text = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(dtfechafinal.Text).ToString("yyyy-MM-dd")
+        End If
+
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application
         Dim hoja As Microsoft.Office.Interop.Excel.Worksheet
@@ -119,36 +131,40 @@ Public Class FrmSST
         Dim recorrido As Integer
         recorrido = 2
         objExcel.Visible = False
-        RstResumen = conn.Execute(" SELECT   Fecha, SST , ubicacion , turno  FROM  dbo.Pb_sst where     (Fecha >= '" & CDate(dtfechainicio.Text) & "') AND (Fecha <= '" & CDate(dtfechafinal.Text) & "')  ORDER BY Fecha ")
-        With objExcel
-            'concentrado de flotacion
-            hoja = CType(.Sheets("Data"), Microsoft.Office.Interop.Excel.Worksheet)
-            'hoja.Cells(1, 3) = RstResumen.Fields("Ubicacion").Value
-            Do While Not RstResumen.EOF
-                hoja.Cells(recorrido, 1) = RstResumen.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumen.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumen.Fields("sst").Value
-                hoja.Cells(recorrido, 4) = RstResumen.Fields("ubicacion").Value
 
-                recorrido = recorrido + 1
-                RstResumen.MoveNext()
-            Loop
+        sql = "SELECT   Fecha, SST , ubicacion , turno  FROM  dbo.Pb_sst where (Fecha >= '" & strFechaInicio & "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+        dt = New DataTable
 
-            recorrido = 3
-            hoja = CType(.Sheets("Report"), Microsoft.Office.Interop.Excel.Worksheet)
-            Dim fecha1, fecha2 As Date
-            fecha1 = dtfechainicio.Value
-            fecha2 = dtfechafinal.Value
-            Do While fecha1 <= fecha2
-                hoja.Cells(recorrido, 1) = fecha1
-                recorrido = recorrido + 1
-                fecha1 = fecha1.AddDays(1)
-                'fecha2 = fecha1.AddDays(1)
-            Loop
+        dt = ds.Tables(0)
 
-        End With
-        objExcel.Visible = True
-        conn.Close()
+        If dt.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("Data"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt.Rows(index)(3).ToString
+                    hoja.Cells(recorrido, 3) = dt.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 4) = dt.Rows(index)(2).ToString
+                    recorrido = recorrido + 1
+                Next
+
+                recorrido = 3
+                hoja = CType(.Sheets("Report"), Microsoft.Office.Interop.Excel.Worksheet)
+                Dim fecha1, fecha2 As Date
+                fecha1 = dtfechainicio.Value
+                fecha2 = dtfechafinal.Value
+                Do While fecha1 <= fecha2
+                    hoja.Cells(recorrido, 1) = fecha1
+                    recorrido = recorrido + 1
+                    fecha1 = fecha1.AddDays(1)
+                Loop
+            End With
+            objExcel.Visible = True
+            Cn.Close()
+        End If
     End Sub
 
     Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
@@ -178,7 +194,7 @@ Public Class FrmSST
                     cmd.CommandText = "INSERT INTO Pb_SST (Fecha, ubicacion,  turno, sst) VALUES (@Fecha, @ubicacion,  @turno, @sst)"
                 End If
 
-                cmd.Parameters.AddWithValue("@Fecha", CDate(DtFecha.Text))
+                cmd.Parameters.AddWithValue("@Fecha", Convert.ToDateTime(DtFecha.Text))
                 cmd.Parameters.AddWithValue("@ubicacion", Convert.ToString(CmbUbicacion.Text))
                 cmd.Parameters.AddWithValue("@turno", Convert.ToString(CmbTurno.Text))
                 cmd.Parameters.AddWithValue("@sst", Convert.ToDecimal(TxtSST.Text))

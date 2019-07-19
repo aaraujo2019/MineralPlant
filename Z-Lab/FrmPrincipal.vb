@@ -373,9 +373,6 @@ Public Class FrmPrincipal
         Else
             MsgBox("No tiene Permisos para ingresar al formulario contacte a su administrador")
         End If
-
-
-
     End Sub
 
     Private Sub ConsumoDeCianuroToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConsumoDeCianuroToolStripMenuItem.Click
