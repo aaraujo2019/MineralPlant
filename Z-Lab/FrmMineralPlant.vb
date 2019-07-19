@@ -2178,12 +2178,10 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
 
     End Sub
 
-    ''' <summary>
-    ''' Por Cambiar usa ODBC - Alvaro Araujo
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
+
     Private Sub CmdReporteMineras_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdReporteMineras.Click
+
+        Dim strFechaInicio As String = System.String.Empty
         Dim fechainicio As Date
         Dim fechafin As Date
         fechainicio = Convert.ToDateTime(DtFechaInicio.Value)
@@ -2196,10 +2194,30 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
             Exit Sub
         End If
 
+        If (fechainicio.ToString = System.String.Empty) Then
+            strFechaInicio = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFechaInicio = Convert.ToDateTime(fechainicio.ToString).ToString("yyyy-MM-dd")
+        End If
+
+        Dim strFecha As String = System.String.Empty
+        If (fechafin.ToString = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(fechafin.ToString).ToString("yyyy-MM-dd")
+        End If
+
         Try
             Dim fechactual As Date
-            cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
-            conn.Open(cnStr, "", "", -1)
+            Cn.Open()
+            Dim ds As New DataSet
+            Dim da As New SqlDataAdapter
+            Dim sql As String
+
+            sql = "SELECT Fecha, ConsumoEnergia, TonHora, OperacionHorasDia, DetencionMtto, DetencionOperacion, TonMolidasZandor, TonMolidasMineras FROM  dbo.PB_Operation  WHERE ( PB_Operation.Fecha >= '" & strFechaInicio &
+                                           "' )and  (PB_Operation.Fecha <= '" & strFechaInicio & "')"
+            da.SelectCommand = New SqlCommand(sql, Cn)
+            da.Fill(ds)
 
             Dim objExcel As Microsoft.Office.Interop.Excel.Application
             objExcel = New Microsoft.Office.Interop.Excel.Application
@@ -2214,57 +2232,69 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
             recorrido = 3
             objExcel.Visible = False
 
-            rstoperacionrep = conn.Execute("SELECT Fecha, ConsumoEnergia, TonHora, OperacionHorasDia, DetencionMtto, DetencionOperacion, TonMolidasZandor, TonMolidasMineras FROM  dbo.PB_Operation  WHERE ( PB_Operation.Fecha >= '" & Format(Convert.ToDateTime(fechainicio), "yyyy/MM/dd") & "' )and  (PB_Operation.Fecha <= '" & Format(Convert.ToDateTime(fechafin), "yyyy/MM/dd") & "')", RuntimeHelpers.GetObjectValue(System.Reflection.Missing.Value), -1)
-            With objExcel
-                hoja = CType(.Sheets("Report"), Microsoft.Office.Interop.Excel.Worksheet)
-                Do While Not rstoperacionrep.EOF
-                    columna = 2
-                    rstoperationContract = conn.Execute("SELECT TOP (100) PERCENT Id, Name, enabled   FROM dbo.RfOperationContracts WHERE Enabled = 1 ORDER BY Name", RuntimeHelpers.GetObjectValue(System.Reflection.Missing.Value), -1)
-                    hoja.Cells(recorrido, 1) = Convert.ToDateTime(rstoperacionrep.Fields("Fecha").Value)
-                    totaltoneladas = 0
-                    totalonzas = 0
-                    Do While Not rstoperationContract.EOF
-                        Dim nombremina As String
-                        nombremina = CStr(rstoperationContract.Fields("name").Value)
-                        fechactual = Convert.ToDateTime(rstoperacionrep.Fields("Fecha").Value)
-                        If recorrido = 3 Then
-                            hoja.Cells(1, columna) = CStr(rstoperationContract.Fields("name").Value)
-                            hoja.Cells(2, columna) = "Toneladas"
-                            hoja.Cells(2, columna + 1) = "Tenor"
-                            hoja.Cells(2, columna + 2) = "Onzas"
-                        End If
-                        rstmineras = conn.Execute("SELECT Fecha, Mina, NombreMina,  SUM(TonMineralS) AS TotalSeca , TenorPromedio FROM dbo.vw_Pb_PequenaMinera  GROUP BY Fecha, NombreMina, Mina, TenorPromedio HAVING (dbo.vw_Pb_PequenaMinera.Fecha = '" & Format(Convert.ToDateTime(fechactual), "yyyy/MM/dd") & "' )  and (NombreMina= '" & nombremina & "' )", RuntimeHelpers.GetObjectValue(System.Reflection.Missing.Value), -1)
-                        If rstmineras.EOF = True And rstmineras.BOF = True Then
-                            'no hay mineral
-                            hoja.Cells(recorrido, columna) = 0
-                            columna = columna + 1
-                            hoja.Cells(recorrido, columna) = 0
-                            columna = columna + 1
-                            hoja.Cells(recorrido, columna) = 0
-                            columna = columna + 1
-                        Else
-                            'si hay mineral
-                            hoja.Cells(recorrido, columna) = rstmineras.Fields("TotalSeca").Value
-                            columna = columna + 1
-                            hoja.Cells(recorrido, columna) = rstmineras.Fields("TenorPromedio").Value
-                            columna = columna + 1
-                            hoja.Cells(recorrido, columna) = (Convert.ToDecimal(rstmineras.Fields("TenorPromedio").Value) * Convert.ToDecimal(rstmineras.Fields("TotalSeca").Value)) / 31.1035
-                            columna = columna + 1
-                            totaltoneladas = totaltoneladas + Convert.ToDecimal(rstmineras.Fields("TotalSeca").Value)
-                            totalonzas = Convert.ToDecimal(totalonzas + ((Convert.ToDecimal(rstmineras.Fields("TenorPromedio").Value) * Convert.ToDecimal(rstmineras.Fields("TotalSeca").Value)) / 31.1035))
+            Dim ds2 As New DataSet
+            Dim ds3 As New DataSet
+            Dim dt As DataTable = ds.Tables(0)
+
+            If dt.Rows.Count > 0 Then
+                With objExcel
+                    hoja = CType(.Sheets("Report"), Microsoft.Office.Interop.Excel.Worksheet)
+                    For index = 0 To dt.Rows.Count - 1
+                        columna = 2
+                        sql = "SELECT TOP (100) PERCENT Id, Name, enabled   FROM dbo.RfOperationContracts WHERE Enabled = 1 ORDER BY Name"
+                        da.SelectCommand = New SqlCommand(sql, Cn)
+                        da.Fill(ds2)
+                        Dim dt2 As DataTable = ds2.Tables(0)
+
+                        If dt2.Rows.Count > 0 Then
+                            hoja.Cells(recorrido, 1) = Convert.ToDateTime(dt.Rows(0)(0))
+                            Dim nombremina As String
+                            nombremina = dt2.Rows(0)(1).ToString
+                            fechactual = Convert.ToDateTime(dt.Rows(0)(0))
+
+                            If recorrido = 3 Then
+                                hoja.Cells(1, columna) = dt2.Rows(0)(1).ToString
+                                hoja.Cells(2, columna) = "Toneladas"
+                                hoja.Cells(2, columna + 1) = "Tenor"
+                                hoja.Cells(2, columna + 2) = "Onzas"
+                            End If
+
+                            sql = "SELECT Fecha, Mina, NombreMina,  SUM(TonMineralS) AS TotalSeca , TenorPromedio FROM dbo.vw_Pb_PequenaMinera  GROUP BY Fecha, NombreMina, Mina, TenorPromedio HAVING (dbo.vw_Pb_PequenaMinera.Fecha = '" & Format(Convert.ToDateTime(fechactual), "yyyy/MM/dd") & "' )  and (NombreMina= '" & nombremina & "' )"
+                            da.SelectCommand = New SqlCommand(sql, Cn)
+                            da.Fill(ds3)
+                            Dim dt3 As DataTable = ds3.Tables(0)
+
+                            If dt3.Rows.Count > 0 Then
+                                'no hay mineral
+                                hoja.Cells(recorrido, columna) = 0
+                                columna = columna + 1
+                                hoja.Cells(recorrido, columna) = 0
+                                columna = columna + 1
+                                hoja.Cells(recorrido, columna) = 0
+                                columna = columna + 1
+                            Else
+                                'si hay mineral
+                                hoja.Cells(recorrido, columna) = dt3.Rows(0)(3).ToString
+                                columna = columna + 1
+                                hoja.Cells(recorrido, columna) = dt3.Rows(0)(4).ToString
+                                columna = columna + 1
+                                hoja.Cells(recorrido, columna) = (Convert.ToDecimal(dt3.Rows(0)(4)) * Convert.ToDecimal(dt3.Rows(0)(3))) / 31.1035
+                                columna = columna + 1
+                                totaltoneladas = totaltoneladas + Convert.ToDecimal(dt3.Rows(0)(3))
+                                totalonzas = Convert.ToDecimal(totalonzas + ((Convert.ToDecimal(dt3.Rows(0)(4)) * Convert.ToDecimal(dt3.Rows(0)(3))) / 31.1035))
+
+                            End If
 
                         End If
-                        rstoperationContract.MoveNext()
-                    Loop
-                    hoja.Cells(recorrido, columna + 1) = totaltoneladas
-                    hoja.Cells(recorrido, columna + 2) = totalonzas
-                    recorrido = recorrido + 1
-                    rstoperacionrep.MoveNext()
-                Loop
-            End With
-            objExcel.Visible = True
-            conn.Close()
-            LblExportar.Visible = False
+                        hoja.Cells(recorrido, columna + 1) = totaltoneladas
+                        hoja.Cells(recorrido, columna + 2) = totalonzas
+                        recorrido = recorrido + 1
+                    Next
+                End With
+                objExcel.Visible = True
+                Cn.Close()
+                LblExportar.Visible = False
+            End If
         Catch ex As Exception
             ' Handle the exception.
             MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -2287,21 +2317,24 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
         exportarsolidos()
     End Sub
 
-    ''' <summary>
-    ''' Por Cambiar usa ODBC - Alvaro Araujo
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
     Private Sub exportarsolidos()
         Dim totaltoneladas As Double
         Dim totalgramos As Double
-        Dim conn As New ADODB.Connection()
-        Dim RstResumen As New ADODB.Recordset()
-        Dim RstResumenTenor As New ADODB.Recordset()
-        Dim RstResumenTenorsolucion As New ADODB.Recordset()
-        Dim cnStr As String
-        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
-        conn.Open(cnStr)
+
+        Dim strFechaInicio As String = System.String.Empty
+        If (DtFechaInicio.Text = System.String.Empty) Then
+            strFechaInicio = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFechaInicio = Convert.ToDateTime(DtFechaInicio.Text).ToString("yyyy-MM-dd")
+        End If
+
+        Dim strFecha As String = System.String.Empty
+        If (DtFechaFinal.Text = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(DtFechaFinal.Text).ToString("yyyy-MM-dd")
+        End If
+
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application
         Dim hoja As Microsoft.Office.Interop.Excel.Worksheet
@@ -2311,268 +2344,360 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
         totaltoneladas = 0
         totalgramos = 0
         objExcel.Visible = False
-        RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoFlotacion where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
-                                  "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-        RstResumenTenor = conn.Execute(" SELECT Fecha, Turno, AuFinal_ppm FROM dbo.Pb_ConcentradoFlotacionTenor where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
-                                       "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-        'RstR = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.Pb_ConcentradoFlotacionTenor where     (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-        'RstResumenTenorSolucion = conn.Execute("SELECT     TOP (100) PERCENT dbo.PB_MerrilCrowe.Fecha, SUM(dbo.PB_MerrilCrowe.Volumen) AS VolumenTotal, SUM(dbo.PB_MerrilCrowe.Onzas) AS OnzasTotal,  AVG(dbo.PB_MerrilCrowe.TenorCabeza) AS TenorPromedio, AVG(dbo.PB_MerrilCrowe.TenorCola) AS TenorColas FROM         dbo.PB_MerrilCrowe INNER JOIN     dbo.RfTime ON dbo.PB_MerrilCrowe.HoraInicial = dbo.RfTime.Hora GROUP BY dbo.PB_MerrilCrowe.Fecha    HAVING        (Fecha >= '" & Convert.ToDateTime(DtFechainicio.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text) & "')")
+
+        Cn.Open()
+        Dim ds As New DataSet
+        Dim ds2 As New DataSet
+        Dim ds3 As New DataSet
+        Dim da As New SqlDataAdapter
+        Dim sql As String
+        sql = "SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoFlotacion where (Fecha >= '" & strFechaInicio &
+                                  "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+
+        sql = "SELECT Fecha, Turno, AuFinal_ppm FROM dbo.Pb_ConcentradoFlotacionTenor where (Fecha >= '" & strFechaInicio &
+                                       "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds2)
+
+        Dim dt As DataTable = ds.Tables(0)
+        Dim dt2 As DataTable = ds2.Tables(0)
+
+        If dt.Rows.Count > 0 Then
+            With objExcel
+                hoja = CType(.Sheets("ConcentradoFlotacion"), Microsoft.Office.Interop.Excel.Worksheet)
+
+                For index = 0 To dt.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt.Rows(index)(2).ToString
+                    hoja.Cells(recorrido, 4) = dt.Rows(index)(3).ToString
+                    hoja.Cells(recorrido, 5) = dt.Rows(index)(4).ToString
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        If dt2.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("TenorFlotacion"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt2.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt2.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt2.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt2.Rows(index)(2).ToString
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        sql = "SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoAAG1 where (Fecha >= '" & strFechaInicio &
+                                      "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+
+        sql = "SELECT Fecha, Turno, AuFinal_ppm FROM dbo.Pb_AlimentoAG1Solido where (Fecha >= '" & strFechaInicio &
+                                           "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds2)
+
+        sql = "SELECT  Fecha, Turno, AuFinal_ppm FROM dbo.Pb_AlimentoAG1Solido where     (Fecha >= '" & strFechaInicio &
+                                                   "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds3)
+
+        dt = New DataTable
+        dt2 = New DataTable
+
+        dt = ds.Tables(0)
+        dt2 = ds2.Tables(0)
+        Dim dt3 As DataTable = ds3.Tables(0)
+
+        If dt.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("AlimentoAgitador1"), Microsoft.Office.Interop.Excel.Worksheet)
+
+                For index = 0 To dt.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt.Rows(index)(2).ToString
+                    hoja.Cells(recorrido, 4) = dt.Rows(index)(3).ToString
+                    hoja.Cells(recorrido, 5) = dt.Rows(index)(4).ToString
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        If dt2.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("AlimentoAgitadorSolido"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt2.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt2.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt2.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt2.Rows(index)(2).ToString
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        If dt3.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("AlimentoAgitadorSolucion"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt3.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt3.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt3.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt3.Rows(index)(2).ToString
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        sql = "SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoEsp5 where (Fecha >= '" & strFechaInicio &
+                                      "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+
+        sql = "SELECT  Fecha, Turno, AuFinal_ppm FROM  dbo.PB_ColasESp5SolidoTenor where  (Fecha >= '" & strFechaInicio &
+                                           "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds2)
+
+        sql = "SELECT  Fecha, Turno, AuFinal_ppm FROM dbo.PB_ColasEsp5Solucion where (Fecha >= '" & strFechaInicio &
+                                                   "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds3)
+
+        dt = New DataTable
+        dt2 = New DataTable
+        dt3 = New DataTable
+
+        dt = ds.Tables(0)
+        dt2 = ds2.Tables(0)
+        dt3 = ds3.Tables(0)
+
+        If dt.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("Cesp5"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt.Rows(index)(2).ToString
+                    hoja.Cells(recorrido, 4) = dt.Rows(index)(3).ToString
+                    hoja.Cells(recorrido, 5) = dt.Rows(index)(4).ToString
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        If dt2.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("TenorSolidoCesp5"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt2.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt2.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt2.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt2.Rows(index)(2).ToString
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        If dt3.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("TenorSolucionEsp5"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt3.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt3.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt3.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt3.Rows(index)(2).ToString
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        sql = "SELECT  Fecha, Turno, AuFinal_ppm FROM dbo.PB_DescargaAgitadorSolido where (Fecha >= '" & strFechaInicio &
+                                           "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+
+        sql = "SELECT Fecha, Turno, AuFinal_ppm FROM dbo.PB_DescargaAgitadorSolucion where (Fecha >= '" & strFechaInicio &
+                                                   "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds2)
+
+        dt = New DataTable
+        dt2 = New DataTable
+
+        dt = ds.Tables(0)
+        dt2 = ds2.Tables(0)
+
+        If dt.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("DescargaAgitadorSolido"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt.Rows(index)(2).ToString
+
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        If dt2.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("DescargaAgitadorSolucion"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt2.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt2.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt2.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt2.Rows(index)(2).ToString
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        sql = "SELECT Fecha, TotalOnzas , OrigenBarra FROM  dbo.Pb_FundicionTotal where (Fecha >= '" & strFechaInicio &
+                                      "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+        dt = New DataTable
+
+        dt = ds.Tables(0)
+
+        If dt.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("Fundicion"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt.Rows(index)(2).ToString
+                    hoja.Cells(recorrido, 3) = dt.Rows(index)(1).ToString
+
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        sql = "SELECT Fecha , Turno , Volumen , TenorCabeza , TenorCola , OnzasCabeza , OnzasCola  FROM  Pb_MerrilCroweBalance where  (Fecha >= '" &
+                                                   strFechaInicio & "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+        dt = New DataTable
+
+        dt = ds.Tables(0)
+
+        If dt.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("MerrilCrowe"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt.Rows(index)(2).ToString
+                    hoja.Cells(recorrido, 4) = dt.Rows(index)(3).ToString
+                    hoja.Cells(recorrido, 5) = dt.Rows(index)(4).ToString
+                    hoja.Cells(recorrido, 6) = dt.Rows(index)(5).ToString
+                    hoja.Cells(recorrido, 7) = dt.Rows(index)(6).ToString
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        sql = "SELECT  Fecha, turno , PromedioTenorTurno , ToneladaSeca , ToneladaHumeda , PromedioHumedad   FROM   Pb_TenorPromedioB12 where (Fecha >= '" &
+                                                   strFechaInicio & "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+        dt = New DataTable
+
+        dt = ds.Tables(0)
+
+        If dt.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("TenorB12"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt.Rows(index)(2).ToString
+                    hoja.Cells(recorrido, 5) = dt.Rows(index)(3).ToString
+                    hoja.Cells(recorrido, 6) = dt.Rows(index)(4).ToString
+                    hoja.Cells(recorrido, 7) = dt.Rows(index)(5).ToString
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        sql = "SELECT  Fecha, turno , AuFinal_ppm  FROM   PB_ColasBulk where (Fecha >= '" & strFechaInicio &
+                                                   "') AND (Fecha <= '" & strFechaInicio & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+        dt = New DataTable
+
+        dt = ds.Tables(0)
+
+        If dt.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("TenorColasBulk"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt.Rows(index)(2).ToString
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        sql = "SELECT Fecha, Turno, AuFinal_ppm FROM  dbo.Pb_RebalseCiclon_Tenor where (Fecha >= '" & strFechaInicio &
+                                           "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+        dt = New DataTable
+
+        dt = ds.Tables(0)
+
+        If dt.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("RebalseCiclon"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt.Rows(index)(2).ToString
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
+        sql = "SELECT Fecha, DetencionMtto, DetencionOperacion FROM  dbo.PB_Operation where  (Fecha >= '" & strFechaInicio &
+                                      "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+        dt = New DataTable
+
+        dt = ds.Tables(0)
+
+        If dt.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("Operacion"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 3) = dt.Rows(index)(2).ToString
+                    recorrido = recorrido + 1
+                Next
+            End With
+        End If
+
         With objExcel
-            'concentrado de flotacion
-            hoja = CType(.Sheets("ConcentradoFlotacion"), Microsoft.Office.Interop.Excel.Worksheet)
-            'hoja.Cells(1, 3) = RstResumen.Fields("Ubicacion").Value
-            Do While Not RstResumen.EOF
-                hoja.Cells(recorrido, 1) = RstResumen.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumen.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumen.Fields("ToneladasTurno").Value
-                hoja.Cells(recorrido, 4) = RstResumen.Fields("PromedioDensidad").Value
-                hoja.Cells(recorrido, 5) = RstResumen.Fields("PromedioGravedad").Value
-                recorrido = recorrido + 1
-                RstResumen.MoveNext()
-            Loop
-            recorrido = 2
-            hoja = CType(.Sheets("TenorFlotacion"), Microsoft.Office.Interop.Excel.Worksheet)
-            Do While Not RstResumenTenor.EOF
-                hoja.Cells(recorrido, 1) = RstResumenTenor.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumenTenor.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumenTenor.Fields("AuFinal_ppm").Value
-                recorrido = recorrido + 1
-                RstResumenTenor.MoveNext()
-            Loop
-
-
-            'agitador 1
-            RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoAAG1 where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
-                                      "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-            RstResumenTenor = conn.Execute(" SELECT Fecha, Turno, AuFinal_ppm FROM dbo.Pb_AlimentoAG1Solido where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
-                                           "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-            RstResumenTenorsolucion = conn.Execute(" SELECT  Fecha, Turno, AuFinal_ppm FROM dbo.Pb_AlimentoAG1Solido where     (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
-                                                   "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-
-            recorrido = 2
-            'concentrado de flotacion
-            hoja = CType(.Sheets("AlimentoAgitador1"), Microsoft.Office.Interop.Excel.Worksheet)
-            'hoja.Cells(1, 3) = RstResumen.Fields("Ubicacion").Value
-            Do While Not RstResumen.EOF
-                hoja.Cells(recorrido, 1) = RstResumen.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumen.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumen.Fields("ToneladasTurno").Value
-                hoja.Cells(recorrido, 4) = RstResumen.Fields("PromedioDensidad").Value
-                hoja.Cells(recorrido, 5) = RstResumen.Fields("PromedioGravedad").Value
-                recorrido = recorrido + 1
-                RstResumen.MoveNext()
-            Loop
-            recorrido = 2
-            hoja = CType(.Sheets("AlimentoAgitadorSolido"), Microsoft.Office.Interop.Excel.Worksheet)
-            Do While Not RstResumenTenor.EOF
-                hoja.Cells(recorrido, 1) = RstResumenTenor.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumenTenor.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumenTenor.Fields("AuFinal_ppm").Value
-                recorrido = recorrido + 1
-                RstResumenTenor.MoveNext()
-            Loop
-
-            recorrido = 2
-            hoja = CType(.Sheets("AlimentoAgitadorSolucion"), Microsoft.Office.Interop.Excel.Worksheet)
-            Do While Not RstResumenTenorsolucion.EOF
-                hoja.Cells(recorrido, 1) = RstResumenTenorsolucion.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumenTenorsolucion.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumenTenorsolucion.Fields("AuFinal_ppm").Value
-                recorrido = recorrido + 1
-                RstResumenTenorsolucion.MoveNext()
-            Loop
-
-
-
-            'espesador5 solido
-            RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoEsp5 where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
-                                      "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-            RstResumenTenor = conn.Execute(" SELECT  Fecha, Turno, AuFinal_ppm FROM  dbo.PB_ColasESp5SolidoTenor where  (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
-                                           "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-            RstResumenTenorsolucion = conn.Execute(" SELECT  Fecha, Turno, AuFinal_ppm FROM dbo.PB_ColasEsp5Solucion where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
-                                                   "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-
-
-            recorrido = 2
-            'concentrado de flotacion
-            hoja = CType(.Sheets("Cesp5"), Microsoft.Office.Interop.Excel.Worksheet)
-            'hoja.Cells(1, 3) = RstResumen.Fields("Ubicacion").Value
-            Do While Not RstResumen.EOF
-                hoja.Cells(recorrido, 1) = RstResumen.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumen.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumen.Fields("ToneladasTurno").Value
-                hoja.Cells(recorrido, 4) = RstResumen.Fields("PromedioDensidad").Value
-                hoja.Cells(recorrido, 5) = RstResumen.Fields("PromedioGravedad").Value
-                recorrido = recorrido + 1
-                RstResumen.MoveNext()
-            Loop
-            recorrido = 2
-            hoja = CType(.Sheets("TenorSolidoCesp5"), Microsoft.Office.Interop.Excel.Worksheet)
-            Do While Not RstResumenTenor.EOF
-                hoja.Cells(recorrido, 1) = RstResumenTenor.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumenTenor.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumenTenor.Fields("AuFinal_ppm").Value
-                recorrido = recorrido + 1
-                RstResumenTenor.MoveNext()
-            Loop
-
-
-            recorrido = 2
-            hoja = CType(.Sheets("TenorSolucionEsp5"), Microsoft.Office.Interop.Excel.Worksheet)
-            'hoja.Cells(1, 3) = RstResumen.Fields("Ubicacion").Value
-            Do While Not RstResumenTenorsolucion.EOF
-                hoja.Cells(recorrido, 1) = RstResumenTenorsolucion.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumenTenorsolucion.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumenTenorsolucion.Fields("AuFinal_ppm").Value
-                recorrido = recorrido + 1
-                RstResumenTenorsolucion.MoveNext()
-            Loop
-
-
-            ' descarga agitador 3
-
-            'RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoEsp5 where     (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-            RstResumenTenor = conn.Execute(" SELECT  Fecha, Turno, AuFinal_ppm FROM dbo.PB_DescargaAgitadorSolido where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
-                                           "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-            RstResumenTenorsolucion = conn.Execute(" SELECT Fecha, Turno, AuFinal_ppm FROM dbo.PB_DescargaAgitadorSolucion where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
-                                                   "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-
-
-
-            recorrido = 2
-            hoja = CType(.Sheets("DescargaAgitadorSolido"), Microsoft.Office.Interop.Excel.Worksheet)
-            Do While Not RstResumenTenor.EOF
-                hoja.Cells(recorrido, 1) = RstResumenTenor.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumenTenor.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumenTenor.Fields("AuFinal_ppm").Value
-                recorrido = recorrido + 1
-                RstResumenTenor.MoveNext()
-            Loop
-
-
-            recorrido = 2
-            hoja = CType(.Sheets("DescargaAgitadorSolucion"), Microsoft.Office.Interop.Excel.Worksheet)
-            'hoja.Cells(1, 3) = RstResumen.Fields("Ubicacion").Value
-            Do While Not RstResumenTenorsolucion.EOF
-                hoja.Cells(recorrido, 1) = RstResumenTenorsolucion.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumenTenorsolucion.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumenTenorsolucion.Fields("AuFinal_ppm").Value
-                recorrido = recorrido + 1
-                RstResumenTenorsolucion.MoveNext()
-            Loop
-
-
-            RstResumen = conn.Execute(" SELECT Fecha, TotalOnzas , OrigenBarra FROM  dbo.Pb_FundicionTotal where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
-                                      "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-            'FUNDICION
-            recorrido = 2
-            hoja = CType(.Sheets("Fundicion"), Microsoft.Office.Interop.Excel.Worksheet)
-            Do While Not RstResumen.EOF
-                hoja.Cells(recorrido, 1) = RstResumen.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumen.Fields("origenbarra").Value
-                hoja.Cells(recorrido, 3) = RstResumen.Fields("totalonzas").Value
-                recorrido = recorrido + 1
-                RstResumen.MoveNext()
-            Loop
-
-
-            ' descarga agitador 4
-
-            '****RstResumen = conn.Execute(" SELECT Fecha, Turno, ToneladasTurno, PromedioDensidad, PromedioGravedad FROM  dbo.Pb_ConcentradoEsp5 where     (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-            '  RstResumenTenor = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.PB_DescargaAG4Solido where     (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-            ' RstResumenTenorsolucion = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.PB_DescargaAG4Solucion where     (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-
-            'recorrido = 2
-            'hoja = CType(.Sheets("TenorSolidoAg3"), Microsoft.Office.Interop.Excel.Worksheet)
-            'Do While Not RstResumenTenor.EOF
-            'hoja.Cells(recorrido, 1) = RstResumenTenor.Fields("Fecha").Value
-            'hoja.Cells(recorrido, 2) = RstResumenTenor.Fields("Turno").Value
-            'hoja.Cells(recorrido, 3) = RstResumenTenor.Fields("AuFinal_ppm").Value
-            ' recorrido = recorrido + 1
-            ' RstResumenTenor.MoveNext()
-            ' Loop
-            ' recorrido = 2
-            'hoja = CType(.Sheets("TenorSolucionAg3"), Microsoft.Office.Interop.Excel.Worksheet)
-            'hoja.Cells(1, 3) = RstResumen.Fields("Ubicacion").Value
-            ' Do While Not RstResumenTenorsolucion.EOF
-            'hoja.Cells(recorrido, 1) = RstResumenTenorsolucion.Fields("Fecha").Value
-            'hoja.Cells(recorrido, 2) = RstResumenTenorsolucion.Fields("Turno").Value
-            ' hoja.Cells(recorrido, 3) = RstResumenTenorsolucion.Fields("AuFinal_ppm").Value
-            'recorrido = recorrido + 1
-            'RstResumenTenorsolucion.MoveNext()
-            'Loop
-            'merrilcrowe
-            '* RstResumenTenor = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM         dbo.PB_DescargaAG3Solido where     (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text) & "')  ORDER BY Fecha ")
-            RstResumenTenorsolucion = conn.Execute("SELECT Fecha , Turno , Volumen , TenorCabeza , TenorCola , OnzasCabeza , OnzasCola  FROM  Pb_MerrilCroweBalance where  (Fecha >= '" &
-                                                   Convert.ToDateTime(DtFechaInicio.Text).ToString & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-            recorrido = 2
-            hoja = CType(.Sheets("MerrilCrowe"), Microsoft.Office.Interop.Excel.Worksheet)
-            Do While Not RstResumenTenorsolucion.EOF
-                hoja.Cells(recorrido, 1) = RstResumenTenorsolucion.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumenTenorsolucion.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumenTenorsolucion.Fields("Volumen").Value
-                hoja.Cells(recorrido, 4) = RstResumenTenorsolucion.Fields("TenorCabeza").Value
-                hoja.Cells(recorrido, 5) = RstResumenTenorsolucion.Fields("TenorCola").Value
-                hoja.Cells(recorrido, 6) = RstResumenTenorsolucion.Fields("OnzasCabeza").Value
-                hoja.Cells(recorrido, 7) = RstResumenTenorsolucion.Fields("OnzasCola").Value
-                recorrido = recorrido + 1
-                RstResumenTenorsolucion.MoveNext()
-            Loop
-            'banda 12 
-            RstResumenTenorsolucion = conn.Execute("SELECT  Fecha, turno , PromedioTenorTurno , ToneladaSeca , ToneladaHumeda , PromedioHumedad   FROM   Pb_TenorPromedioB12 where (Fecha >= '" &
-                                                   Convert.ToDateTime(DtFechaInicio.Text).ToString & "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-            recorrido = 2
-            hoja = CType(.Sheets("TenorB12"), Microsoft.Office.Interop.Excel.Worksheet)
-            Do While Not RstResumenTenorsolucion.EOF
-                hoja.Cells(recorrido, 1) = RstResumenTenorsolucion.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumenTenorsolucion.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumenTenorsolucion.Fields("PromedioTenorTurno").Value
-                hoja.Cells(recorrido, 5) = RstResumenTenorsolucion.Fields("ToneladaSeca").Value
-                hoja.Cells(recorrido, 6) = RstResumenTenorsolucion.Fields("ToneladaHumeda").Value
-                hoja.Cells(recorrido, 7) = RstResumenTenorsolucion.Fields("PromedioHumedad").Value
-                recorrido = recorrido + 1
-                RstResumenTenorsolucion.MoveNext()
-            Loop
-
-            'Colas Bulk 
-            RstResumenTenorsolucion = conn.Execute("SELECT  Fecha, turno , AuFinal_ppm  FROM   PB_ColasBulk where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
-                                                   "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-            recorrido = 2
-            hoja = CType(.Sheets("TenorColasBulk"), Microsoft.Office.Interop.Excel.Worksheet)
-            Do While Not RstResumenTenorsolucion.EOF
-                hoja.Cells(recorrido, 1) = RstResumenTenorsolucion.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumenTenorsolucion.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumenTenorsolucion.Fields("AuFinal_ppm").Value
-                recorrido = recorrido + 1
-                RstResumenTenorsolucion.MoveNext()
-            Loop
-
-
-            RstResumenTenor = conn.Execute(" SELECT     Fecha, Turno, AuFinal_ppm FROM  dbo.Pb_RebalseCiclon_Tenor where (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
-                                           "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-
-            recorrido = 2
-            hoja = CType(.Sheets("RebalseCiclon"), Microsoft.Office.Interop.Excel.Worksheet)
-            Do While Not RstResumenTenor.EOF
-                hoja.Cells(recorrido, 1) = RstResumenTenor.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumenTenor.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumenTenor.Fields("AuFinal_ppm").Value
-                recorrido = recorrido + 1
-                RstResumenTenor.MoveNext()
-            Loop
-
-            RstResumen = conn.Execute(" SELECT Fecha, DetencionMtto, DetencionOperacion FROM  dbo.PB_Operation where  (Fecha >= '" & Convert.ToDateTime(DtFechaInicio.Text).ToString &
-                                      "') AND (Fecha <= '" & Convert.ToDateTime(DtFechaFinal.Text).ToString & "')  ORDER BY Fecha ")
-            recorrido = 2
-            hoja = CType(.Sheets("Operacion"), Microsoft.Office.Interop.Excel.Worksheet)
-            Do While Not RstResumen.EOF
-                hoja.Cells(recorrido, 1) = RstResumen.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumen.Fields("DetencionMtto").Value
-                hoja.Cells(recorrido, 3) = RstResumen.Fields("DetencionOperacion").Value
-                recorrido = recorrido + 1
-                RstResumen.MoveNext()
-            Loop
-
             recorrido = 5
             hoja = CType(.Sheets("Report"), Microsoft.Office.Interop.Excel.Worksheet)
             Dim fecha1, fecha2 As Date
@@ -2582,12 +2707,11 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
                 hoja.Cells(recorrido, 2) = Convert.ToDateTime(fecha1).ToString
                 recorrido = recorrido + 1
                 fecha1 = fecha1.AddDays(1)
-                'fecha2 = fecha1.AddDays(1)
             Loop
-            objExcel.Visible = True
         End With
 
-        conn.Close()
+        objExcel.Visible = True
+        Cn.Close()
     End Sub
 
     Private Sub CmdSaveMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdSaveMC.Click
@@ -2989,6 +3113,7 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
 
         Cn.Open()
         Dim ds As New DataSet
+        Dim ds2 As New DataSet
         Dim da As New SqlDataAdapter
         Dim sql As String
         sql = "SELECT  Turno, FlujoM3, TonsTurno, HorasOperacion, Densidad, Fecha, ToneladasVertidas FROM dbo.Pb_FlowsColasBulk where (Fecha >= '" & strFechaInicio &
@@ -3023,16 +3148,18 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
                 sql = "SELECT fecha, turno, AuFinal_ppm FROM  dbo.PB_ColasBulk where (Fecha >= '" & strFechaInicio &
                                       "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
                 da.SelectCommand = New SqlCommand(sql, Cn)
-                da.Fill(ds)
+                da.Fill(ds2)
+                Dim dt2 As DataTable = ds2.Tables(0)
 
                 hoja = CType(.Sheets("tenor"), Microsoft.Office.Interop.Excel.Worksheet)
-                For index = 0 To dt.Rows.Count - 1
-                    hoja.Cells(recorrido, 1) = dt.Rows(index)(0).ToString
-                    hoja.Cells(recorrido, 2) = dt.Rows(index)(1).ToString
-                    hoja.Cells(recorrido, 3) = dt.Rows(index)(2).ToString
-
-                    recorrido = recorrido + 1
-                Next
+                If dt2.Rows.Count > 0 Then
+                    For index = 0 To dt.Rows.Count - 1
+                        hoja.Cells(recorrido, 1) = dt2.Rows(index)(0).ToString
+                        hoja.Cells(recorrido, 2) = dt2.Rows(index)(1).ToString
+                        hoja.Cells(recorrido, 3) = dt2.Rows(index)(2).ToString
+                        recorrido = recorrido + 1
+                    Next
+                End If
 
                 recorrido = 3
                 hoja = CType(.Sheets("Report"), Microsoft.Office.Interop.Excel.Worksheet)
@@ -3121,13 +3248,25 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
     End Sub
 
     Private Sub exportarflujoE5()
-        Dim conn As New ADODB.Connection()
-        Dim RstResumen As New ADODB.Recordset()
-        Dim RstResumenTenor As New ADODB.Recordset()
+        Cn.Open()
+        Dim ds As New DataSet
+        Dim da As New SqlDataAdapter
+        Dim sql As String
 
-        Dim cnStr As String
-        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
-        conn.Open(cnStr, "", "", -1)
+        Dim strFechaInicio As String = System.String.Empty
+        If (DtInicioE5.Text = System.String.Empty) Then
+            strFechaInicio = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFechaInicio = Convert.ToDateTime(DtInicioE5.Text).ToString("yyyy-MM-dd")
+        End If
+
+        Dim strFecha As String = System.String.Empty
+        If (DtFinalE5.Text = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(DtFinalE5.Text).ToString("yyyy-MM-dd")
+        End If
+
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application
         Dim hoja As Microsoft.Office.Interop.Excel.Worksheet
@@ -3135,38 +3274,43 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
         Dim recorrido As Integer
         recorrido = 2
         objExcel.Visible = False
-        RstResumen = conn.Execute(" SELECT  Turno, FlujoM3, TonsTurno, HorasOperacion, Densidad, Fecha , ToneladasVertidas FROM  dbo.Pb_FlowsE5 where     (Fecha >= '" & Convert.ToDateTime(DtInicioE5.Text) & "') AND (Fecha <= '" & Convert.ToDateTime(DtFinalE5.Text) & "')  ORDER BY Fecha ")
-        With objExcel
-            'concentrado de flotacion
-            hoja = CType(.Sheets("Data"), Microsoft.Office.Interop.Excel.Worksheet)
-            'hoja.Cells(1, 3) = RstResumen.Fields("Ubicacion").Value
-            Do While Not RstResumen.EOF
-                hoja.Cells(recorrido, 1) = RstResumen.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumen.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumen.Fields("Densidad").Value
-                hoja.Cells(recorrido, 4) = RstResumen.Fields("HorasOperacion").Value
-                hoja.Cells(recorrido, 5) = RstResumen.Fields("Tonsturno").Value
-                hoja.Cells(recorrido, 7) = RstResumen.Fields("ToneladasVertidas").Value
-                recorrido = recorrido + 1
-                RstResumen.MoveNext()
-            Loop
 
+        sql = "SELECT  Turno, FlujoM3, TonsTurno, HorasOperacion, Densidad, Fecha , ToneladasVertidas FROM  dbo.Pb_FlowsE5 where (Fecha >= '" & strFechaInicio &
+                                  "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+        dt = New DataTable
 
-            recorrido = 3
-            hoja = CType(.Sheets("Report"), Microsoft.Office.Interop.Excel.Worksheet)
-            Dim fecha1, fecha2 As Date
-            fecha1 = DtInicioE5.Value
-            fecha2 = DtFinalE5.Value
-            Do While fecha1 <= fecha2
-                hoja.Cells(recorrido, 1) = fecha1
-                recorrido = recorrido + 1
-                fecha1 = fecha1.AddDays(1)
-                'fecha2 = fecha1.AddDays(1)
-            Loop
+        dt = ds.Tables(0)
 
-        End With
-        objExcel.Visible = True
-        conn.Close()
+        If dt.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("Data"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt.Rows(index)(5).ToString
+                    hoja.Cells(recorrido, 2) = dt.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 3) = dt.Rows(index)(4).ToString
+                    hoja.Cells(recorrido, 4) = dt.Rows(index)(3).ToString
+                    hoja.Cells(recorrido, 5) = dt.Rows(index)(2).ToString
+                    hoja.Cells(recorrido, 7) = dt.Rows(index)(6).ToString
+                    recorrido = recorrido + 1
+                Next
+
+                recorrido = 3
+                hoja = CType(.Sheets("Report"), Microsoft.Office.Interop.Excel.Worksheet)
+                Dim fecha1, fecha2 As Date
+                fecha1 = DtInicioE5.Value
+                fecha2 = DtFinalE5.Value
+                Do While fecha1 <= fecha2
+                    hoja.Cells(recorrido, 1) = fecha1
+                    recorrido = recorrido + 1
+                    fecha1 = fecha1.AddDays(1)
+                Loop
+            End With
+            objExcel.Visible = True
+            Cn.Close()
+        End If
     End Sub
 
     Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
@@ -3179,13 +3323,11 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
         If dias > 31 Then
             MsgBox("Por Favor Seleccione un rango de Fecha no superior a 30 dias.")
             Exit Sub
-
         End If
         exportarBanda12()
     End Sub
 
     Private Sub exportarBanda12()
-
         Dim strFechaInicio As String = System.String.Empty
         If (DtInicioB12.Text = System.String.Empty) Then
             strFechaInicio = DateTime.Now.ToString("yyyy-MM-dd")
@@ -3208,6 +3350,7 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
                                   "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
         da.SelectCommand = New SqlCommand(sql, Cn)
         da.Fill(ds)
+        Dim dt As DataTable = ds.Tables(0)
 
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application
@@ -3264,13 +3407,20 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
 
 
     Private Sub ExportarMerrilCrowe()
-        Dim conn As New ADODB.Connection()
-        Dim RstResumen As New ADODB.Recordset()
-        Dim RstResumenTenor As New ADODB.Recordset()
+        Dim strFechaInicio As String = System.String.Empty
+        If (DtInicioMerril.Text = System.String.Empty) Then
+            strFechaInicio = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFechaInicio = Convert.ToDateTime(DtInicioMerril.Text).ToString("yyyy-MM-dd")
+        End If
 
-        Dim cnStr As String
-        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
-        conn.Open(cnStr, "", "", -1)
+        Dim strFecha As String = System.String.Empty
+        If (DtFinalMerril.Text = System.String.Empty) Then
+            strFecha = DateTime.Now.ToString("yyyy-MM-dd")
+        Else
+            strFecha = Convert.ToDateTime(DtFinalMerril.Text).ToString("yyyy-MM-dd")
+        End If
+
         Dim objExcel As Microsoft.Office.Interop.Excel.Application
         objExcel = New Microsoft.Office.Interop.Excel.Application
         Dim hoja As Microsoft.Office.Interop.Excel.Worksheet
@@ -3278,37 +3428,48 @@ ByVal e As EventArgs) Handles ChKFlotaLixiSolucion.CheckedChanged
         Dim recorrido As Integer
         recorrido = 2
         objExcel.Visible = False
-        RstResumen = conn.Execute(" SELECT Fecha, Volumen, TenorCabeza, TenorCola, Turno  FROM  dbo.Pb_MerrilCroweBalance where (Fecha >= '" & Convert.ToDateTime(DtInicioMerril.Text).ToString &
-                                  "') AND (Fecha <= '" & Convert.ToDateTime(DtFinalMerril.Text).ToString & "')  ORDER BY Fecha ")
-        With objExcel
-            'concentrado de flotacion
-            hoja = CType(.Sheets("Data"), Microsoft.Office.Interop.Excel.Worksheet)
-            'hoja.Cells(1, 3) = RstResumen.Fields("Ubicacion").Value
-            Do While Not RstResumen.EOF
-                hoja.Cells(recorrido, 1) = RstResumen.Fields("Fecha").Value
-                hoja.Cells(recorrido, 2) = RstResumen.Fields("Turno").Value
-                hoja.Cells(recorrido, 3) = RstResumen.Fields("Volumen").Value
-                hoja.Cells(recorrido, 4) = RstResumen.Fields("TenorCabeza").Value
-                hoja.Cells(recorrido, 5) = RstResumen.Fields("TenorCola").Value
-                recorrido = recorrido + 1
-                RstResumen.MoveNext()
-            Loop
-            recorrido = 6
-            hoja = CType(.Sheets("Report"), Microsoft.Office.Interop.Excel.Worksheet)
-            Dim fecha1, fecha2 As Date
-            fecha1 = DtInicioMerril.Value
-            fecha2 = DtFinalMerril.Value
 
-            Do While fecha1 <= fecha2
-                hoja.Cells(recorrido, 1) = Convert.ToDateTime(fecha1).ToString
-                recorrido = recorrido + 1
-                fecha1 = fecha1.AddDays(1)
-                'fecha2 = fecha1.AddDays(1)
-            Loop
+        Cn.Open()
+        Dim ds As New DataSet
+        Dim da As New SqlDataAdapter
+        Dim sql As String
+        sql = "SELECT Fecha, Volumen, TenorCabeza, TenorCola, Turno  FROM  dbo.Pb_MerrilCroweBalance where (Fecha >= '" & strFechaInicio &
+                                  "') AND (Fecha <= '" & strFecha & "')  ORDER BY Fecha "
+        da.SelectCommand = New SqlCommand(Sql, Cn)
+        Da.Fill(ds)
+        dt = New DataTable
 
-        End With
+        dt = ds.Tables(0)
+
+        If dt.Rows.Count > 0 Then
+            With objExcel
+                recorrido = 2
+                hoja = CType(.Sheets("Data"), Microsoft.Office.Interop.Excel.Worksheet)
+                For index = 0 To dt.Rows.Count - 1
+                    hoja.Cells(recorrido, 1) = dt.Rows(index)(0).ToString
+                    hoja.Cells(recorrido, 2) = dt.Rows(index)(4).ToString
+                    hoja.Cells(recorrido, 3) = dt.Rows(index)(1).ToString
+                    hoja.Cells(recorrido, 4) = dt.Rows(index)(2).ToString
+                    hoja.Cells(recorrido, 5) = dt.Rows(index)(3).ToString
+                    recorrido = recorrido + 1
+                Next
+
+                recorrido = 6
+                hoja = CType(.Sheets("Report"), Microsoft.Office.Interop.Excel.Worksheet)
+                Dim fecha1, fecha2 As Date
+                fecha1 = DtInicioMerril.Value
+                fecha2 = DtFinalMerril.Value
+
+                Do While fecha1 <= fecha2
+                    hoja.Cells(recorrido, 1) = Convert.ToDateTime(fecha1).ToString
+                    recorrido = recorrido + 1
+                    fecha1 = fecha1.AddDays(1)
+                Loop
+            End With
+        End If
+
         objExcel.Visible = True
-        conn.Close()
+        Cn.Close()
     End Sub
 
 
