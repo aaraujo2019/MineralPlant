@@ -204,6 +204,12 @@
     <Compile Include="FrmCargarGravedadEspecifica.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmCargarReactivos.Designer.vb">
+      <DependentUpon>FrmCargarReactivos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCargarReactivos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmCargarHumedad.Designer.vb">
       <DependentUpon>FrmCargarHumedad.vb</DependentUpon>
     </Compile>
@@ -519,6 +525,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmCargarGravedadEspecifica.resx">
       <DependentUpon>FrmCargarGravedadEspecifica.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCargarReactivos.resx">
+      <DependentUpon>FrmCargarReactivos.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmCargarHumedad.resx">
       <DependentUpon>FrmCargarHumedad.vb</DependentUpon>

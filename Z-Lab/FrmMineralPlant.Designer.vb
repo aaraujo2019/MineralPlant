@@ -389,7 +389,7 @@ Partial Class FrmMineralPlant
         '
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Lucida Calligraphy", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(319, 24)
+        Me.Label8.Location = New System.Drawing.Point(319, 7)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(434, 27)
         Me.Label8.TabIndex = 25
@@ -444,7 +444,7 @@ Partial Class FrmMineralPlant
         Me.GroupBox2.Controls.Add(Me.LblArea)
         Me.GroupBox2.Controls.Add(Me.LblUsuario)
         Me.GroupBox2.Controls.Add(Me.PictureBox1)
-        Me.GroupBox2.Location = New System.Drawing.Point(15, 38)
+        Me.GroupBox2.Location = New System.Drawing.Point(15, 19)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(1026, 75)
         Me.GroupBox2.TabIndex = 26
@@ -463,7 +463,7 @@ Partial Class FrmMineralPlant
         'DateTimePickerFechaReporte
         '
         Me.DateTimePickerFechaReporte.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DateTimePickerFechaReporte.Location = New System.Drawing.Point(19, 152)
+        Me.DateTimePickerFechaReporte.Location = New System.Drawing.Point(19, 121)
         Me.DateTimePickerFechaReporte.Name = "DateTimePickerFechaReporte"
         Me.DateTimePickerFechaReporte.Size = New System.Drawing.Size(200, 20)
         Me.DateTimePickerFechaReporte.TabIndex = 27
@@ -472,7 +472,7 @@ Partial Class FrmMineralPlant
         'Label46
         '
         Me.Label46.AutoSize = True
-        Me.Label46.Location = New System.Drawing.Point(238, 141)
+        Me.Label46.Location = New System.Drawing.Point(238, 110)
         Me.Label46.Name = "Label46"
         Me.Label46.Size = New System.Drawing.Size(52, 13)
         Me.Label46.TabIndex = 40
@@ -481,7 +481,7 @@ Partial Class FrmMineralPlant
         'ChkTimeView
         '
         Me.ChkTimeView.AutoSize = True
-        Me.ChkTimeView.Location = New System.Drawing.Point(256, 158)
+        Me.ChkTimeView.Location = New System.Drawing.Point(256, 127)
         Me.ChkTimeView.Name = "ChkTimeView"
         Me.ChkTimeView.Size = New System.Drawing.Size(15, 14)
         Me.ChkTimeView.TabIndex = 39
@@ -490,7 +490,7 @@ Partial Class FrmMineralPlant
         'CmbHoraFinal
         '
         Me.CmbHoraFinal.FormattingEnabled = True
-        Me.CmbHoraFinal.Location = New System.Drawing.Point(961, 119)
+        Me.CmbHoraFinal.Location = New System.Drawing.Point(956, 103)
         Me.CmbHoraFinal.Name = "CmbHoraFinal"
         Me.CmbHoraFinal.Size = New System.Drawing.Size(80, 21)
         Me.CmbHoraFinal.TabIndex = 38
@@ -499,7 +499,7 @@ Partial Class FrmMineralPlant
         'CmbHoraInicio
         '
         Me.CmbHoraInicio.FormattingEnabled = True
-        Me.CmbHoraInicio.Location = New System.Drawing.Point(873, 119)
+        Me.CmbHoraInicio.Location = New System.Drawing.Point(873, 103)
         Me.CmbHoraInicio.Name = "CmbHoraInicio"
         Me.CmbHoraInicio.Size = New System.Drawing.Size(80, 21)
         Me.CmbHoraInicio.TabIndex = 37
@@ -3451,7 +3451,7 @@ Partial Class FrmMineralPlant
         Me.Horometro.Controls.Add(Me.TabPage8)
         Me.Horometro.Controls.Add(Me.TabPage9)
         Me.Horometro.Controls.Add(Me.TabPage10)
-        Me.Horometro.Location = New System.Drawing.Point(15, 187)
+        Me.Horometro.Location = New System.Drawing.Point(15, 156)
         Me.Horometro.Margin = New System.Windows.Forms.Padding(2)
         Me.Horometro.Name = "Horometro"
         Me.Horometro.SelectedIndex = 0
@@ -3676,7 +3676,7 @@ Partial Class FrmMineralPlant
         '
         Me.LblFechaReporte.AutoSize = True
         Me.LblFechaReporte.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblFechaReporte.Location = New System.Drawing.Point(17, 135)
+        Me.LblFechaReporte.Location = New System.Drawing.Point(17, 104)
         Me.LblFechaReporte.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.LblFechaReporte.Name = "LblFechaReporte"
         Me.LblFechaReporte.Size = New System.Drawing.Size(63, 16)
@@ -3688,7 +3688,7 @@ Partial Class FrmMineralPlant
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightGoldenrodYellow
-        Me.ClientSize = New System.Drawing.Size(1061, 733)
+        Me.ClientSize = New System.Drawing.Size(1061, 698)
         Me.Controls.Add(Me.LblFechaReporte)
         Me.Controls.Add(Me.Horometro)
         Me.Controls.Add(Me.Label46)

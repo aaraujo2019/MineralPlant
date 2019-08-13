@@ -133,7 +133,7 @@ Public Class FrmCargarInstantaneas
         Dim LibroExcel As Excel.Workbook
         Dim HojaExcel As Excel.Worksheet
         Dim celda As String
-        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
+
         Try
 
             Dim FicheroExcel As String
@@ -235,24 +235,19 @@ Public Class FrmCargarInstantaneas
 
 
                 Else
-                    conn.Open(cnStr)
+
                     If (ValidaSiExiste(fecha, hora2, ubicacion)) Then
                         cmd.CommandText = "UPDATE  PB_Instantaneas  SET tenor = '" & tenor & "' WHERE fecha= '" & fecha & "'  and hora= '" & hora2 & "' and hora= '" & ubicacion & "'  "
                     Else
                         cmd.CommandText = "INSERT INTO PB_Instantaneas (Ordentrabajo,hora,ubicacion,tenor,fecha,TipoMuestra)VALUES('" & Ordentrabajo & "','" & hora2 & "','" & ubicacion & "' , '" & tenor & "' , '" & fecha & "' , '" & TipoMuestra & "' )"
-                        'End If
+
                     End If
                     cmd.Connection = sqlConnectiondb
                     sqlConnectiondb.Open()
                     cmd.ExecuteNonQuery()
                     sqlConnectiondb.Close()
-                    conn.Close()
-
-
 
                     If CStr(HojaExcel.Range("D" & i).Value) = "" Then
-                        ' sqlConnectiondb.Close()
-                        ' conn.Close()
                         MsgBox("Importacion Finalizada")
                         Exit For
 
@@ -274,8 +269,7 @@ Public Class FrmCargarInstantaneas
         Catch ex As Exception
             ' MsgBox(celda)
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             If conn.State <> ConnectionState.Closed Then
                 conn.Close()

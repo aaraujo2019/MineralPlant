@@ -480,4 +480,8 @@ Public Class FrmPrincipal
     Private Sub DespacharMuestraLabToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DespacharMuestraLabToolStripMenuItem.Click
 
     End Sub
+
+    Private Sub ReactivosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReactivosToolStripMenuItem.Click
+        FrmCargarReactivos.Show()
+    End Sub
 End Class

@@ -74,6 +74,7 @@ Partial Class FrmPrincipal
         Me.Label1 = New System.Windows.Forms.Label()
         Me.LblUserName = New System.Windows.Forms.Label()
         Me.lbltipoflujo = New System.Windows.Forms.Label()
+        Me.ReactivosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -161,7 +162,7 @@ Partial Class FrmPrincipal
         '
         'ImportarReportesToolStripMenuItem
         '
-        Me.ImportarReportesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ImportarAnalisisQuimicosSGSToolStripMenuItem, Me.ImportarAnalisisQuimicosZandorToolStripMenuItem, Me.MuestrasInstantaneasToolStripMenuItem1, Me.GravedadEspecificaToolStripMenuItem1, Me.HumedadToolStripMenuItem, Me.MinerasToolStripMenuItem1, Me.SSTSolidosEnSuspencionToolStripMenuItem})
+        Me.ImportarReportesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ImportarAnalisisQuimicosSGSToolStripMenuItem, Me.ImportarAnalisisQuimicosZandorToolStripMenuItem, Me.MuestrasInstantaneasToolStripMenuItem1, Me.GravedadEspecificaToolStripMenuItem1, Me.HumedadToolStripMenuItem, Me.MinerasToolStripMenuItem1, Me.SSTSolidosEnSuspencionToolStripMenuItem, Me.ReactivosToolStripMenuItem})
         Me.ImportarReportesToolStripMenuItem.Name = "ImportarReportesToolStripMenuItem"
         Me.ImportarReportesToolStripMenuItem.Size = New System.Drawing.Size(114, 20)
         Me.ImportarReportesToolStripMenuItem.Text = "Importar Reportes"
@@ -407,6 +408,12 @@ Partial Class FrmPrincipal
         Me.lbltipoflujo.Text = "tipoflujo"
         Me.lbltipoflujo.Visible = False
         '
+        'ReactivosToolStripMenuItem
+        '
+        Me.ReactivosToolStripMenuItem.Name = "ReactivosToolStripMenuItem"
+        Me.ReactivosToolStripMenuItem.Size = New System.Drawing.Size(209, 22)
+        Me.ReactivosToolStripMenuItem.Text = "Reactivos"
+        '
         'FrmPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -480,4 +487,5 @@ Partial Class FrmPrincipal
     Friend WithEvents IndicadoresAmbienteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents AdminToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents GestionDeUsuariosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ReactivosToolStripMenuItem As Windows.Forms.ToolStripMenuItem
 End Class
