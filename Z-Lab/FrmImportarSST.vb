@@ -9,12 +9,6 @@ Imports System.Configuration
 
 Public Class FrmImportarSST
     Dim nombreHoja As String
-    Dim conn As New ADODB.Connection()
-    Dim rstlab As New ADODB.Recordset()
-
-
-    Dim rst As New ADODB.Recordset()
-    Dim cnStr As String
     Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Private Sub FrmImportarSST_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
@@ -160,7 +154,7 @@ Public Class FrmImportarSST
         Dim LibroExcel As Excel.Workbook
         Dim HojaExcel As Excel.Worksheet
         Dim celda As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=GZC;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+
         Try
 
             Dim FicheroExcel As String
@@ -182,7 +176,7 @@ Public Class FrmImportarSST
 
             For i As Integer = 38 To 100
                 celda = "A" & i
-                conn.Open(cnStr)
+
                 Dim SST As Double
                 Dim ubicacion, idlab, turno As String
                 Dim fecha As Date
@@ -214,36 +208,14 @@ Public Class FrmImportarSST
                     sqlConnectiondb.Open()
                     cmd.ExecuteNonQuery()
                     sqlConnectiondb.Close()
-                    conn.Close()
+
                 End If
 
-
-
-
-                ' If CStr(HojaExcel.Range("A" & i).Value) = "" Then
-                '   sqlConnectiondb.Close()
-                '   conn.Close()
-                '   MsgBox("Importacion Finalizada")
-                '      Exit For
-
-                ' End If
-
             Next
-            'LibroExcel.Close()
-            ' AppExcel.Quit()
-            'AppExcel = Nothing
-            'LibroExcel = Nothing
-
-
-
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Finally
-            If conn.State <> ConnectionState.Closed Then
-                conn.Close()
-            End If
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
+
         End Try
     End Sub
 End Class

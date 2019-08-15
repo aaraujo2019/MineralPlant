@@ -6,6 +6,7 @@ Imports Microsoft.Office.Interop
 Imports System.Data.OleDb
 Imports System.Windows.Forms
 Imports System.Configuration
+Imports Microsoft.ReportingServices.Rendering.ExcelRenderer
 
 Public Class FrmCargarReactivos
     Dim nombreHoja As String

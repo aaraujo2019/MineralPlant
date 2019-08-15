@@ -285,11 +285,14 @@ Public Class FrmIndicadorAmbiental
             End If
 
         Next dRow
-        LblTotalToneladas.Text = CStr(Format(tonseca, "0.00"))
-        lbldiaston.Text = CStr(Format(registros, "0.00"))
-        lblpromediotondia.Text = CStr(Format(tonseca / registros, "0.00"))
 
-        Me.DgToneladas.ReadOnly = False
+        If tonseca <> 0 And registros <> 0 Then
+            LblTotalToneladas.Text = CStr(Format(tonseca, "0.00"))
+            lbldiaston.Text = CStr(Format(registros, "0.00"))
+            lblpromediotondia.Text = CStr(Format(tonseca / registros, "0.00"))
+
+            Me.DgToneladas.ReadOnly = False
+        End If
     End Sub
 
     Private Sub Llenar_TotalConsumoAgua()

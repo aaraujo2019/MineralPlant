@@ -20,19 +20,23 @@ Public Class FrmConsumoCianuro
     Dim Rsfundicion As New ADODB.Recordset()
     Dim cnStr As String
     Private Sub CmdBuscar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdBuscar.Click
-        ' AND PERIODO = '" & (cmbperiodo2.Text) & "' 
-        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
-        conn.Open(cnStr)
-        Rsfundicion = conn.Execute(" SELECT * FROM         Pb_ConsumoDeCianuro WHERE ubicacion  = '" & (CmbUbicacion.Text) & "'  AND fecha >= '" & CDate(DtInicio.Text) & "'  AND fecha <= '" & CDate(DtFinal.Text) & "'       ")
-        If Rsfundicion.EOF = True Then
-            MsgBox("No Existe")
-            DtFinal.Value = Today
-        Else
-            ' Me.DtFinal.Value = CDate((Rsfundicion.Fields("FECHA").Value))
+        Cn.Open()
+        Dim ds As New DataSet
+        Dim da As New SqlDataAdapter
+        Dim sql As String
+        sql = "SELECT * FROM Pb_ConsumoDeCianuro WHERE ubicacion  = '" & (CmbUbicacion.Text) & "'  AND fecha >= '" & CDate(DtInicio.Text) & "'  AND fecha <= '" & CDate(DtFinal.Text) & "'"
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+        Cn.Close()
+        Dim dt As DataTable = ds.Tables(0)
+
+        If dt.Rows.Count > 0 Then
             llenardatagridviewCianuro()
             Llenar_TotalConsumoCianuro()
+        Else
+            MsgBox("No Existe")
+            DtFinal.Value = Today
         End If
-        conn.Close()
     End Sub
     Private Sub Cargarubicacion()
         With Cmd

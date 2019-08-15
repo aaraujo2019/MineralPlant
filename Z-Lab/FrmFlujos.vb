@@ -5,13 +5,15 @@ Imports System.Data.SqlClient
 Imports Z_Lab.Login
 Imports System.Data.OleDb
 Imports System.Windows.Forms
+Imports System.Configuration
+
 Public Class FrmFlujos
     Private dt As DataTable
     Dim Da As New SqlDataAdapter
     Dim Cmd As New SqlCommand
     Dim Dataset As DataSet
     Dim editarflujo As Boolean
-    Dim Cn As New SqlConnection("Server=10.10.203.4\gcg;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+    Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Private Sub FrmFlujos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.LblUsuario.Text = FrmPrincipal.LblUserName.Text
         Me.LblTipoFlujos.Text = FrmPrincipal.lbltipoflujo.Text
@@ -23,7 +25,7 @@ Public Class FrmFlujos
     Private Sub CmdAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdAdd.Click
         Dim DsPriv As New DataSet
 
-        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" & _
+        Dim EPermisos As New SqlClient.SqlDataAdapter("SELECT Usuario, IdEvento FROM RfUserEvent" &
 " WHERE RfUserEvent.Usuario='" & LblUsuario.Text & "'  and (RfUserEvent.IdEvento  = 'ModificarFlujos'  ) ", Cn)
         EPermisos.Fill(DsPriv, "RfUserEvent")
         Dim myDataViewpermisos As DataView = New DataView(DsPriv.Tables("RfUserEvent"))
@@ -41,7 +43,7 @@ Public Class FrmFlujos
             MsgBox("Todos los campos son obligatorios, por favor Diligencie correctamente el formulario")
         Else
             Try
-                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=10.10.203.4\gcg;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                 Dim cmd As New System.Data.SqlClient.SqlCommand
                 cmd.CommandType = System.Data.CommandType.Text
 
@@ -108,7 +110,7 @@ Public Class FrmFlujos
             Catch ex As Exception
 
                 ' Handle the exception.
-                MessageBox.Show(ex.Message, Me.Text, _
+                MessageBox.Show(ex.Message, Me.Text,
       MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
 
@@ -200,7 +202,7 @@ Public Class FrmFlujos
             If DBNull.Value.Equals(DgFlujos.CurrentRow.Cells("idconsecutivo").Value) Then
                 Me.TxtDensidad.Clear()
                 Me.TxtTiempo.Clear()
-                Me.TxtPh.Clear()
+                Me.TxtPH.Clear()
                 Me.TxtCianuro.Clear()
 
             Else
@@ -240,7 +242,7 @@ Public Class FrmFlujos
         Catch ex As Exception
             ' Handle the exception.
 
-            MessageBox.Show(ex.Message, Me.Text, _
+            MessageBox.Show(ex.Message, Me.Text,
   MessageBoxButtons.OK, MessageBoxIcon.Error)
 
         End Try
@@ -254,11 +256,11 @@ Public Class FrmFlujos
                 If DBNull.Value.Equals(DgFlujos.CurrentRow.Cells("IdConsecutivo").Value) Then
                     TxtDensidad.Clear()
                     TxtCianuro.Clear()
-                    TxtPh.Clear()
+                    TxtPH.Clear()
                     TxtTiempo.Clear()
 
                 Else
-                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection("Server=10.10.203.4\gcg;uid=sa;pwd=*Bd6r4nC0l0mb1a*;database=PlantaBeneficio")
+                    Dim sqlConnectiondb As New System.Data.SqlClient.SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
                     Dim cmd As New System.Data.SqlClient.SqlCommand
                     cmd.CommandType = System.Data.CommandType.Text
                     'cmd.CommandText = "DELETE FROM PB_Flows    WHERE Fecha=  '" & CDate(DtPFecha.Text) & "' AND Ubicacion= '" & cmbubicacion.Text & "' AND HoraInicio= '" & CmbHoraInicio.Text & "' "
@@ -273,7 +275,7 @@ Public Class FrmFlujos
                 ' ListHoraFinal.ClearSelected()
                 TxtDensidad.Clear()
                 TxtCianuro.Clear()
-                TxtPh.Clear()
+                TxtPH.Clear()
                 TxtTiempo.Clear()
                 editarflujo = False
             Catch ex As Exception

@@ -9,15 +9,7 @@ Imports System.Configuration
 
 Public Class FrmCargarHumedad
     Dim nombreHoja As String
-    Dim conn As New ADODB.Connection()
-    Dim rstlab As New ADODB.Recordset()
-
-
-    Dim rst As New ADODB.Recordset()
-    Dim cnStr As String
     Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
-
-
 
     Private Sub CmdExaminar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdExaminar.Click
 
@@ -158,12 +150,14 @@ Public Class FrmCargarHumedad
             Throw
         End Try
     End Function
+
+
     Private Sub CmdGuardarJobno_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardarJobno.Click
         Dim AppExcel As Excel.Application
         Dim LibroExcel As Excel.Workbook
         Dim HojaExcel As Excel.Worksheet
         Dim celda As String
-        cnStr = "Provider=SQLNCLI10;Initial Catalog=GZC;Data Source=SEGSVRSQL01; User ID=sa;Password=*Bd6r4nC0l0mb1a*;"
+
         Try
 
             Dim FicheroExcel As String
@@ -185,7 +179,7 @@ Public Class FrmCargarHumedad
 
             For i As Integer = 46 To 200
                 celda = "A" & i
-                conn.Open(cnStr)
+
                 Dim humedad As Double
                 Dim samples, idlab As String
                 Dim fecha As Date
@@ -206,7 +200,6 @@ Public Class FrmCargarHumedad
                     sqlConnectiondb.Open()
                     cmd.ExecuteNonQuery()
                     sqlConnectiondb.Close()
-                    conn.Close()
                 End If
 
 
@@ -214,7 +207,6 @@ Public Class FrmCargarHumedad
 
                 If CStr(HojaExcel.Range("A" & i).Value) = "" Then
                     sqlConnectiondb.Close()
-                    conn.Close()
                     MsgBox("Importacion Finalizada")
                     Exit For
 
@@ -230,12 +222,7 @@ Public Class FrmCargarHumedad
 
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Finally
-            If conn.State <> ConnectionState.Closed Then
-                conn.Close()
-            End If
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 End Class

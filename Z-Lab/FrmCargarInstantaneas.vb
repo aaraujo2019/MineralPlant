@@ -11,11 +11,7 @@ Public Class FrmCargarInstantaneas
     ' _______________________________
 
     Dim nombreHoja As String
-    Dim conn As New ADODB.Connection()
-    Dim rstlab As New ADODB.Recordset()
-
     Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
-    Dim rst As New ADODB.Recordset()
     Dim cnStr As String
     ' Dim Cn As New MySqlConnection("Server=versionline.com;uid=versionl_jpalaci;pwd=colombia12**;database=versionl_planta")
     Private Sub CmdExaminar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdExaminar.Click
@@ -122,11 +118,6 @@ Public Class FrmCargarInstantaneas
             MsgBox(oMsg.Message, MsgBoxStyle.Critical)
         End Try
     End Sub
-
-
-
-
-
 
     Private Sub CmdGuardarJobno_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardarJobno.Click
         Dim AppExcel As Excel.Application
@@ -270,12 +261,6 @@ Public Class FrmCargarInstantaneas
             ' MsgBox(celda)
             ' Handle the exception.
             MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Finally
-            If conn.State <> ConnectionState.Closed Then
-                conn.Close()
-                AppExcel = Nothing
-                LibroExcel = Nothing
-            End If
         End Try
     End Sub
 

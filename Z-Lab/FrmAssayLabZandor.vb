@@ -10,12 +10,6 @@ Imports System.Configuration
 
 Public Class FrmAssayLabZandor
     Dim nombreHoja As String
-    Dim conn As New ADODB.Connection()
-    Dim rstlab As New ADODB.Recordset()
-
-
-    Dim rst As New ADODB.Recordset()
-    Dim cnStr As String
     Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
 
 
@@ -139,7 +133,7 @@ Public Class FrmAssayLabZandor
         Dim LibroExcel As Excel.Workbook
         Dim HojaExcel As Excel.Worksheet
         Dim celda As String
-        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
+
         Try
 
             Dim FicheroExcel As String
@@ -167,9 +161,6 @@ Public Class FrmAssayLabZandor
 
             For i As Integer = 46 To 200
                 celda = "A" & i
-                conn.Open(cnStr)
-
-
                 Dim Au_Ppm, Au_Gt, Au_final, muestra As String
                 Au_Gt = ""
                 muestra = CStr(HojaExcel.Range("a" & i).Value)
@@ -199,15 +190,9 @@ Public Class FrmAssayLabZandor
                 sqlConnectiondb.Open()
                 cmd.ExecuteNonQuery()
                 sqlConnectiondb.Close()
-                conn.Close()
-
-
-
-
 
                 If CStr(HojaExcel.Range("c" & i).Value) = "" Then
                     sqlConnectiondb.Close()
-                    conn.Close()
                     MsgBox("Importacion Finalizada")
                     Exit For
 
@@ -220,12 +205,7 @@ Public Class FrmAssayLabZandor
             LibroExcel = Nothing
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Finally
-            If conn.State <> ConnectionState.Closed Then
-                conn.Close()
-            End If
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
@@ -242,8 +222,6 @@ Public Class FrmAssayLabZandor
         au_ppb = "NO"
         au_gtm = "NO"
         ag_ppm = "NO"
-
-        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
 
         'campos de tabla muestra
         Dim horainicio As String
@@ -301,7 +279,6 @@ Public Class FrmAssayLabZandor
                     limite = 200
                     For i As Integer = 38 To 200
                         celda = "A" & i
-                        conn.Open(cnStr)
                         Dim samples, idlab, aulab_ppb, Aglab_ppm, pesogr, AuFinal_ppm As String
                         samples = Replace(Convert.ToString(HojaExcel.Range("A" & i).Value), " ", "")
                         idlab = Convert.ToString((HojaExcel.Range("B10").Value))
@@ -444,8 +421,6 @@ Public Class FrmAssayLabZandor
                         End If
 
                         sqlConnectiondb.Close()
-                        conn.Close()
-
 
                         Aglab_ppm = ""
                         pesogr = ""
@@ -459,15 +434,10 @@ Public Class FrmAssayLabZandor
                         End If
 
                         AuFinal_ppm = aulab_ppb
-
-                        conn.Open(cnStr)
                         cmd.CommandText = "INSERT INTO PB_Assay (Muestra,Jobno,Au_Ppm,AuFinal_ppm, Ag_Ppm,Peso_gr)VALUES('" & samples + Fechamuestra & "','" & idlab & "','" & aulab_ppb & "','" & AuFinal_ppm & "','" & Aglab_ppm & "', '" & pesogr & "')"
-
-
 
                         If CStr(HojaExcel.Range("A" & i).Value) = "" Then
                             sqlConnectiondb.Close()
-                            conn.Close()
                             MsgBox("Importacion Finalizada")
 
                             'LibroExcel.Close()
@@ -481,7 +451,6 @@ Public Class FrmAssayLabZandor
                         sqlConnectiondb.Open()
                         cmd.ExecuteNonQuery()
                         sqlConnectiondb.Close()
-                        conn.Close()
                     Next
 
 
@@ -493,12 +462,8 @@ Public Class FrmAssayLabZandor
 
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text,
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Finally
-            If conn.State <> ConnectionState.Closed Then
-                conn.Close()
-            End If
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
+
         End Try
 
     End Sub

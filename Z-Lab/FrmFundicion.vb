@@ -1,12 +1,8 @@
 ﻿Option Explicit On
 Option Strict On
-Imports System.Data
-Imports System.Data.SqlClient
-Imports Z_Lab.Login
-Imports System.Data.OleDb
-Imports System.Windows.Forms
-Imports Z_Lab.FrmPrincipal
 Imports System.Configuration
+Imports System.Data.SqlClient
+Imports System.Windows.Forms
 
 Public Class FrmFundicion
     Private dt As DataTable
@@ -178,10 +174,6 @@ Public Class FrmFundicion
         Dgfundicion.Columns("ContenidoAu2").HeaderText = "Contenido de Oro (Gr)"
         Dgfundicion.Columns("ContenidoAg2").HeaderText = "Contenido de Plata (Gr)"
         Dgfundicion.Columns("Base2").HeaderText = "Base"
-        ' Dgfundicion.Columns("Espesador").HeaderText = "Espesador-Agitador"
-        ' Dgfundicion.Columns("Tonsecalixi").HeaderText = "Toneladas Seca"
-        ' Dgfundicion.Columns("AuFinal_ppm").HeaderText = "Tenor Gr/Ton"
-        'Dgfundicion.Columns("AlimentoGr").HeaderText = "Total Gr de Au."
         Dim metrospreparacion As Decimal
         metrospreparacion = 0
 
@@ -260,7 +252,6 @@ Public Class FrmFundicion
             LblAgOz.Text = CStr(Format(contenidoag1 / 31.1035, "0.00"))
             LblAuOzAu.Text = CStr(Format(contenidoau2 / 31.1035, "0.00"))
             LblAgOz2.Text = CStr(Format(contenidoag2 / 31.1035, "0.00"))
-            'LblPesoFOnzas.Text = CStr(Format(porcsolido / registros, "0.00"))
         End If
 
         Me.Dgfundicion.ReadOnly = False
@@ -290,18 +281,23 @@ Public Class FrmFundicion
     End Sub
 
     Private Sub CmdBuscar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdBuscar.Click
-        ' AND PERIODO = '" & (cmbperiodo2.Text) & "' 
-        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
-        conn.Open(cnStr)
-        Rsfundicion = conn.Execute(" SELECT * FROM         PB_Fundicion WHERE ano = '" & (cmbano.Text) & "'  AND MES = '" & (cmbmes.Text) & "'  AND PERIODO = '" & (cmbperiodo2.Text) & "'       ")
-        If Rsfundicion.EOF = True Then
+        Dim ds As New DataSet
+        Dim da As New SqlDataAdapter
+        Dim sql As String
+
+        sql = "SELECT * FROM PB_Fundicion WHERE ano = '" & (cmbano.Text) & "'  AND MES = '" & (cmbmes.Text) & "'  AND PERIODO = '" & (cmbperiodo2.Text) & "'"
+        da.SelectCommand = New SqlCommand(sql, Cn)
+        da.Fill(ds)
+        Cn.Close()
+        Dim dt As DataTable = ds.Tables(0)
+
+        If dt.Rows.Count > 0 Then
+            LblArea.Text = dt.Rows(0)(9).ToString
+            Me.DtFecha.Value = CDate((dt.Rows(0)("FECHA")))
+        Else
             MsgBox("No Existe")
             DtFecha.Value = Today
-        Else
-            Me.DtFecha.Value = CDate((Rsfundicion.Fields("FECHA").Value))
         End If
-        conn.Close()
-
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click

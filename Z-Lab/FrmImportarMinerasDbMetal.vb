@@ -9,12 +9,6 @@ Imports System.Configuration
 
 Public Class FrmImportarMinerasDbMetal
     Dim nombreHoja As String
-    Dim conn As New ADODB.Connection()
-    Dim rstlab As New ADODB.Recordset()
-
-
-    Dim rst As New ADODB.Recordset()
-    Dim cnStr As String
     Dim Cn As New SqlConnection(ConfigurationManager.ConnectionStrings.Item("StringConexion").ToString())
     Private Sub FrmImportarMinerasDbMetal_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
@@ -138,7 +132,7 @@ Public Class FrmImportarMinerasDbMetal
         Dim LibroExcel As Excel.Workbook
         Dim HojaExcel As Excel.Worksheet
         Dim celda As String
-        cnStr = ConfigurationManager.ConnectionStrings.Item("StringConexionODBC").ToString()
+
         Try
             Dim FicheroExcel As String
             Dim NombreHoja As String
@@ -158,7 +152,6 @@ Public Class FrmImportarMinerasDbMetal
             limite = 2000
             For i As Integer = 2 To 10000
                 celda = "A" & i
-                conn.Open(cnStr)
 
                 'Dim samples, idlab As String
                 Consecutivo = Replace(Convert.ToString(HojaExcel.Range("C" & i).Value), " ", "")
@@ -189,12 +182,10 @@ Public Class FrmImportarMinerasDbMetal
                     sqlConnectiondb.Open()
                     cmd.ExecuteNonQuery()
                     sqlConnectiondb.Close()
-                    conn.Close()
                 End If
 
                 If CStr(HojaExcel.Range("C" & i).Value) = "" Then
                     sqlConnectiondb.Close()
-                    conn.Close()
                     MsgBox("Importacion Finalizada")
                     Exit For
 
@@ -210,12 +201,7 @@ Public Class FrmImportarMinerasDbMetal
 
         Catch ex As Exception
             ' Handle the exception.
-            MessageBox.Show(ex.Message, Me.Text, _
-  MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Finally
-            If conn.State <> ConnectionState.Closed Then
-                conn.Close()
-            End If
+            MessageBox.Show(ex.Message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 End Class
